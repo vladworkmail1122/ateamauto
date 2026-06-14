@@ -3,41 +3,6 @@ import Link from "next/link";
 
 export const revalidate = 0;
 
-const carBrands = [
-  "Audi",
-  "BMW",
-  "Mercedes-Benz",
-  "Volkswagen",
-  "Škoda",
-  "Seat",
-  "Cupra",
-  "Porsche",
-  "Toyota",
-  "Honda",
-  "Mazda",
-  "Nissan",
-  "Mitsubishi",
-  "Subaru",
-  "Suzuki",
-  "Lexus",
-  "Ford",
-  "Chevrolet",
-  "Tesla",
-  "Hyundai",
-  "Kia",
-  "Peugeot",
-  "Renault",
-  "Citroën",
-  "Opel",
-  "Fiat",
-  "Volvo",
-  "Land Rover",
-  "Jaguar",
-  "Mini",
-  "Dacia",
-  "Jiné",
-];
-
 const popularBrands = [
   "Audi",
   "BMW",
@@ -53,7 +18,7 @@ export default async function Home() {
   const { data: featuredCars } = await supabase
     .from("cars")
     .select(
-      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured",
+      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured"
     )
     .eq("is_featured", true)
     .order("id", { ascending: false })
@@ -62,121 +27,82 @@ export default async function Home() {
   const { data: latestCars } = await supabase
     .from("cars")
     .select(
-      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured",
+      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured"
     )
     .order("id", { ascending: false })
     .limit(6);
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-14">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-orange-600">
-                ATEAM AUTO MARKETPLACE CZECHIA
-              </p>
+      <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
+        <div className="mx-auto max-w-7xl px-6 py-20">
+          <div className="max-w-3xl">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-orange-400">
+              ATEAM AUTO MARKETPLACE CZECHIA
+            </p>
 
-              <h1 className="max-w-3xl text-5xl font-bold tracking-tight text-gray-900 md:text-6xl">
-                Kupujte a prodávejte auta v Česku
-              </h1>
+            <h1 className="text-5xl font-bold tracking-tight md:text-6xl">
+              Kupujte a prodávejte auta v Česku
+            </h1>
 
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-                Moderní marketplace pro ojetá auta. Rychlé vyhledávání,
-                přehledné inzeráty a jednoduché přidání vozidla.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="/cars"
-                  className="rounded-full bg-orange-600 px-7 py-3 font-semibold text-white hover:bg-orange-700"
-                >
-                  Prohlížet auta
-                </Link>
-
-                <Link
-                  href="/sell"
-                  className="rounded-full border border-gray-300 bg-white px-7 py-3 font-semibold text-gray-900 hover:border-orange-600 hover:text-orange-600"
-                >
-                  Prodat auto
-                </Link>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border bg-gray-50 p-8 shadow-sm">
-              <img
-                src="/logo.png"
-                alt="ATEAM AUTO"
-                className="mx-auto max-h-52 object-contain"
-              />
-
-              <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-2xl bg-white p-4 text-center shadow-sm">
-                  <p className="text-2xl font-bold text-orange-600">
-                    {latestCars?.length || 0}+
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">nových vozů</p>
-                </div>
-
-                <div className="rounded-2xl bg-white p-4 text-center shadow-sm">
-                  <p className="text-2xl font-bold text-orange-600">
-                    {featuredCars?.length || 0}
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">TOP nabídek</p>
-                </div>
-
-                <div className="rounded-2xl bg-white p-4 text-center shadow-sm">
-                  <p className="text-2xl font-bold text-orange-600">CZ</p>
-                  <p className="mt-1 text-sm text-gray-500">marketplace</p>
-                </div>
-              </div>
-            </div>
+            <p className="mt-6 max-w-2xl text-lg text-gray-300">
+              Moderní marketplace pro ojetá auta. Rychlé vyhledávání,
+              přehledné inzeráty a jednoduché přidání vozidla.
+            </p>
           </div>
 
           <form
             action="/cars"
-            className="mt-12 rounded-3xl bg-white p-5 shadow-xl ring-1 ring-gray-200"
+            className="mt-10 grid max-w-5xl grid-cols-1 gap-3 rounded-2xl bg-white p-4 shadow-2xl md:grid-cols-5"
           >
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-              <select
-                name="brand"
-                className="rounded-xl border px-4 py-3 text-gray-900"
-              >
-                <option value="">Značka</option>
-                {carBrands.map((brand) => (
-                  <option key={brand} value={brand}>
-                    {brand}
-                  </option>
-                ))}
-              </select>
+            <input
+              name="brand"
+              className="rounded-xl border px-4 py-3 text-gray-900"
+              placeholder="Značka"
+            />
 
-              <input
-                name="model"
-                className="rounded-xl border px-4 py-3 text-gray-900"
-                placeholder="Model"
-              />
+            <input
+              name="model"
+              className="rounded-xl border px-4 py-3 text-gray-900"
+              placeholder="Model"
+            />
 
-              <input
-                name="priceFrom"
-                className="rounded-xl border px-4 py-3 text-gray-900"
-                placeholder="Cena od"
-              />
+            <input
+              name="city"
+              className="rounded-xl border px-4 py-3 text-gray-900"
+              placeholder="Město"
+            />
 
-              <input
-                name="priceTo"
-                className="rounded-xl border px-4 py-3 text-gray-900"
-                placeholder="Cena do"
-              />
+            <input
+              name="priceTo"
+              className="rounded-xl border px-4 py-3 text-gray-900"
+              placeholder="Cena do"
+            />
 
-              <button className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white hover:bg-orange-700">
-                Hledat
-              </button>
-            </div>
+            <button className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white hover:bg-orange-700">
+              Hledat
+            </button>
           </form>
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              href="/cars"
+              className="rounded-full bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700"
+            >
+              Prohlížet auta
+            </Link>
+
+            <Link
+              href="/sell"
+              className="rounded-full border border-white/30 px-6 py-3 font-semibold text-white hover:bg-white hover:text-gray-900"
+            >
+              Prodat auto
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-6 py-10">
         <h2 className="text-2xl font-bold">Oblíbené značky</h2>
 
         <div className="mt-5 flex flex-wrap gap-3">
