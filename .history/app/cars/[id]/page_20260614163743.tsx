@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import CarGallery from "./CarGallery";
 import FavoriteButton from "./FavoriteButton";
-import ShareButtons from "./ShareButtons";
 
 export const revalidate = 0;
 
@@ -34,48 +32,6 @@ function formatDate(date: string | null) {
   });
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const isNumericId = /^\d+$/.test(params.id);
-
-  const { data: car } = isNumericId
-    ? await supabase
-        .from("cars")
-        .select("*")
-        .eq("id", Number(params.id))
-        .single()
-    : await supabase.from("cars").select("*").eq("slug", params.id).single();
-
-  if (!car) {
-    return {
-      title: "Auto nebylo nalezeno | ATEAM AUTO",
-      description: "Inzerát nebyl nalezen.",
-    };
-  }
-
-  const title = `${car.brand} ${car.model} ${car.year || ""} | ATEAM AUTO`;
-
-  const description = `${car.brand} ${car.model}, ${car.year || ""}, ${
-    car.mileage ? `${car.mileage.toLocaleString()} km` : "nájezd neuveden"
-  }, ${car.fuel || "palivo neuvedeno"}, ${
-    car.transmission || "převodovka neuvedena"
-  }. Cena ${car.price ? `${car.price.toLocaleString()} Kč` : "dohodou"}.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      images: car.image_url ? [car.image_url] : [],
-      type: "website",
-    },
-  };
-}
-
 export default async function CarDetailPage({
   params,
 }: {
@@ -83,13 +39,40 @@ export default async function CarDetailPage({
 }) {
   const isNumericId = /^\d+$/.test(params.id);
 
-  const { data: car, error } = isNumericId
-    ? await supabase
-        .from("cars")
-        .select("*")
-        .eq("id", Number(params.id))
-        .single()
-    : await supabase.from("cars").select("*").eq("slug", params.id).single();
+const { data: car, error } = isNumericId
+  ? await supabase
+      .from("cars")
+      .select("*")
+      .eq("id", Number(params.id))
+      .single()
+  : await supabase
+      .from("cars")
+      .select("*")
+      .eq("slug", params.id)
+      .single();
+    if (error || !car) {
+  return (
+    <main className="p-10">
+      <h1 className="text-3xl font-bold">Auto nebylo nalezeno</h1>
+      <Link href="/cars" className="mt-4 inline-block text-orange-600">
+        Zpět na nabídku
+      </Link>
+    </main>
+  );
+}
+
+  if (car) {
+    await supabase
+      .from("cars")
+      .update({ views: (car.views || 0) + 1 })
+      .eq("id", car.id);
+  }
+
+  const { data: images } = await supabase
+    .from("car_images")
+    .select("image_url")
+    .eq("car_id", params.id)
+    .order("id", { ascending: true });
 
   if (error || !car) {
     return (
@@ -102,27 +85,9 @@ export default async function CarDetailPage({
     );
   }
 
-  await supabase
-    .from("cars")
-    .update({ views: (car.views || 0) + 1 })
-    .eq("id", car.id);
-
-  const { data: images } = await supabase
-    .from("car_images")
-    .select("image_url")
-    .eq("car_id", car.id)
-    .order("id", { ascending: true });
-
-  const { count: favoriteCount } = await supabase
-    .from("favorites")
-    .select("*", { count: "exact", head: true })
-    .eq("car_id", car.id);
-
   const { data: similarCars } = await supabase
     .from("cars")
-    .select(
-      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured",
-    )
+    .select("id, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured")
     .eq("brand", car.brand)
     .neq("id", car.id)
     .order("is_featured", { ascending: false })
@@ -154,7 +119,7 @@ export default async function CarDetailPage({
             <div className="mb-4 flex flex-wrap gap-3">
               <span
                 className={`inline-flex rounded-full border px-4 py-2 text-sm font-semibold ${getStatusClass(
-                  status,
+                  status
                 )}`}
               >
                 {status}
@@ -182,29 +147,6 @@ export default async function CarDetailPage({
             </div>
 
             <FavoriteButton carId={car.id} />
-
-            <ShareButtons
-              title={`${car.brand} ${car.model} ${car.year || ""}`}
-            />
-
-            <div className="mt-6 grid gap-4 rounded-2xl border bg-gray-50 p-5 md:grid-cols-3">
-              <div>
-                <p className="text-sm text-gray-500">Zobrazení</p>
-                <p className="text-2xl font-bold">
-                  👁 {views.toLocaleString()}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">V oblíbených</p>
-                <p className="text-2xl font-bold">❤️ {favoriteCount || 0}</p>
-              </div>
-
-              <div>
-                <p className="text-sm text-gray-500">ID inzerátu</p>
-                <p className="text-2xl font-bold">#{car.id}</p>
-              </div>
-            </div>
 
             <div className="mt-8 rounded-2xl border bg-gray-50 p-6">
               <h2 className="mb-5 text-2xl font-bold">Technické údaje</h2>
@@ -239,7 +181,9 @@ export default async function CarDetailPage({
                 <div>
                   <p className="text-sm text-gray-500">Objem motoru</p>
                   <p className="font-semibold">
-                    {car.engine_volume ? `${car.engine_volume} l` : "Neuvedeno"}
+                    {car.engine_volume
+                      ? `${car.engine_volume} l`
+                      : "Neuvedeno"}
                   </p>
                 </div>
 
@@ -312,7 +256,9 @@ export default async function CarDetailPage({
             </div>
 
             <div className="mt-10 rounded-2xl border bg-gray-50 p-6">
-              <h2 className="mb-4 text-2xl font-bold">Kontakt na prodejce</h2>
+              <h2 className="mb-4 text-2xl font-bold">
+                Kontakt na prodejce
+              </h2>
 
               {car.seller_name && (
                 <div className="mb-3">
@@ -421,7 +367,7 @@ export default async function CarDetailPage({
                     </div>
 
                     <Link
-                      href={`/cars/${similarCar.slug || similarCar.id}`}
+                      href={`/cars/${similarCar.id}`}
                       className="mt-4 block w-full rounded-xl bg-gray-900 py-3 text-center text-white"
                     >
                       Detail vozu

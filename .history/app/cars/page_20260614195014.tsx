@@ -140,7 +140,6 @@ export default async function CarsPage({
   const currentPage = Math.max(Number(searchParams.page || "1"), 1);
 
   let query = supabase.from("cars").select("*");
-
   if (searchParams.search) {
     const search = searchParams.search.trim();
 
@@ -165,45 +164,32 @@ export default async function CarsPage({
   }
 
   if (searchParams.brand) query = query.eq("brand", searchParams.brand);
-  if (searchParams.model) {
+  if (searchParams.model)
     query = query.ilike("model", `%${searchParams.model}%`);
-  }
-  if (searchParams.priceFrom) {
+  if (searchParams.priceFrom)
     query = query.gte("price", Number(searchParams.priceFrom));
-  }
-  if (searchParams.priceTo) {
+  if (searchParams.priceTo)
     query = query.lte("price", Number(searchParams.priceTo));
-  }
-  if (searchParams.yearFrom) {
+  if (searchParams.yearFrom)
     query = query.gte("year", Number(searchParams.yearFrom));
-  }
-  if (searchParams.yearTo) {
+  if (searchParams.yearTo)
     query = query.lte("year", Number(searchParams.yearTo));
-  }
-  if (searchParams.engineFrom) {
+  if (searchParams.engineFrom)
     query = query.gte("engine_volume", Number(searchParams.engineFrom));
-  }
-  if (searchParams.engineTo) {
+  if (searchParams.engineTo)
     query = query.lte("engine_volume", Number(searchParams.engineTo));
-  }
   if (searchParams.fuel) query = query.eq("fuel", searchParams.fuel);
-  if (searchParams.transmission) {
+  if (searchParams.transmission)
     query = query.eq("transmission", searchParams.transmission);
-  }
-  if (searchParams.bodyType) {
+  if (searchParams.bodyType)
     query = query.eq("body_type", searchParams.bodyType);
-  }
   if (searchParams.color) query = query.eq("color", searchParams.color);
   if (searchParams.status) query = query.eq("status", searchParams.status);
-  if (searchParams.driveType) {
+  if (searchParams.driveType)
     query = query.eq("drive_type", searchParams.driveType);
-  }
-  if (searchParams.euroNorm) {
+  if (searchParams.euroNorm)
     query = query.eq("euro_norm", searchParams.euroNorm);
-  }
-  if (searchParams.city) {
-    query = query.ilike("city", `%${searchParams.city}%`);
-  }
+  if (searchParams.city) query = query.ilike("city", `%${searchParams.city}%`);
 
   switch (searchParams.sort) {
     case "price_asc":
@@ -226,12 +212,6 @@ export default async function CarsPage({
       break;
     case "engine_desc":
       query = query.order("engine_volume", { ascending: false });
-      break;
-    case "views_desc":
-      query = query.order("views", { ascending: false });
-      break;
-    case "oldest":
-      query = query.order("id", { ascending: true });
       break;
     default:
       query = query.order("id", { ascending: false });
@@ -296,7 +276,6 @@ export default async function CarsPage({
               placeholder="Hledat: značka, model, VIN, město, ID..."
               className="rounded-xl border px-4 py-3 md:col-span-4"
             />
-
             <select
               name="brand"
               defaultValue={searchParams.brand || ""}
@@ -316,7 +295,6 @@ export default async function CarsPage({
               placeholder="Model"
               className="rounded-xl border px-4 py-3"
             />
-
             <input
               name="city"
               defaultValue={searchParams.city || ""}
@@ -421,7 +399,6 @@ export default async function CarsPage({
               placeholder="Cena od"
               className="rounded-xl border px-4 py-3"
             />
-
             <input
               name="priceTo"
               defaultValue={searchParams.priceTo || ""}
@@ -461,7 +438,6 @@ export default async function CarsPage({
               placeholder="Objem od"
               className="rounded-xl border px-4 py-3"
             />
-
             <input
               name="engineTo"
               defaultValue={searchParams.engineTo || ""}
@@ -475,7 +451,6 @@ export default async function CarsPage({
               className="rounded-xl border px-4 py-3"
             >
               <option value="newest">Nejnovější</option>
-              <option value="oldest">Nejstarší</option>
               <option value="price_asc">Nejlevnější</option>
               <option value="price_desc">Nejdražší</option>
               <option value="mileage_asc">Nejnižší nájezd</option>
@@ -483,7 +458,6 @@ export default async function CarsPage({
               <option value="power_desc">Nejvyšší výkon</option>
               <option value="engine_asc">Nejmenší objem motoru</option>
               <option value="engine_desc">Největší objem motoru</option>
-              <option value="views_desc">Nejvíce zobrazení</option>
             </select>
 
             <button className="rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white md:col-span-2">
@@ -553,10 +527,6 @@ export default async function CarsPage({
                           {car.body_type}
                         </span>
                       )}
-
-                      <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
-                        👁 {(car.views || 0).toLocaleString()}
-                      </span>
                     </div>
 
                     <h2 className="text-xl font-semibold">

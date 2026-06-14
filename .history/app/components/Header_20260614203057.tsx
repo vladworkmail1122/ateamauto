@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 
 const menuLinks = [
@@ -20,14 +19,11 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between py-3">
-          <Link href="/" className="flex items-center">
-            <Image
+          <Link href="/" className="flex items-center gap-3">
+            <img
               src="/logo.png"
               alt="ATEAM AUTO"
-              width={500}
-              height={140}
-              className="h-14 w-auto object-contain sm:h-20"
-              priority
+              className="h-12 w-auto object-contain sm:h-16"
             />
           </Link>
 

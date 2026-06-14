@@ -70,47 +70,47 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-orange-600 sm:mb-4 sm:text-sm">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-orange-600">
                 ATEAM AUTO MARKETPLACE CZECHIA
               </p>
 
-              <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-3xl text-5xl font-bold tracking-tight text-gray-900 md:text-6xl">
                 Kupujte a prodávejte auta v Česku
               </h1>
 
-              <p className="mt-5 max-w-2xl text-base leading-7 text-gray-600 sm:mt-6 sm:text-lg sm:leading-8">
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
                 Moderní marketplace pro ojetá auta. Rychlé vyhledávání,
                 přehledné inzeráty a jednoduché přidání vozidla.
               </p>
 
-              <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap sm:gap-4">
+              <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/cars"
-                  className="rounded-full bg-orange-600 px-7 py-3 text-center font-semibold text-white hover:bg-orange-700"
+                  className="rounded-full bg-orange-600 px-7 py-3 font-semibold text-white hover:bg-orange-700"
                 >
                   Prohlížet auta
                 </Link>
 
                 <Link
                   href="/sell"
-                  className="rounded-full border border-gray-300 bg-white px-7 py-3 text-center font-semibold text-gray-900 hover:border-orange-600 hover:text-orange-600"
+                  className="rounded-full border border-gray-300 bg-white px-7 py-3 font-semibold text-gray-900 hover:border-orange-600 hover:text-orange-600"
                 >
                   Prodat auto
                 </Link>
               </div>
             </div>
 
-            <div className="rounded-3xl border bg-gray-50 p-5 shadow-sm sm:p-8">
+            <div className="rounded-3xl border bg-gray-50 p-8 shadow-sm">
               <img
                 src="/logo.png"
                 alt="ATEAM AUTO"
-                className="mx-auto max-h-40 object-contain sm:max-h-52"
+                className="mx-auto max-h-52 object-contain"
               />
 
-              <div className="mt-6 grid gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4">
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-2xl bg-white p-4 text-center shadow-sm">
                   <p className="text-2xl font-bold text-orange-600">
                     {latestCars?.length || 0}+
@@ -135,13 +135,13 @@ export default async function Home() {
 
           <form
             action="/cars"
-            className="mt-8 rounded-3xl bg-white p-4 shadow-xl ring-1 ring-gray-200 sm:mt-12 sm:p-5"
+            className="mt-12 rounded-3xl bg-white p-5 shadow-xl ring-1 ring-gray-200"
           >
             <div className="grid gap-4">
               <input
                 name="search"
-                placeholder="Hledat auto, VIN, město, palivo, ID..."
-                className="rounded-xl border px-4 py-4 text-base text-gray-900 sm:text-lg"
+                placeholder="Hledat auto, VIN, město, palivo, převodovku, ID..."
+                className="rounded-xl border px-4 py-4 text-lg text-gray-900"
               />
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -179,7 +179,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <h2 className="text-2xl font-bold">Oblíbené značky</h2>
 
         <div className="mt-5 flex flex-wrap gap-3">
@@ -187,7 +187,7 @@ export default async function Home() {
             <Link
               key={brand}
               href={`/cars?brand=${encodeURIComponent(brand)}`}
-              className="rounded-full border bg-white px-5 py-3 text-sm font-semibold shadow-sm hover:border-orange-500 hover:text-orange-600 sm:text-base"
+              className="rounded-full border bg-white px-5 py-3 font-semibold shadow-sm hover:border-orange-500 hover:text-orange-600"
             >
               {brand}
             </Link>
@@ -196,9 +196,9 @@ export default async function Home() {
       </section>
 
       {featuredCars && featuredCars.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+        <section className="mx-auto max-w-7xl px-6 py-10">
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold sm:text-3xl">TOP nabídky</h2>
+            <h2 className="text-3xl font-bold">TOP nabídky</h2>
 
             <Link href="/cars" className="font-semibold text-orange-600">
               Zobrazit vše →
@@ -220,10 +220,10 @@ export default async function Home() {
                     <img
                       src={car.image_url}
                       alt={`${car.brand} ${car.model}`}
-                      className="h-48 w-full object-cover sm:h-56"
+                      className="h-56 w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-48 items-center justify-center bg-gray-200 sm:h-56">
+                    <div className="flex h-56 items-center justify-center bg-gray-200">
                       🚗 Foto vozidla
                     </div>
                   )}
@@ -264,9 +264,9 @@ export default async function Home() {
       )}
 
       {latestCars && latestCars.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+        <section className="mx-auto max-w-7xl px-6 py-10">
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold sm:text-3xl">Nejnovější vozy</h2>
+            <h2 className="text-3xl font-bold">Nejnovější vozy</h2>
 
             <Link href="/cars" className="font-semibold text-orange-600">
               Zobrazit vše →
@@ -290,10 +290,10 @@ export default async function Home() {
                     <img
                       src={car.image_url}
                       alt={`${car.brand} ${car.model}`}
-                      className="h-48 w-full object-cover sm:h-56"
+                      className="h-56 w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-48 items-center justify-center bg-gray-200 sm:h-56">
+                    <div className="flex h-56 items-center justify-center bg-gray-200">
                       🚗 Foto vozidla
                     </div>
                   )}
@@ -333,11 +333,9 @@ export default async function Home() {
         </section>
       )}
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
-        <div className="rounded-3xl bg-gray-900 p-6 text-white sm:p-8 md:p-12">
-          <h2 className="text-2xl font-bold sm:text-3xl">
-            Chcete prodat auto?
-          </h2>
+      <section className="mx-auto max-w-7xl px-6 py-14">
+        <div className="rounded-3xl bg-gray-900 p-8 text-white md:p-12">
+          <h2 className="text-3xl font-bold">Chcete prodat auto?</h2>
 
           <p className="mt-3 max-w-2xl text-gray-300">
             Přidejte svůj inzerát během pár minut. Fotky, popis, technické údaje
@@ -346,7 +344,7 @@ export default async function Home() {
 
           <Link
             href="/sell"
-            className="mt-6 block rounded-xl bg-orange-600 px-6 py-3 text-center font-semibold text-white hover:bg-orange-700 sm:inline-block"
+            className="mt-6 inline-block rounded-xl bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700"
           >
             Přidat inzerát
           </Link>
