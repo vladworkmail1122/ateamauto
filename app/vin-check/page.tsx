@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const normalizeVin = (value: string) =>
   value
@@ -11,6 +11,14 @@ const normalizeVin = (value: string) =>
 
 export default function VinCheckPage() {
   const [vin, setVin] = useState("");
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const vinFromUrl = params.get("vin");
+
+  if (vinFromUrl) {
+    setVin(normalizeVin(vinFromUrl));
+  }
+}, []);
   const [message, setMessage] = useState("");
 
   const cleanVin = normalizeVin(vin);

@@ -275,9 +275,7 @@ export default async function CarsPage({
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
         <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold sm:text-4xl">
-              Nabídka vozidel
-            </h1>
+            <h1 className="text-3xl font-bold sm:text-4xl">Nabídka vozidel</h1>
 
             <p className="mt-2 text-sm text-gray-500">
               Nalezeno vozidel: {totalCars} • Stránka {currentPage} z{" "}
@@ -585,12 +583,25 @@ export default async function CarsPage({
                       {car.price?.toLocaleString()} Kč
                     </div>
 
-                    <Link
-                      href={`/cars/${car.slug || car.id}`}
-                      className="mt-4 block w-full rounded-xl bg-gray-900 py-3 text-center text-sm font-semibold text-white sm:text-base"
-                    >
-                      Detail vozu
-                    </Link>
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <Link
+                        href={`/cars/${car.slug || car.id}`}
+                        className="rounded-xl bg-gray-900 px-3 py-3 text-center text-sm font-semibold text-white transition hover:bg-gray-800 sm:text-base"
+                      >
+                        Detail vozu
+                      </Link>
+
+                      <Link
+                        href={
+                          car.vin
+                            ? `/vin-check?vin=${encodeURIComponent(car.vin)}`
+                            : "/vin-check"
+                        }
+                        className="rounded-xl border border-gray-300 bg-white px-3 py-3 text-center text-sm font-semibold text-gray-900 transition hover:bg-gray-50 sm:text-base"
+                      >
+                        Prověřit VIN
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}
