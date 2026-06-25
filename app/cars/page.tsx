@@ -528,12 +528,6 @@ export default async function CarsPage({
                       </div>
                     )}
 
-                    {car.is_verified_by_ateam && (
-                      <div className="absolute right-3 top-3 z-10 max-w-[70%] rounded-full border border-green-300 bg-green-100 px-3 py-1 text-[10px] font-black text-green-800 shadow sm:text-xs">
-                        ✓ Ověřeno ATEAM SERVICE
-                      </div>
-                    )}
-
                     {car.image_url ? (
                       <img
                         src={car.image_url}
@@ -551,9 +545,21 @@ export default async function CarsPage({
 
                   <div className="p-4 sm:p-5">
                     <div className="mb-2 flex flex-wrap gap-2">
+                      {car.is_verified_by_ateam && (
+                        <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-black text-green-800">
+                          ✓ Ověřeno ATEAM SERVICE
+                        </span>
+                      )}
+
                       {car.status && (
                         <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
                           {car.status}
+                        </span>
+                      )}
+
+                      {car.city && (
+                        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                          📍 {car.city}
                         </span>
                       )}
 
@@ -582,7 +588,6 @@ export default async function CarsPage({
                       {car.fuel}
                       {car.drive_type ? ` • ${car.drive_type}` : ""}
                       {car.transmission ? ` • ${car.transmission}` : ""}
-                      {car.city ? ` • ${car.city}` : ""}
                     </p>
 
                     <div className="mt-3 text-2xl font-bold text-orange-600 sm:mt-4">

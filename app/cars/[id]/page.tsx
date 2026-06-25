@@ -61,12 +61,28 @@ function InfoItem({
   value: string | number | null;
 }) {
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100">
+    <div className="min-w-0 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100">
       <p className="text-xs font-medium text-gray-500 sm:text-sm">{label}</p>
-      <p className="mt-1 break-words font-bold text-gray-900">
+      <p className="mt-1 whitespace-normal break-normal text-sm font-bold text-gray-900 sm:text-base">
         {value || "Neuvedeno"}
       </p>
     </div>
+  );
+}
+
+function SmallBadge({
+  children,
+  className = "bg-gray-100 text-gray-700",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${className}`}
+    >
+      {children}
+    </span>
   );
 }
 
@@ -158,7 +174,7 @@ export default async function CarDetailPage({
   const { data: similarCars } = await supabase
     .from("cars")
     .select(
-      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured, is_verified_by_ateam, vin",
+      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured, is_verified_by_ateam, vin, status, body_type, views",
     )
     .eq("brand", car.brand)
     .neq("id", car.id)
@@ -206,6 +222,12 @@ export default async function CarDetailPage({
                 {status}
               </span>
 
+              {car.city && (
+                <span className="inline-flex rounded-full border border-gray-200 bg-gray-100 px-3 py-1.5 text-xs font-bold text-gray-700 sm:px-4 sm:py-2 sm:text-sm">
+                  📍 {car.city}
+                </span>
+              )}
+
               {car.is_featured && (
                 <span className="inline-flex rounded-full border border-yellow-300 bg-yellow-100 px-3 py-1.5 text-xs font-bold text-yellow-800 sm:px-4 sm:py-2 sm:text-sm">
                   TOP nabídka
@@ -233,7 +255,7 @@ export default async function CarDetailPage({
               {formatPrice(car.price || null)}
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-5 grid grid-cols-2 gap-3">
               <InfoItem label="Rok" value={car.year || "Neuvedeno"} />
               <InfoItem label="Najeto" value={formatMileage(car.mileage)} />
               <InfoItem label="Palivo" value={car.fuel || "Neuvedeno"} />
@@ -242,6 +264,30 @@ export default async function CarDetailPage({
                 value={car.transmission || "Neuvedeno"}
               />
             </div>
+
+            {(car.seller_phone || sellerPhoneDigits) && (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {car.seller_phone && (
+                  <a
+                    href={`tel:${car.seller_phone}`}
+                    className="block rounded-2xl bg-gray-900 px-5 py-4 text-center font-black text-white transition hover:bg-gray-800"
+                  >
+                    Zavolat prodejci
+                  </a>
+                )}
+
+                {sellerPhoneDigits && (
+                  <a
+                    href={`https://wa.me/${sellerPhoneDigits}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-2xl bg-green-600 px-5 py-4 text-center font-black text-white transition hover:bg-green-700"
+                  >
+                    WhatsApp
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className="mt-5">
               <FavoriteButton carId={car.id} />
@@ -454,12 +500,6 @@ export default async function CarDetailPage({
                       </div>
                     )}
 
-                    {similarCar.is_verified_by_ateam && (
-                      <div className="absolute right-3 top-3 z-10 max-w-[75%] rounded-full border border-green-300 bg-green-100 px-3 py-1 text-xs font-black text-green-800 shadow sm:text-sm">
-                        ✓ Ověřeno
-                      </div>
-                    )}
-
                     {similarCar.image_url ? (
                       <img
                         src={similarCar.image_url}
@@ -474,6 +514,30 @@ export default async function CarDetailPage({
                   </div>
 
                   <div className="p-4 sm:p-5">
+                    <div className="mb-2 flex flex-wrap gap-2">
+                      {similarCar.is_verified_by_ateam && (
+                        <SmallBadge className="bg-green-100 text-green-800">
+                          ✓ Ověřeno ATEAM SERVICE
+                        </SmallBadge>
+                      )}
+
+                      {similarCar.status && (
+                        <SmallBadge>{similarCar.status}</SmallBadge>
+                      )}
+
+                      {similarCar.city && (
+                        <SmallBadge>📍 {similarCar.city}</SmallBadge>
+                      )}
+
+                      {similarCar.body_type && (
+                        <SmallBadge>{similarCar.body_type}</SmallBadge>
+                      )}
+
+                      <SmallBadge>
+                        👁 {(similarCar.views || 0).toLocaleString()}
+                      </SmallBadge>
+                    </div>
+
                     <h3 className="text-lg font-black text-gray-900 sm:text-xl">
                       {similarCar.brand} {similarCar.model}
                     </h3>
@@ -491,7 +555,6 @@ export default async function CarDetailPage({
                       {similarCar.transmission
                         ? ` • ${similarCar.transmission}`
                         : ""}
-                      {similarCar.city ? ` • ${similarCar.city}` : ""}
                     </p>
 
                     <div className="mt-3 text-2xl font-black text-orange-600 sm:mt-4">
