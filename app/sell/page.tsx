@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
@@ -8,7 +8,7 @@ const carBrands = [
   "BMW",
   "Mercedes-Benz",
   "Volkswagen",
-  "Škoda",
+  "Е koda",
   "Seat",
   "Cupra",
   "Porsche",
@@ -31,7 +31,7 @@ const carBrands = [
   "Kia",
   "Peugeot",
   "Renault",
-  "Citroën",
+  "CitroГ«n",
   "DS",
   "Opel",
   "Fiat",
@@ -55,7 +55,7 @@ const carBrands = [
   "Dacia",
   "MG",
   "BYD",
-  "Jiné",
+  "JinГ©",
 ];
 
 const years = Array.from({ length: 2026 - 1990 + 1 }, (_, index) =>
@@ -63,7 +63,7 @@ const years = Array.from({ length: 2026 - 1990 + 1 }, (_, index) =>
 );
 
 const fuels = [
-  "Benzín",
+  "BenzГ­n",
   "Nafta",
   "Hybrid",
   "Plug-in hybrid",
@@ -72,40 +72,40 @@ const fuels = [
   "CNG",
 ];
 
-const transmissions = ["Manuální", "Automatická", "DSG", "CVT"];
+const transmissions = ["ManuГЎlnГ­", "AutomatickГЎ", "DSG", "CVT"];
 
 const bodyTypes = [
   "Sedan",
   "Combi",
   "Hatchback",
   "SUV",
-  "Kupé",
+  "KupГ©",
   "Kabriolet",
   "MPV",
   "Pickup",
-  "Dodávka",
+  "DodГЎvka",
 ];
 
 const colors = [
-  "Bílá",
-  "Černá",
-  "Šedá",
-  "Stříbrná",
-  "Modrá",
-  "Červená",
-  "Zelená",
-  "Hnědá",
-  "Béžová",
-  "Žlutá",
-  "Oranžová",
-  "Zlatá",
-  "Fialová",
-  "Jiná",
+  "BГ­lГЎ",
+  "ДЊernГЎ",
+  "Е edГЎ",
+  "StЕ™Г­brnГЎ",
+  "ModrГЎ",
+  "ДЊervenГЎ",
+  "ZelenГЎ",
+  "HnД›dГЎ",
+  "BГ©ЕѕovГЎ",
+  "ЕЅlutГЎ",
+  "OranЕѕovГЎ",
+  "ZlatГЎ",
+  "FialovГЎ",
+  "JinГЎ",
 ];
 
-const statuses = ["Aktivní", "Rezervováno", "Prodáno"];
+const statuses = ["AktivnГ­", "RezervovГЎno", "ProdГЎno"];
 
-const driveTypes = ["Přední náhon", "Zadní náhon", "4x4 / AWD"];
+const driveTypes = ["PЕ™ednГ­ nГЎhon", "ZadnГ­ nГЎhon", "4x4 / AWD"];
 
 const euroNorms = ["Euro 3", "Euro 4", "Euro 5", "Euro 6", "Euro 6d"];
 
@@ -155,7 +155,7 @@ export default function SellPage() {
   const [engineVolume, setEngineVolume] = useState("");
   const [bodyType, setBodyType] = useState("");
   const [color, setColor] = useState("");
-  const [status, setStatus] = useState("Aktivní");
+  const [status, setStatus] = useState("AktivnГ­");
   const [vin, setVin] = useState("");
   const [driveType, setDriveType] = useState("");
   const [ownerCount, setOwnerCount] = useState("");
@@ -218,7 +218,7 @@ export default function SellPage() {
 
     if (carError || !carData) {
       setLoading(false);
-      setMessage(carError?.message || "Chyba při vytváření inzerátu.");
+      setMessage(carError?.message || "Chyba pЕ™i vytvГЎЕ™enГ­ inzerГЎtu.");
       return;
     }
 
@@ -269,7 +269,7 @@ export default function SellPage() {
         .eq("id", carData.id);
     }
 
-    setMessage("Inzerát byl úspěšně přidán.");
+    setMessage("InzerГЎt byl ГєspД›ЕЎnД› pЕ™idГЎn.");
     window.location.href = `/cars/${carData.slug || carData.id}`;
   }
 
@@ -277,11 +277,11 @@ export default function SellPage() {
     <main className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-3xl font-bold sm:text-4xl">Přidat inzerát</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">PЕ™idat inzerГЎt</h1>
 
           <p className="mt-2 text-sm text-gray-500 sm:text-base">
-            Vyplňte údaje o vozidle, kontakt a fotografie. Povinná pole jsou
-            značka, model, rok, nájezd, cena, palivo, převodovka a město.
+            VyplЕ€te Гєdaje o vozidle, kontakt a fotografie. PovinnГЎ pole jsou
+            znaДЌka, model, rok, nГЎjezd, cena, palivo, pЕ™evodovka a mД›sto.
           </p>
         </div>
 
@@ -293,8 +293,8 @@ export default function SellPage() {
 
         <form onSubmit={handleSubmit} className="grid gap-5">
           <FormSection
-            title="Základní údaje"
-            description="Hlavní informace, podle kterých lidé auto najdou."
+            title="ZГЎkladnГ­ Гєdaje"
+            description="HlavnГ­ informace, podle kterГЅch lidГ© auto najdou."
           >
             <div className="grid gap-4 md:grid-cols-2">
               <select
@@ -303,7 +303,7 @@ export default function SellPage() {
                 onChange={(e) => setBrand(e.target.value)}
                 required
               >
-                <option value="">Značka</option>
+                <option value="">ZnaДЌka</option>
                 {carBrands.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -325,7 +325,7 @@ export default function SellPage() {
                 onChange={(e) => setYear(e.target.value)}
                 required
               >
-                <option value="">Rok výroby</option>
+                <option value="">Rok vГЅroby</option>
                 {years.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -343,7 +343,7 @@ export default function SellPage() {
 
               <input
                 className="rounded-xl border px-4 py-3"
-                placeholder="Cena Kč"
+                placeholder="Cena KДЌ"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
@@ -351,7 +351,7 @@ export default function SellPage() {
 
               <input
                 className="rounded-xl border px-4 py-3"
-                placeholder="Město"
+                placeholder="MД›sto"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
@@ -360,8 +360,8 @@ export default function SellPage() {
           </FormSection>
 
           <FormSection
-            title="Technické údaje"
-            description="Motor, převodovka, karoserie a další parametry."
+            title="TechnickГ© Гєdaje"
+            description="Motor, pЕ™evodovka, karoserie a dalЕЎГ­ parametry."
           >
             <div className="grid gap-4 md:grid-cols-2">
               <select
@@ -384,7 +384,7 @@ export default function SellPage() {
                 onChange={(e) => setTransmission(e.target.value)}
                 required
               >
-                <option value="">Převodovka</option>
+                <option value="">PЕ™evodovka</option>
                 {transmissions.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -420,14 +420,14 @@ export default function SellPage() {
 
               <input
                 className="rounded-xl border px-4 py-3"
-                placeholder="Výkon kW"
+                placeholder="VГЅkon kW"
                 value={power}
                 onChange={(e) => setPower(e.target.value)}
               />
 
               <input
                 className="rounded-xl border px-4 py-3"
-                placeholder="Objem motoru l, např. 2.0"
+                placeholder="Objem motoru l, napЕ™. 2.0"
                 value={engineVolume}
                 onChange={(e) => setEngineVolume(e.target.value)}
               />
@@ -449,7 +449,7 @@ export default function SellPage() {
 
           <FormSection
             title="Stav a dokumenty"
-            description="Status inzerátu, VIN, STK a další údaje."
+            description="Status inzerГЎtu, VIN, STK a dalЕЎГ­ Гєdaje."
           >
             <div className="grid gap-4 md:grid-cols-2">
               <select
@@ -473,7 +473,7 @@ export default function SellPage() {
 
               <input
                 className="rounded-xl border px-4 py-3"
-                placeholder="Počet majitelů"
+                placeholder="PoДЌet majitelЕЇ"
                 value={ownerCount}
                 onChange={(e) => setOwnerCount(e.target.value)}
               />
@@ -503,27 +503,17 @@ export default function SellPage() {
                   onChange={(e) => setStkUntil(e.target.value)}
                 />
               </div>
-
-              <label className="flex items-center gap-3 rounded-xl border bg-gray-50 px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={isFeatured}
-                  onChange={(e) => setIsFeatured(e.target.checked)}
-                />
-
-                <span className="font-semibold">TOP nabídka</span>
-              </label>
             </div>
           </FormSection>
 
           <FormSection
             title="Kontakt na prodejce"
-            description="Tyto údaje se zobrazí u inzerátu."
+            description="Tyto Гєdaje se zobrazГ­ u inzerГЎtu."
           >
             <div className="grid gap-4 md:grid-cols-3">
               <input
                 className="rounded-xl border px-4 py-3"
-                placeholder="Jméno prodejce"
+                placeholder="JmГ©no prodejce"
                 value={sellerName}
                 onChange={(e) => setSellerName(e.target.value)}
               />
@@ -546,7 +536,7 @@ export default function SellPage() {
 
           <FormSection
             title="Fotografie"
-            description="Nahrajte více fotek vozidla. První fotka bude hlavní."
+            description="Nahrajte vГ­ce fotek vozidla. PrvnГ­ fotka bude hlavnГ­."
           >
             <div className="rounded-xl border bg-gray-50 p-4">
               <label className="block font-semibold">Fotografie vozidla</label>
@@ -561,7 +551,7 @@ export default function SellPage() {
 
               {files.length > 0 && (
                 <p className="mt-3 text-sm text-gray-500">
-                  Vybráno fotografií: {files.length}
+                  VybrГЎno fotografiГ­: {files.length}
                 </p>
               )}
             </div>
@@ -570,7 +560,7 @@ export default function SellPage() {
           <FormSection title="Popis vozidla">
             <textarea
               className="min-h-40 w-full rounded-xl border px-4 py-3"
-              placeholder="Popis vozidla, servisní historie, výbava, stav..."
+              placeholder="Popis vozidla, servisnГ­ historie, vГЅbava, stav..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -580,7 +570,7 @@ export default function SellPage() {
             disabled={loading}
             className="rounded-2xl bg-orange-600 py-4 text-lg font-semibold text-white shadow hover:bg-orange-700 disabled:bg-gray-400"
           >
-            {loading ? "Nahrávání..." : "Přidat inzerát"}
+            {loading ? "NahrГЎvГЎnГ­..." : "PЕ™idat inzerГЎt"}
           </button>
         </form>
       </div>
