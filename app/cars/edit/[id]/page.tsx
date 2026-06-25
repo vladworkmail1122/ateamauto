@@ -166,7 +166,6 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
   const [ownerCount, setOwnerCount] = useState("");
   const [euroNorm, setEuroNorm] = useState("");
   const [stkUntil, setStkUntil] = useState("");
-  const [isFeatured, setIsFeatured] = useState(false);
   const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
   const [sellerName, setSellerName] = useState("");
@@ -218,7 +217,6 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
     setOwnerCount(String(car.owner_count || ""));
     setEuroNorm(car.euro_norm || "");
     setStkUntil(car.stk_until || "");
-    setIsFeatured(car.is_featured || false);
     setCity(car.city || "");
     setDescription(car.description || "");
     setSellerName(car.seller_name || "");
@@ -375,7 +373,6 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
         owner_count: ownerCount ? Number(ownerCount) : null,
         euro_norm: euroNorm,
         stk_until: stkUntil || null,
-        is_featured: isFeatured,
         city,
         description,
         seller_name: sellerName,
@@ -617,16 +614,6 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
                   onChange={(e) => setStkUntil(e.target.value)}
                 />
               </div>
-
-              <label className="flex items-center gap-3 rounded-xl border bg-gray-50 px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={isFeatured}
-                  onChange={(e) => setIsFeatured(e.target.checked)}
-                />
-
-                <span className="font-semibold">TOP nabídka</span>
-              </label>
             </div>
           </FormSection>
 
