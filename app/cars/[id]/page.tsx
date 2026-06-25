@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 import CarGallery from "./CarGallery";
 import FavoriteButton from "./FavoriteButton";
 import ShareButtons from "./ShareButtons";
@@ -32,6 +32,42 @@ function formatDate(date: string | null) {
     month: "2-digit",
     year: "numeric",
   });
+}
+
+function formatPrice(price: number | null) {
+  if (!price) return "Cena dohodou";
+  return `${price.toLocaleString()} Kč`;
+}
+
+function formatMileage(mileage: number | null) {
+  if (!mileage) return "Neuvedeno";
+  return `${mileage.toLocaleString()} km`;
+}
+
+function formatEngineVolume(engineVolume: number | null) {
+  if (!engineVolume) return "Neuvedeno";
+  return `${engineVolume} l`;
+}
+
+function getVinCheckHref(vin: string | null) {
+  return vin ? `/vin-check?vin=${encodeURIComponent(vin)}` : "/vin-check";
+}
+
+function InfoItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number | null;
+}) {
+  return (
+    <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100">
+      <p className="text-xs font-medium text-gray-500 sm:text-sm">{label}</p>
+      <p className="mt-1 break-words font-bold text-gray-900">
+        {value || "Neuvedeno"}
+      </p>
+    </div>
+  );
 }
 
 export async function generateMetadata({
@@ -124,7 +160,7 @@ export default async function CarDetailPage({
   const { data: similarCars } = await supabase
     .from("cars")
     .select(
-      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured",
+      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured, vin",
     )
     .eq("brand", car.brand)
     .neq("id", car.id)
@@ -134,18 +170,24 @@ export default async function CarDetailPage({
 
   const views = (car.views || 0) + 1;
   const status = car.status || "Aktivní";
+  const vinCheckHref = getVinCheckHref(car.vin || null);
+  const sellerPhoneDigits = car.seller_phone
+    ? car.seller_phone.replace(/\D/g, "")
+    : "";
 
   const galleryImages =
     images && images.length > 0
       ? images.map((image) => image.image_url)
-      : [car.image_url || fallbackImages[Number(car.id)]].filter(Boolean);
+      : [car.image_url || fallbackImages[Number(car.id)]].filter(
+          (image): image is string => Boolean(image),
+        );
 
   return (
     <main className="min-h-screen bg-gray-100">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
         <Link
           href="/cars"
-          className="inline-block text-sm font-semibold text-orange-600 hover:underline sm:text-base"
+          className="inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm ring-1 ring-gray-200 transition hover:text-orange-600 sm:text-base"
         >
           ← Zpět na nabídku
         </Link>
@@ -156,10 +198,10 @@ export default async function CarDetailPage({
             title={`${car.brand} ${car.model}`}
           />
 
-          <div className="rounded-2xl bg-white p-5 shadow sm:p-8">
+          <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-gray-200 sm:p-8">
             <div className="mb-4 flex flex-wrap gap-2 sm:gap-3">
               <span
-                className={`inline-flex rounded-full border px-3 py-1.5 text-xs font-semibold sm:px-4 sm:py-2 sm:text-sm ${getStatusClass(
+                className={`inline-flex rounded-full border px-3 py-1.5 text-xs font-bold sm:px-4 sm:py-2 sm:text-sm ${getStatusClass(
                   status,
                 )}`}
               >
@@ -167,217 +209,229 @@ export default async function CarDetailPage({
               </span>
 
               {car.is_featured && (
-                <span className="inline-flex rounded-full border border-yellow-300 bg-yellow-100 px-3 py-1.5 text-xs font-semibold text-yellow-800 sm:px-4 sm:py-2 sm:text-sm">
+                <span className="inline-flex rounded-full border border-yellow-300 bg-yellow-100 px-3 py-1.5 text-xs font-bold text-yellow-800 sm:px-4 sm:py-2 sm:text-sm">
                   TOP nabídka
                 </span>
               )}
             </div>
 
-            <h1 className="text-3xl font-bold leading-tight sm:text-4xl">
+            <h1 className="text-3xl font-black leading-tight text-gray-900 sm:text-5xl">
               {car.brand} {car.model}
             </h1>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-gray-500 sm:gap-4 sm:text-sm">
+            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-medium text-gray-500 sm:gap-4 sm:text-sm">
               <span>👁 {views.toLocaleString()} zobrazení</span>
               <span>ID: {car.id}</span>
               {car.vin && <span className="break-all">VIN: {car.vin}</span>}
             </div>
 
-            <div className="mt-4 text-3xl font-bold text-orange-600 sm:text-4xl">
-              {car.price?.toLocaleString()} Kč
+            <div className="mt-5 text-3xl font-black text-orange-600 sm:text-5xl">
+              {formatPrice(car.price || null)}
+            </div>
+
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <InfoItem label="Rok" value={car.year || "Neuvedeno"} />
+              <InfoItem label="Najeto" value={formatMileage(car.mileage)} />
+              <InfoItem label="Palivo" value={car.fuel || "Neuvedeno"} />
+              <InfoItem
+                label="Převodovka"
+                value={car.transmission || "Neuvedeno"}
+              />
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
+              <FavoriteButton carId={car.id} />
+
+              <Link
+                href={vinCheckHref}
+                className="rounded-2xl border border-orange-200 bg-orange-50 px-5 py-3 text-center text-sm font-black text-orange-700 shadow-sm transition hover:bg-orange-100"
+              >
+                Prověřit VIN
+              </Link>
             </div>
 
             <div className="mt-4">
-              <FavoriteButton carId={car.id} />
+              <ShareButtons
+                title={`${car.brand} ${car.model} ${car.year || ""}`}
+              />
             </div>
 
-            <ShareButtons
-              title={`${car.brand} ${car.model} ${car.year || ""}`}
-            />
+            <div className="mt-5 rounded-3xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white p-5 shadow-sm sm:mt-6 sm:p-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.18em] text-orange-600">
+                    Kontrola historie
+                  </p>
 
-            <div className="mt-5 grid grid-cols-3 gap-2 rounded-2xl border bg-gray-50 p-4 sm:mt-6 sm:gap-4 sm:p-5">
+                  <h2 className="mt-2 text-2xl font-black text-gray-900">
+                    Ověření podle VIN
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-6 text-gray-600">
+                    Rychlé otevření kontroly přes carVertical nebo Cebia. VIN se
+                    na stránce kontroly automaticky předvyplní.
+                  </p>
+
+                  <p className="mt-3 text-sm font-bold text-gray-900">
+                    {car.vin ? (
+                      <span className="break-all">VIN: {car.vin}</span>
+                    ) : (
+                      "VIN není u tohoto inzerátu uveden."
+                    )}
+                  </p>
+                </div>
+
+                <Link
+                  href={vinCheckHref}
+                  className="inline-flex shrink-0 items-center justify-center rounded-2xl bg-orange-600 px-6 py-4 text-center text-sm font-black text-white shadow-sm transition hover:bg-orange-700"
+                >
+                  Prověřit VIN
+                </Link>
+              </div>
+            </div>
+
+            <div className="mt-5 grid grid-cols-3 gap-2 rounded-3xl border border-gray-200 bg-gray-50 p-4 sm:mt-6 sm:gap-4 sm:p-5">
               <div>
                 <p className="text-xs text-gray-500 sm:text-sm">Zobrazení</p>
-                <p className="mt-1 text-lg font-bold sm:text-2xl">
+                <p className="mt-1 text-lg font-black text-gray-900 sm:text-2xl">
                   👁 {views.toLocaleString()}
                 </p>
               </div>
 
               <div>
                 <p className="text-xs text-gray-500 sm:text-sm">Oblíbené</p>
-                <p className="mt-1 text-lg font-bold sm:text-2xl">
+                <p className="mt-1 text-lg font-black text-gray-900 sm:text-2xl">
                   ❤️ {favoriteCount || 0}
                 </p>
               </div>
 
               <div>
                 <p className="text-xs text-gray-500 sm:text-sm">ID</p>
-                <p className="mt-1 text-lg font-bold sm:text-2xl">#{car.id}</p>
+                <p className="mt-1 text-lg font-black text-gray-900 sm:text-2xl">
+                  #{car.id}
+                </p>
               </div>
             </div>
 
-            <div className="mt-6 rounded-2xl border bg-gray-50 p-4 sm:mt-8 sm:p-6">
-              <h2 className="mb-4 text-xl font-bold sm:mb-5 sm:text-2xl">
+            <div className="mt-6 rounded-3xl border border-gray-200 bg-gray-50 p-4 sm:mt-8 sm:p-6">
+              <h2 className="mb-4 text-xl font-black text-gray-900 sm:mb-5 sm:text-2xl">
                 Technické údaje
               </h2>
 
-              <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">
-                    Rok výroby
-                  </p>
-                  <p className="font-semibold">{car.year || "Neuvedeno"}</p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Najeto</p>
-                  <p className="font-semibold">
-                    {car.mileage
-                      ? `${car.mileage.toLocaleString()} km`
-                      : "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Karoserie</p>
-                  <p className="font-semibold">
-                    {car.body_type || "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Barva</p>
-                  <p className="font-semibold">{car.color || "Neuvedeno"}</p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">
-                    Objem motoru
-                  </p>
-                  <p className="font-semibold">
-                    {car.engine_volume ? `${car.engine_volume} l` : "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Palivo</p>
-                  <p className="font-semibold">{car.fuel || "Neuvedeno"}</p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">
-                    Převodovka
-                  </p>
-                  <p className="font-semibold">
-                    {car.transmission || "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Výkon</p>
-                  <p className="font-semibold">
-                    {car.power ? `${car.power} kW` : "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Pohon</p>
-                  <p className="font-semibold">
-                    {car.drive_type || "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">
-                    Počet majitelů
-                  </p>
-                  <p className="font-semibold">
-                    {car.owner_count || "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">
-                    Euro norma
-                  </p>
-                  <p className="font-semibold">
-                    {car.euro_norm || "Neuvedeno"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">STK do</p>
-                  <p className="font-semibold">
-                    {formatDate(car.stk_until || null)}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">Město</p>
-                  <p className="font-semibold">{car.city || "Neuvedeno"}</p>
-                </div>
-
-                <div>
-                  <p className="text-xs text-gray-500 sm:text-sm">VIN</p>
-                  <p className="break-all font-semibold">
-                    {car.vin || "Neuvedeno"}
-                  </p>
-                </div>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <InfoItem label="Rok výroby" value={car.year || "Neuvedeno"} />
+                <InfoItem label="Najeto" value={formatMileage(car.mileage)} />
+                <InfoItem
+                  label="Karoserie"
+                  value={car.body_type || "Neuvedeno"}
+                />
+                <InfoItem label="Barva" value={car.color || "Neuvedeno"} />
+                <InfoItem
+                  label="Objem motoru"
+                  value={formatEngineVolume(car.engine_volume)}
+                />
+                <InfoItem label="Palivo" value={car.fuel || "Neuvedeno"} />
+                <InfoItem
+                  label="Převodovka"
+                  value={car.transmission || "Neuvedeno"}
+                />
+                <InfoItem
+                  label="Výkon"
+                  value={car.power ? `${car.power} kW` : "Neuvedeno"}
+                />
+                <InfoItem
+                  label="Pohon"
+                  value={car.drive_type || "Neuvedeno"}
+                />
+                <InfoItem
+                  label="Počet majitelů"
+                  value={car.owner_count || "Neuvedeno"}
+                />
+                <InfoItem
+                  label="Euro norma"
+                  value={car.euro_norm || "Neuvedeno"}
+                />
+                <InfoItem
+                  label="STK do"
+                  value={formatDate(car.stk_until || null)}
+                />
+                <InfoItem label="Město" value={car.city || "Neuvedeno"} />
+                <InfoItem label="VIN" value={car.vin || "Neuvedeno"} />
               </div>
             </div>
 
-            <div className="mt-6 sm:mt-10">
-              <h2 className="mb-3 text-xl font-bold">Popis vozidla</h2>
-              <p className="whitespace-pre-line text-sm leading-7 text-gray-600 sm:text-base">
+            <div className="mt-6 rounded-3xl bg-white sm:mt-10">
+              <h2 className="mb-3 text-xl font-black text-gray-900">
+                Popis vozidla
+              </h2>
+
+              <p className="whitespace-pre-line rounded-3xl border border-gray-200 bg-gray-50 p-5 text-sm leading-7 text-gray-700 sm:text-base">
                 {car.description || "Popis vozidla není k dispozici."}
               </p>
             </div>
 
-            <div className="mt-6 rounded-2xl border bg-gray-50 p-4 sm:mt-10 sm:p-6">
-              <h2 className="mb-4 text-xl font-bold sm:text-2xl">
+            <div className="mt-6 rounded-3xl border border-gray-200 bg-gray-50 p-4 sm:mt-10 sm:p-6">
+              <h2 className="mb-4 text-xl font-black text-gray-900 sm:text-2xl">
                 Kontakt na prodejce
               </h2>
 
-              {car.seller_name && (
-                <div className="mb-3">
-                  <p className="text-xs text-gray-500 sm:text-sm">Jméno</p>
-                  <p className="font-semibold">{car.seller_name}</p>
-                </div>
-              )}
+              <div className="space-y-4">
+                {car.seller_name && (
+                  <div>
+                    <p className="text-xs text-gray-500 sm:text-sm">Jméno</p>
+                    <p className="font-bold text-gray-900">
+                      {car.seller_name}
+                    </p>
+                  </div>
+                )}
 
-              {car.seller_phone && (
-                <div className="mb-4">
-                  <p className="text-xs text-gray-500 sm:text-sm">Telefon</p>
-                  <a
-                    href={`tel:${car.seller_phone}`}
-                    className="text-lg font-semibold text-orange-600 hover:underline"
-                  >
-                    {car.seller_phone}
-                  </a>
-                </div>
-              )}
+                {car.seller_phone && (
+                  <div>
+                    <p className="text-xs text-gray-500 sm:text-sm">Telefon</p>
+                    <a
+                      href={`tel:${car.seller_phone}`}
+                      className="text-lg font-black text-orange-600 hover:underline"
+                    >
+                      {car.seller_phone}
+                    </a>
+                  </div>
+                )}
 
-              {car.seller_email && (
-                <div className="mb-4">
-                  <p className="text-xs text-gray-500 sm:text-sm">E-mail</p>
-                  <a
-                    href={`mailto:${car.seller_email}`}
-                    className="break-all font-semibold text-orange-600 hover:underline"
-                  >
-                    {car.seller_email}
-                  </a>
-                </div>
-              )}
+                {car.seller_email && (
+                  <div>
+                    <p className="text-xs text-gray-500 sm:text-sm">E-mail</p>
+                    <a
+                      href={`mailto:${car.seller_email}`}
+                      className="break-all font-bold text-orange-600 hover:underline"
+                    >
+                      {car.seller_email}
+                    </a>
+                  </div>
+                )}
+              </div>
 
-              {car.seller_phone && (
-                <a
-                  href={`https://wa.me/${car.seller_phone.replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 block w-full rounded-xl bg-green-600 py-3 text-center font-semibold text-white hover:bg-green-700 sm:py-4 sm:text-lg"
-                >
-                  WhatsApp
-                </a>
+              {(car.seller_phone || sellerPhoneDigits) && (
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {car.seller_phone && (
+                    <a
+                      href={`tel:${car.seller_phone}`}
+                      className="block rounded-2xl bg-gray-900 px-5 py-4 text-center font-black text-white transition hover:bg-gray-800"
+                    >
+                      Zavolat
+                    </a>
+                  )}
+
+                  {sellerPhoneDigits && (
+                    <a
+                      href={`https://wa.me/${sellerPhoneDigits}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block rounded-2xl bg-green-600 px-5 py-4 text-center font-black text-white transition hover:bg-green-700"
+                    >
+                      WhatsApp
+                    </a>
+                  )}
+                </div>
               )}
 
               {!car.seller_name && !car.seller_phone && !car.seller_email && (
@@ -391,7 +445,7 @@ export default async function CarDetailPage({
 
         {similarCars && similarCars.length > 0 && (
           <section className="mt-10 sm:mt-12">
-            <h2 className="text-2xl font-bold sm:text-3xl">
+            <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">
               Podobná vozidla
             </h2>
 
@@ -399,11 +453,11 @@ export default async function CarDetailPage({
               {similarCars.map((similarCar) => (
                 <div
                   key={similarCar.id}
-                  className="overflow-hidden rounded-2xl bg-white shadow"
+                  className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-gray-200"
                 >
                   <div className="relative">
                     {similarCar.is_featured && (
-                      <div className="absolute left-3 top-3 z-10 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black shadow sm:text-sm">
+                      <div className="absolute left-3 top-3 z-10 rounded-full bg-yellow-400 px-3 py-1 text-xs font-black text-black shadow sm:text-sm">
                         TOP
                       </div>
                     )}
@@ -422,36 +476,45 @@ export default async function CarDetailPage({
                   </div>
 
                   <div className="p-4 sm:p-5">
-                    <h3 className="text-lg font-bold sm:text-xl">
+                    <h3 className="text-lg font-black text-gray-900 sm:text-xl">
                       {similarCar.brand} {similarCar.model}
                     </h3>
 
                     <p className="mt-2 text-sm text-gray-600 sm:text-base">
-                      {similarCar.year} •{" "}
+                      {similarCar.year || "Neuvedeno"} •{" "}
                       {similarCar.engine_volume
                         ? `${similarCar.engine_volume} l • `
                         : ""}
-                      {similarCar.mileage?.toLocaleString()} km
+                      {formatMileage(similarCar.mileage)}
                     </p>
 
                     <p className="mt-1 text-sm text-gray-500">
-                      {similarCar.fuel}
+                      {similarCar.fuel || "Palivo neuvedeno"}
                       {similarCar.transmission
                         ? ` • ${similarCar.transmission}`
                         : ""}
                       {similarCar.city ? ` • ${similarCar.city}` : ""}
                     </p>
 
-                    <div className="mt-3 text-2xl font-bold text-orange-600 sm:mt-4">
-                      {similarCar.price?.toLocaleString()} Kč
+                    <div className="mt-3 text-2xl font-black text-orange-600 sm:mt-4">
+                      {formatPrice(similarCar.price)}
                     </div>
 
-                    <Link
-                      href={`/cars/${similarCar.slug || similarCar.id}`}
-                      className="mt-4 block w-full rounded-xl bg-gray-900 py-3 text-center text-sm font-semibold text-white sm:text-base"
-                    >
-                      Detail vozu
-                    </Link>
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <Link
+                        href={`/cars/${similarCar.slug || similarCar.id}`}
+                        className="rounded-xl bg-gray-900 px-3 py-3 text-center text-sm font-bold text-white transition hover:bg-gray-800 sm:text-base"
+                      >
+                        Detail
+                      </Link>
+
+                      <Link
+                        href={getVinCheckHref(similarCar.vin || null)}
+                        className="rounded-xl border border-gray-300 bg-white px-3 py-3 text-center text-sm font-bold text-gray-900 transition hover:bg-gray-50 sm:text-base"
+                      >
+                        VIN
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}

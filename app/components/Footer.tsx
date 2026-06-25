@@ -34,6 +34,12 @@ export default function Footer() {
               <Link href="/cars" className="hover:text-orange-500">
                 Vozidla
               </Link>
+              <Link
+                href="/vin-check"
+                className="text-gray-400 transition hover:text-white"
+              >
+                Kontrola VIN
+              </Link>
 
               <Link href="/sell" className="hover:text-orange-500">
                 Prodat auto
@@ -89,7 +95,9 @@ export default function Footer() {
 
         <div className="mt-10 border-t border-white/10 pt-6 text-sm text-gray-400">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} ATEAM AUTO. Všechna práva vyhrazena.</p>
+            <p>
+              © {new Date().getFullYear()} ATEAM AUTO. Všechna práva vyhrazena.
+            </p>
 
             <p>Auto marketplace Czechia</p>
           </div>
