@@ -130,9 +130,7 @@ export default async function CarDetailPage({
   if (error || !car) {
     return (
       <main className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6">
-        <h1 className="text-2xl font-bold sm:text-3xl">
-          Auto nebylo nalezeno
-        </h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">Auto nebylo nalezeno</h1>
 
         <Link href="/cars" className="mt-4 inline-block text-orange-600">
           Zpět na nabídku
@@ -239,15 +237,8 @@ export default async function CarDetailPage({
               />
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
+            <div className="mt-5">
               <FavoriteButton carId={car.id} />
-
-              <Link
-                href={vinCheckHref}
-                className="rounded-2xl border border-orange-200 bg-orange-50 px-5 py-3 text-center text-sm font-black text-orange-700 shadow-sm transition hover:bg-orange-100"
-              >
-                Prověřit VIN
-              </Link>
             </div>
 
             <div className="mt-4">
@@ -339,10 +330,7 @@ export default async function CarDetailPage({
                   label="Výkon"
                   value={car.power ? `${car.power} kW` : "Neuvedeno"}
                 />
-                <InfoItem
-                  label="Pohon"
-                  value={car.drive_type || "Neuvedeno"}
-                />
+                <InfoItem label="Pohon" value={car.drive_type || "Neuvedeno"} />
                 <InfoItem
                   label="Počet majitelů"
                   value={car.owner_count || "Neuvedeno"}
@@ -379,9 +367,7 @@ export default async function CarDetailPage({
                 {car.seller_name && (
                   <div>
                     <p className="text-xs text-gray-500 sm:text-sm">Jméno</p>
-                    <p className="font-bold text-gray-900">
-                      {car.seller_name}
-                    </p>
+                    <p className="font-bold text-gray-900">{car.seller_name}</p>
                   </div>
                 )}
 
