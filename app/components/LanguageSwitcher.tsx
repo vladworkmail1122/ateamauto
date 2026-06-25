@@ -3,30 +3,10 @@
 import { useEffect, useState } from "react";
 
 const languages = [
-  {
-    code: "cs",
-    label: "Čeština",
-    short: "CZ",
-    flag: "🇨🇿",
-  },
-  {
-    code: "en",
-    label: "English",
-    short: "EN",
-    flag: "🇬🇧",
-  },
-  {
-    code: "uk",
-    label: "Українська",
-    short: "UA",
-    flag: "🇺🇦",
-  },
-  {
-    code: "ru",
-    label: "Русский",
-    short: "RU",
-    flag: "🇷🇺",
-  },
+  { code: "cs", short: "CZ", label: "Čeština" },
+  { code: "en", short: "EN", label: "English" },
+  { code: "uk", short: "UA", label: "Українська" },
+  { code: "ru", short: "RU", label: "Русский" },
 ];
 
 export default function LanguageSwitcher() {
@@ -40,37 +20,46 @@ export default function LanguageSwitcher() {
     }
   }, []);
 
-  const currentLanguage =
-    languages.find((language) => language.code === selectedLanguage) ||
-    languages[0];
-
   function changeLanguage(languageCode: string) {
     setSelectedLanguage(languageCode);
     localStorage.setItem("site-language", languageCode);
   }
 
   return (
-    <div className="relative">
-      <label className="sr-only" htmlFor="language-switcher">
-        Vybrat jazyk
+    <div className="flex items-center rounded-2xl border border-gray-200 bg-white px-3 py-2 shadow-sm">
+      <label
+        className="mr-2 flex h-5 w-5 items-center justify-center text-gray-600"
+        htmlFor="language-switcher"
+        aria-label="Vybrat jazyk"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="h-4 w-4"
+          aria-hidden="true"
+        >
+          <path d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18Z" />
+          <path d="M3.6 9h16.8" />
+          <path d="M3.6 15h16.8" />
+          <path d="M12 3c2.1 2.2 3.2 5.2 3.2 9s-1.1 6.8-3.2 9" />
+          <path d="M12 3c-2.1 2.2-3.2 5.2-3.2 9s1.1 6.8 3.2 9" />
+        </svg>
       </label>
 
-      <div className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-3 py-2 shadow-sm">
-        <span className="text-lg">{currentLanguage.flag}</span>
-
-        <select
-          id="language-switcher"
-          value={selectedLanguage}
-          onChange={(event) => changeLanguage(event.target.value)}
-          className="cursor-pointer bg-transparent text-sm font-black text-gray-900 outline-none"
-        >
-          {languages.map((language) => (
-            <option key={language.code} value={language.code}>
-              {language.short}
-            </option>
-          ))}
-        </select>
-      </div>
+      <select
+        id="language-switcher"
+        value={selectedLanguage}
+        onChange={(event) => changeLanguage(event.target.value)}
+        className="cursor-pointer bg-transparent text-sm font-black text-gray-900 outline-none"
+      >
+        {languages.map((language) => (
+          <option key={language.code} value={language.code}>
+            {language.short}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
