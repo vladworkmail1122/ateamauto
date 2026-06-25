@@ -2,20 +2,108 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
-const menuLinks = [
-  { href: "/", label: "Hlavní" },
-  { href: "/cars", label: "Vozidla" },
-  { href: "/sell", label: "Prodat auto" },
-  { href: "/contact", label: "Kontakt" },
-  { href: "/login", label: "Přihlášení" },
-  { href: "/register", label: "Registrace" },
-];
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const translations = {
+  cs: {
+    home: "Hlavní",
+    cars: "Vozidla",
+    sell: "Prodat auto",
+    contact: "Kontakt",
+    login: "Přihlášení",
+    register: "Registrace",
+    account: "Můj účet",
+    openMenu: "Otevřít menu",
+  },
+  en: {
+    home: "Home",
+    cars: "Cars",
+    sell: "Sell car",
+    contact: "Contact",
+    login: "Login",
+    register: "Register",
+    account: "My account",
+    openMenu: "Open menu",
+  },
+  uk: {
+    home: "Головна",
+    cars: "Авто",
+    sell: "Продати авто",
+    contact: "Контакти",
+    login: "Вхід",
+    register: "Реєстрація",
+    account: "Мій кабінет",
+    openMenu: "Відкрити меню",
+  },
+  ru: {
+    home: "Главная",
+    cars: "Авто",
+    sell: "Продать авто",
+    contact: "Контакты",
+    login: "Вход",
+    register: "Регистрация",
+    account: "Мой кабинет",
+    openMenu: "Открыть меню",
+  },
+};
+
+const menuKeys = [
+  { href: "/", key: "home" },
+  { href: "/cars", key: "cars" },
+  { href: "/sell", key: "sell" },
+  { href: "/contact", key: "contact" },
+  { href: "/login", key: "login" },
+  { href: "/register", key: "register" },
+] as const;
+
+function getSavedLanguage(): LanguageCode {
+  if (typeof window === "undefined") return "cs";
+
+  const savedLanguage = localStorage.getItem("site-language");
+
+  if (
+    savedLanguage === "cs" ||
+    savedLanguage === "en" ||
+    savedLanguage === "uk" ||
+    savedLanguage === "ru"
+  ) {
+    return savedLanguage;
+  }
+
+  return "cs";
+}
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [language, setLanguage] = useState<LanguageCode>("cs");
+
+  useEffect(() => {
+    setLanguage(getSavedLanguage());
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (
+        customEvent.detail === "cs" ||
+        customEvent.detail === "en" ||
+        customEvent.detail === "uk" ||
+        customEvent.detail === "ru"
+      ) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
+
+  const t = translations[language];
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
@@ -33,13 +121,13 @@ export default function Header() {
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm font-semibold lg:flex">
-            {menuLinks.map((link) => (
+            {menuKeys.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className="transition hover:text-orange-600"
               >
-                {link.label}
+                {t[link.key]}
               </Link>
             ))}
 
@@ -49,7 +137,7 @@ export default function Header() {
               href="/dashboard"
               className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white transition hover:bg-orange-700"
             >
-              Můj účet
+              {t.account}
             </Link>
           </nav>
 
@@ -60,7 +148,7 @@ export default function Header() {
               type="button"
               onClick={() => setIsOpen((current) => !current)}
               className="rounded-xl border px-4 py-2 text-2xl font-bold"
-              aria-label="Otevřít menu"
+              aria-label={t.openMenu}
             >
               {isOpen ? "×" : "☰"}
             </button>
@@ -69,14 +157,14 @@ export default function Header() {
 
         {isOpen && (
           <nav className="grid gap-2 border-t py-4 text-base font-semibold lg:hidden">
-            {menuLinks.map((link) => (
+            {menuKeys.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
                 className="rounded-xl px-4 py-3 hover:bg-gray-100"
               >
-                {link.label}
+                {t[link.key]}
               </Link>
             ))}
 
@@ -85,7 +173,7 @@ export default function Header() {
               onClick={() => setIsOpen(false)}
               className="rounded-xl bg-orange-600 px-4 py-3 text-center font-semibold text-white hover:bg-orange-700"
             >
-              Můj účet
+              {t.account}
             </Link>
           </nav>
         )}

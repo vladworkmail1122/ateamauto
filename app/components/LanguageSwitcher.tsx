@@ -2,27 +2,41 @@
 
 import { useEffect, useState } from "react";
 
-const languages = [
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const languages: { code: LanguageCode; short: string; label: string }[] = [
   { code: "cs", short: "CZ", label: "Čeština" },
   { code: "en", short: "EN", label: "English" },
   { code: "uk", short: "UA", label: "Українська" },
   { code: "ru", short: "RU", label: "Русский" },
 ];
 
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
 export default function LanguageSwitcher() {
-  const [selectedLanguage, setSelectedLanguage] = useState("cs");
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>("cs");
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("site-language");
 
-    if (savedLanguage) {
+    if (isLanguageCode(savedLanguage)) {
       setSelectedLanguage(savedLanguage);
+      document.documentElement.lang = savedLanguage;
     }
   }, []);
 
-  function changeLanguage(languageCode: string) {
+  function changeLanguage(languageCode: LanguageCode) {
     setSelectedLanguage(languageCode);
     localStorage.setItem("site-language", languageCode);
+    document.documentElement.lang = languageCode;
+
+    window.dispatchEvent(
+      new CustomEvent<LanguageCode>("languagechange", {
+        detail: languageCode,
+      }),
+    );
   }
 
   return (
@@ -51,7 +65,7 @@ export default function LanguageSwitcher() {
       <select
         id="language-switcher"
         value={selectedLanguage}
-        onChange={(event) => changeLanguage(event.target.value)}
+        onChange={(event) => changeLanguage(event.target.value as LanguageCode)}
         className="cursor-pointer bg-transparent text-sm font-black text-gray-900 outline-none"
       >
         {languages.map((language) => (
