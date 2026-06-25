@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const menuLinks = [
   { href: "/", label: "Hlavní" },
@@ -36,28 +37,34 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="hover:text-orange-600"
+                className="transition hover:text-orange-600"
               >
                 {link.label}
               </Link>
             ))}
 
+            <LanguageSwitcher />
+
             <Link
               href="/dashboard"
-              className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white hover:bg-orange-700"
+              className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white transition hover:bg-orange-700"
             >
               Můj účet
             </Link>
           </nav>
 
-          <button
-            type="button"
-            onClick={() => setIsOpen((current) => !current)}
-            className="rounded-xl border px-4 py-2 text-2xl font-bold lg:hidden"
-            aria-label="Otevřít menu"
-          >
-            {isOpen ? "×" : "☰"}
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <LanguageSwitcher />
+
+            <button
+              type="button"
+              onClick={() => setIsOpen((current) => !current)}
+              className="rounded-xl border px-4 py-2 text-2xl font-bold"
+              aria-label="Otevřít menu"
+            >
+              {isOpen ? "×" : "☰"}
+            </button>
+          </div>
         </div>
 
         {isOpen && (
