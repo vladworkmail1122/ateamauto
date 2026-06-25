@@ -528,6 +528,12 @@ export default async function CarsPage({
                       </div>
                     )}
 
+                    {car.is_verified_by_ateam && (
+                      <div className="absolute right-3 top-3 z-10 max-w-[70%] rounded-full border border-green-300 bg-green-100 px-3 py-1 text-[10px] font-black text-green-800 shadow sm:text-xs">
+                        ✓ Ověřeno ATEAM SERVICE
+                      </div>
+                    )}
+
                     {car.image_url ? (
                       <img
                         src={car.image_url}

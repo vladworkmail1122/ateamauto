@@ -161,7 +161,6 @@ export default function SellPage() {
   const [ownerCount, setOwnerCount] = useState("");
   const [euroNorm, setEuroNorm] = useState("");
   const [stkUntil, setStkUntil] = useState("");
-  const [isFeatured, setIsFeatured] = useState(false);
   const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
   const [sellerName, setSellerName] = useState("");
@@ -205,7 +204,8 @@ export default function SellPage() {
         owner_count: ownerCount ? Number(ownerCount) : null,
         euro_norm: euroNorm,
         stk_until: stkUntil || null,
-        is_featured: isFeatured,
+        is_featured: false,
+        is_verified_by_ateam: false,
         city,
         description,
         seller_name: sellerName,

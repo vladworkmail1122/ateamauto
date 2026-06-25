@@ -158,7 +158,7 @@ export default async function CarDetailPage({
   const { data: similarCars } = await supabase
     .from("cars")
     .select(
-      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured, vin",
+      "id, slug, brand, model, year, mileage, price, fuel, transmission, engine_volume, city, image_url, is_featured, is_verified_by_ateam, vin",
     )
     .eq("brand", car.brand)
     .neq("id", car.id)
@@ -209,6 +209,12 @@ export default async function CarDetailPage({
               {car.is_featured && (
                 <span className="inline-flex rounded-full border border-yellow-300 bg-yellow-100 px-3 py-1.5 text-xs font-bold text-yellow-800 sm:px-4 sm:py-2 sm:text-sm">
                   TOP nabídka
+                </span>
+              )}
+
+              {car.is_verified_by_ateam && (
+                <span className="inline-flex rounded-full border border-green-300 bg-green-100 px-3 py-1.5 text-xs font-black text-green-800 sm:px-4 sm:py-2 sm:text-sm">
+                  ✓ Ověřeno ATEAM SERVICE
                 </span>
               )}
             </div>
@@ -445,6 +451,12 @@ export default async function CarDetailPage({
                     {similarCar.is_featured && (
                       <div className="absolute left-3 top-3 z-10 rounded-full bg-yellow-400 px-3 py-1 text-xs font-black text-black shadow sm:text-sm">
                         TOP
+                      </div>
+                    )}
+
+                    {similarCar.is_verified_by_ateam && (
+                      <div className="absolute right-3 top-3 z-10 max-w-[75%] rounded-full border border-green-300 bg-green-100 px-3 py-1 text-xs font-black text-green-800 shadow sm:text-sm">
+                        ✓ Ověřeno
                       </div>
                     )}
 
