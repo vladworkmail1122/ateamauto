@@ -1,15 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { supabase } from "@/lib/supabase";
 
-export default function FavoriteHeartButton({
-  carId,
-}: {
-  carId: number;
-}) {
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const translations = {
+  cs: {
+    add: "Přidat do oblíbených",
+    remove: "Odebrat z oblíbených",
+  },
+  en: {
+    add: "Add to favorites",
+    remove: "Remove from favorites",
+  },
+  uk: {
+    add: "Додати в обране",
+    remove: "Видалити з обраного",
+  },
+  ru: {
+    add: "Добавить в избранное",
+    remove: "Удалить из избранного",
+  },
+};
+
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
+export default function FavoriteHeartButton({ carId }: { carId: number }) {
+  const [language, setLanguage] = useState<LanguageCode>("cs");
   const [isFavorite, setIsFavorite] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+
+  const t = translations[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
 
   useEffect(() => {
     async function loadFavorite() {
@@ -32,9 +78,7 @@ export default function FavoriteHeartButton({
     loadFavorite();
   }, [carId]);
 
-  async function toggleFavorite(
-    e: React.MouseEvent<HTMLButtonElement>
-  ) {
+  async function toggleFavorite(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -65,11 +109,8 @@ export default function FavoriteHeartButton({
   return (
     <button
       onClick={toggleFavorite}
-      title={
-        isFavorite
-          ? "Odebrat z oblíbených"
-          : "Přidat do oblíbených"
-      }
+      title={isFavorite ? t.remove : t.add}
+      aria-label={isFavorite ? t.remove : t.add}
       className="
         absolute
         right-2

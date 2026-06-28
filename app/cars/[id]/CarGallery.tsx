@@ -1,7 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TouchEvent } from "react";
+
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const translations = {
+  cs: {
+    carPhoto: "🚗 Foto vozidla",
+    photo: "foto",
+  },
+  en: {
+    carPhoto: "🚗 Vehicle photo",
+    photo: "photo",
+  },
+  uk: {
+    carPhoto: "🚗 Фото авто",
+    photo: "фото",
+  },
+  ru: {
+    carPhoto: "🚗 Фото авто",
+    photo: "фото",
+  },
+};
+
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
 
 export default function CarGallery({
   images,
@@ -10,11 +35,35 @@ export default function CarGallery({
   images: string[];
   title: string;
 }) {
+  const [language, setLanguage] = useState<LanguageCode>("cs");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const activeImage = images[activeIndex];
+  const t = translations[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
 
   function prevImage() {
     setActiveIndex((current) =>
@@ -52,7 +101,7 @@ export default function CarGallery({
   if (!activeImage) {
     return (
       <div className="flex h-72 items-center justify-center rounded-2xl bg-gray-200 text-3xl shadow sm:h-[500px]">
-        🚗 Foto vozidla
+        {t.carPhoto}
       </div>
     );
   }
@@ -112,7 +161,7 @@ export default function CarGallery({
             >
               <img
                 src={image}
-                alt={`${title} foto ${index + 1}`}
+                alt={`${title} ${t.photo} ${index + 1}`}
                 className="h-20 w-24 object-cover sm:h-24 sm:w-32"
               />
             </button>
@@ -181,7 +230,7 @@ export default function CarGallery({
                   >
                     <img
                       src={image}
-                      alt={`${title} foto ${index + 1}`}
+                      alt={`${title} ${t.photo} ${index + 1}`}
                       className="h-14 w-20 object-cover"
                     />
                   </button>
