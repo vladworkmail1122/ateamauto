@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+
+type LanguageCode = "cs" | "en" | "uk" | "ru";
 
 type Car = {
   id: number;
@@ -18,22 +20,207 @@ type Car = {
   views: number | null;
 };
 
+const translations = {
+  cs: {
+    title: "Můj účet",
+    loggedAs: "Přihlášen jako",
+    loading: "Načítání...",
+    logout: "Odhlásit se",
+    addListing: "Přidat inzerát",
+    addShort: "+ Přidat",
+    newVehicle: "Nové vozidlo",
+    listings: "Nabídka",
+    allCars: "Všechna vozidla",
+    favorites: "❤️ Oblíbené",
+    savedListings: "Uložené inzeráty",
+    views: "Zobrazení",
+    adverts: "Inzeráty",
+    active: "Aktivní",
+    sold: "Prodáno",
+    average: "Průměr",
+    myListings: "Moje inzeráty",
+    noListings: "Zatím nemáte žádné inzeráty",
+    noListingsText: "Přidejte své první vozidlo do nabídky.",
+    carPhoto: "🚗 Foto vozidla",
+    unknown: "Neuvedeno",
+    priceNegotiable: "Cena dohodou",
+    detail: "Detail",
+    edit: "Upravit",
+    delete: "Smazat",
+    deleteConfirm: "Opravdu chcete smazat tento inzerát?",
+    statusActive: "Aktivní",
+    statusReserved: "Rezervováno",
+    statusSold: "Prodáno",
+  },
+  en: {
+    title: "My account",
+    loggedAs: "Logged in as",
+    loading: "Loading...",
+    logout: "Log out",
+    addListing: "Add listing",
+    addShort: "+ Add",
+    newVehicle: "New vehicle",
+    listings: "Listings",
+    allCars: "All vehicles",
+    favorites: "❤️ Favorites",
+    savedListings: "Saved listings",
+    views: "Views",
+    adverts: "Listings",
+    active: "Active",
+    sold: "Sold",
+    average: "Average",
+    myListings: "My listings",
+    noListings: "You don't have any listings yet",
+    noListingsText: "Add your first vehicle to the marketplace.",
+    carPhoto: "🚗 Vehicle photo",
+    unknown: "Not specified",
+    priceNegotiable: "Price negotiable",
+    detail: "Details",
+    edit: "Edit",
+    delete: "Delete",
+    deleteConfirm: "Do you really want to delete this listing?",
+    statusActive: "Active",
+    statusReserved: "Reserved",
+    statusSold: "Sold",
+  },
+  uk: {
+    title: "Мій кабінет",
+    loggedAs: "Ви увійшли як",
+    loading: "Завантаження...",
+    logout: "Вийти",
+    addListing: "Додати оголошення",
+    addShort: "+ Додати",
+    newVehicle: "Нове авто",
+    listings: "Каталог",
+    allCars: "Усі авто",
+    favorites: "❤️ Обране",
+    savedListings: "Збережені оголошення",
+    views: "Перегляди",
+    adverts: "Оголошення",
+    active: "Активні",
+    sold: "Продано",
+    average: "Середнє",
+    myListings: "Мої оголошення",
+    noListings: "У вас поки немає оголошень",
+    noListingsText: "Додайте своє перше авто в каталог.",
+    carPhoto: "🚗 Фото авто",
+    unknown: "Не вказано",
+    priceNegotiable: "Ціна договірна",
+    detail: "Деталі",
+    edit: "Редагувати",
+    delete: "Видалити",
+    deleteConfirm: "Ви дійсно хочете видалити це оголошення?",
+    statusActive: "Активне",
+    statusReserved: "Зарезервовано",
+    statusSold: "Продано",
+  },
+  ru: {
+    title: "Мой кабинет",
+    loggedAs: "Вы вошли как",
+    loading: "Загрузка...",
+    logout: "Выйти",
+    addListing: "Добавить объявление",
+    addShort: "+ Добавить",
+    newVehicle: "Новое авто",
+    listings: "Каталог",
+    allCars: "Все авто",
+    favorites: "❤️ Избранное",
+    savedListings: "Сохранённые объявления",
+    views: "Просмотры",
+    adverts: "Объявления",
+    active: "Активные",
+    sold: "Продано",
+    average: "Среднее",
+    myListings: "Мои объявления",
+    noListings: "У вас пока нет объявлений",
+    noListingsText: "Добавьте свой первый автомобиль в каталог.",
+    carPhoto: "🚗 Фото авто",
+    unknown: "Не указано",
+    priceNegotiable: "Цена договорная",
+    detail: "Подробнее",
+    edit: "Редактировать",
+    delete: "Удалить",
+    deleteConfirm: "Вы действительно хотите удалить это объявление?",
+    statusActive: "Активно",
+    statusReserved: "Зарезервировано",
+    statusSold: "Продано",
+  },
+};
+
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
+function getLocale(language: LanguageCode) {
+  if (language === "en") return "en-US";
+  if (language === "uk") return "uk-UA";
+  if (language === "ru") return "ru-RU";
+  return "cs-CZ";
+}
+
 function getStatusClass(status: string | null) {
   if (status === "Prodáno") return "bg-red-100 text-red-700";
   if (status === "Rezervováno") return "bg-yellow-100 text-yellow-800";
   return "bg-green-100 text-green-700";
 }
 
+function translateStatus(status: string | null, language: LanguageCode) {
+  const t = translations[language];
+
+  if (status === "Prodáno") return t.statusSold;
+  if (status === "Rezervováno") return t.statusReserved;
+
+  return t.statusActive;
+}
+
+function formatPrice(price: number | null, language: LanguageCode) {
+  if (!price) return translations[language].priceNegotiable;
+
+  return `${price.toLocaleString(getLocale(language))} Kč`;
+}
+
+function formatMileage(mileage: number | null, language: LanguageCode) {
+  if (mileage === null || mileage === undefined) return "0";
+
+  return mileage.toLocaleString(getLocale(language));
+}
+
 export default function DashboardPage() {
+  const [language, setLanguage] = useState<LanguageCode>("cs");
   const [email, setEmail] = useState<string | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const t = translations[language];
+  const locale = getLocale(language);
 
   const totalCars = cars.length;
   const activeCars = cars.filter((car) => car.status === "Aktivní").length;
   const soldCars = cars.filter((car) => car.status === "Prodáno").length;
   const topCars = cars.filter((car) => car.is_featured).length;
   const totalViews = cars.reduce((sum, car) => sum + (car.views || 0), 0);
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
 
   useEffect(() => {
     loadDashboard();
@@ -66,9 +253,7 @@ export default function DashboardPage() {
   }
 
   async function deleteCar(id: number) {
-    const confirmDelete = window.confirm(
-      "Opravdu chcete smazat tento inzerát?",
-    );
+    const confirmDelete = window.confirm(t.deleteConfirm);
 
     if (!confirmDelete) return;
 
@@ -103,10 +288,10 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold sm:text-4xl">Můj účet</h1>
+            <h1 className="text-3xl font-bold sm:text-4xl">{t.title}</h1>
 
             <p className="mt-2 break-all text-sm text-gray-600 sm:text-base">
-              Přihlášen jako: {email || "Načítání..."}
+              {t.loggedAs}: {email || t.loading}
             </p>
           </div>
 
@@ -114,7 +299,7 @@ export default function DashboardPage() {
             onClick={logout}
             className="w-full rounded-xl border bg-white px-4 py-3 font-semibold hover:bg-gray-100 sm:w-fit"
           >
-            Odhlásit se
+            {t.logout}
           </button>
         </div>
 
@@ -123,9 +308,9 @@ export default function DashboardPage() {
             href="/sell"
             className="rounded-2xl bg-orange-600 p-4 text-white shadow hover:bg-orange-700 sm:p-5"
           >
-            <h2 className="text-base font-bold sm:text-xl">Přidat inzerát</h2>
+            <h2 className="text-base font-bold sm:text-xl">{t.addListing}</h2>
             <p className="mt-1 text-xs text-orange-100 sm:text-sm">
-              Nové vozidlo
+              {t.newVehicle}
             </p>
           </Link>
 
@@ -133,9 +318,9 @@ export default function DashboardPage() {
             href="/cars"
             className="rounded-2xl bg-white p-4 shadow hover:shadow-md sm:p-5"
           >
-            <h2 className="text-base font-bold sm:text-xl">Nabídka</h2>
+            <h2 className="text-base font-bold sm:text-xl">{t.listings}</h2>
             <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-              Všechna vozidla
+              {t.allCars}
             </p>
           </Link>
 
@@ -143,35 +328,35 @@ export default function DashboardPage() {
             href="/dashboard/favorites"
             className="rounded-2xl bg-white p-4 shadow hover:shadow-md sm:p-5"
           >
-            <h2 className="text-base font-bold sm:text-xl">❤️ Oblíbené</h2>
+            <h2 className="text-base font-bold sm:text-xl">{t.favorites}</h2>
             <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-              Uložené inzeráty
+              {t.savedListings}
             </p>
           </Link>
 
           <div className="rounded-2xl bg-white p-4 shadow sm:p-5">
-            <h2 className="text-base font-bold sm:text-xl">Zobrazení</h2>
+            <h2 className="text-base font-bold sm:text-xl">{t.views}</h2>
             <p className="mt-1 text-2xl font-bold text-orange-600">
-              {totalViews.toLocaleString()}
+              {totalViews.toLocaleString(locale)}
             </p>
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
           <div className="rounded-2xl bg-white p-4 shadow">
-            <p className="text-xs text-gray-500 sm:text-sm">Inzeráty</p>
+            <p className="text-xs text-gray-500 sm:text-sm">{t.adverts}</p>
             <p className="mt-1 text-2xl font-bold">{totalCars}</p>
           </div>
 
           <div className="rounded-2xl bg-white p-4 shadow">
-            <p className="text-xs text-gray-500 sm:text-sm">Aktivní</p>
+            <p className="text-xs text-gray-500 sm:text-sm">{t.active}</p>
             <p className="mt-1 text-2xl font-bold text-green-600">
               {activeCars}
             </p>
           </div>
 
           <div className="rounded-2xl bg-white p-4 shadow">
-            <p className="text-xs text-gray-500 sm:text-sm">Prodáno</p>
+            <p className="text-xs text-gray-500 sm:text-sm">{t.sold}</p>
             <p className="mt-1 text-2xl font-bold text-red-600">{soldCars}</p>
           </div>
 
@@ -183,7 +368,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="rounded-2xl bg-white p-4 shadow">
-            <p className="text-xs text-gray-500 sm:text-sm">Průměr</p>
+            <p className="text-xs text-gray-500 sm:text-sm">{t.average}</p>
             <p className="mt-1 text-2xl font-bold">
               {totalCars > 0 ? Math.round(totalViews / totalCars) : 0}
             </p>
@@ -192,33 +377,31 @@ export default function DashboardPage() {
 
         <section className="mt-8 sm:mt-12">
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-2xl font-bold sm:text-3xl">Moje inzeráty</h2>
+            <h2 className="text-2xl font-bold sm:text-3xl">{t.myListings}</h2>
 
             <Link
               href="/sell"
               className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700"
             >
-              + Přidat
+              {t.addShort}
             </Link>
           </div>
 
           {loading ? (
-            <p className="mt-6 text-gray-500">Načítání...</p>
+            <p className="mt-6 text-gray-500">{t.loading}</p>
           ) : cars.length === 0 ? (
             <div className="mt-6 rounded-2xl bg-white p-6 text-center shadow sm:p-8">
               <h3 className="text-xl font-bold sm:text-2xl">
-                Zatím nemáte žádné inzeráty
+                {t.noListings}
               </h3>
 
-              <p className="mt-2 text-gray-500">
-                Přidejte své první vozidlo do nabídky.
-              </p>
+              <p className="mt-2 text-gray-500">{t.noListingsText}</p>
 
               <Link
                 href="/sell"
                 className="mt-6 inline-block rounded-xl bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700"
               >
-                Přidat inzerát
+                {t.addListing}
               </Link>
             </div>
           ) : (
@@ -243,7 +426,7 @@ export default function DashboardPage() {
                       />
                     ) : (
                       <div className="flex h-44 items-center justify-center bg-gray-200 sm:h-48">
-                        🚗 Foto vozidla
+                        {t.carPhoto}
                       </div>
                     )}
                   </div>
@@ -255,11 +438,11 @@ export default function DashboardPage() {
                           car.status,
                         )}`}
                       >
-                        {car.status || "Aktivní"}
+                        {translateStatus(car.status, language)}
                       </span>
 
                       <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
-                        👁 {(car.views || 0).toLocaleString()}
+                        👁 {(car.views || 0).toLocaleString(locale)}
                       </span>
                     </div>
 
@@ -268,12 +451,11 @@ export default function DashboardPage() {
                     </h3>
 
                     <p className="mt-1 text-sm text-gray-600">
-                      {car.year || "Neuvedeno"} •{" "}
-                      {car.mileage ? car.mileage.toLocaleString() : "0"} km
+                      {car.year || t.unknown} • {formatMileage(car.mileage, language)} km
                     </p>
 
                     <div className="mt-2 text-2xl font-bold text-orange-600">
-                      {car.price?.toLocaleString()} Kč
+                      {formatPrice(car.price, language)}
                     </div>
 
                     <div className="mt-4 grid gap-2">
@@ -281,7 +463,7 @@ export default function DashboardPage() {
                         href={`/cars/${car.slug || car.id}`}
                         className="rounded-xl bg-gray-900 py-3 text-center text-sm font-semibold text-white"
                       >
-                        Detail
+                        {t.detail}
                       </Link>
 
                       <div className="grid grid-cols-2 gap-2">
@@ -289,14 +471,14 @@ export default function DashboardPage() {
                           href={`/cars/edit/${car.id}`}
                           className="rounded-xl border py-3 text-center text-sm font-semibold hover:bg-gray-50"
                         >
-                          Upravit
+                          {t.edit}
                         </Link>
 
                         <button
                           onClick={() => deleteCar(car.id)}
                           className="rounded-xl border border-red-300 py-3 text-sm font-semibold text-red-600 hover:bg-red-50"
                         >
-                          Smazat
+                          {t.delete}
                         </button>
                       </div>
                     </div>
