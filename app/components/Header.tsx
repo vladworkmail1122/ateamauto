@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 type LanguageCode = "cs" | "en" | "uk" | "ru";
@@ -16,6 +17,7 @@ const translations = {
     login: "Přihlášení",
     register: "Registrace",
     account: "Můj účet",
+    admin: "Admin",
     openMenu: "Otevřít menu",
   },
   en: {
@@ -26,6 +28,7 @@ const translations = {
     login: "Login",
     register: "Register",
     account: "My account",
+    admin: "Admin",
     openMenu: "Open menu",
   },
   uk: {
@@ -36,6 +39,7 @@ const translations = {
     login: "Вхід",
     register: "Реєстрація",
     account: "Мій кабінет",
+    admin: "Адмін",
     openMenu: "Відкрити меню",
   },
   ru: {
@@ -46,6 +50,7 @@ const translations = {
     login: "Вход",
     register: "Регистрация",
     account: "Мой кабинет",
+    admin: "Админ",
     openMenu: "Открыть меню",
   },
 };
@@ -79,6 +84,7 @@ function getSavedLanguage(): LanguageCode {
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [language, setLanguage] = useState<LanguageCode>("cs");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setLanguage(getSavedLanguage());
@@ -100,6 +106,38 @@ export default function Header() {
 
     return () => {
       window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    async function checkAdmin() {
+      const { data: userData } = await supabase.auth.getUser();
+
+      if (!userData.user) {
+        setIsAdmin(false);
+        return;
+      }
+
+      const { data, error } = await supabase.rpc("is_admin");
+
+      if (error) {
+        setIsAdmin(false);
+        return;
+      }
+
+      setIsAdmin(!!data);
+    }
+
+    checkAdmin();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      checkAdmin();
+    });
+
+    return () => {
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -130,6 +168,15 @@ export default function Header() {
                 {t[link.key]}
               </Link>
             ))}
+
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 font-semibold text-orange-700 transition hover:bg-orange-100"
+              >
+                {t.admin}
+              </Link>
+            )}
 
             <LanguageSwitcher />
 
@@ -167,6 +214,16 @@ export default function Header() {
                 {t[link.key]}
               </Link>
             ))}
+
+            {isAdmin && (
+              <Link
+                href="/admin"
+                onClick={() => setIsOpen(false)}
+                className="rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 text-center font-semibold text-orange-700 hover:bg-orange-100"
+              >
+                {t.admin}
+              </Link>
+            )}
 
             <Link
               href="/dashboard"
