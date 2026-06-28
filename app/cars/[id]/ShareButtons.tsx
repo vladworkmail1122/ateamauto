@@ -1,20 +1,75 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function ShareButtons({
-  title,
-}: {
-  title: string;
-}) {
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const translations = {
+  cs: {
+    title: "Sdílet inzerát",
+    copied: "✓ Zkopírováno",
+    copyLink: "📋 Kopírovat odkaz",
+    shareText: "Podívejte se na tento inzerát",
+  },
+  en: {
+    title: "Share listing",
+    copied: "✓ Copied",
+    copyLink: "📋 Copy link",
+    shareText: "Check out this listing",
+  },
+  uk: {
+    title: "Поділитися оголошенням",
+    copied: "✓ Скопійовано",
+    copyLink: "📋 Скопіювати посилання",
+    shareText: "Подивіться це оголошення",
+  },
+  ru: {
+    title: "Поделиться объявлением",
+    copied: "✓ Скопировано",
+    copyLink: "📋 Скопировать ссылку",
+    shareText: "Посмотрите это объявление",
+  },
+};
+
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
+export default function ShareButtons({ title }: { title: string }) {
   const [copied, setCopied] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
+  const [language, setLanguage] = useState<LanguageCode>("cs");
 
-  function getCurrentUrl() {
-    return window.location.href;
-  }
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
+
+  const t = translations[language];
 
   async function copyLink() {
-    await navigator.clipboard.writeText(getCurrentUrl());
+    if (!currentUrl) return;
+
+    await navigator.clipboard.writeText(currentUrl);
     setCopied(true);
 
     setTimeout(() => {
@@ -23,12 +78,12 @@ export default function ShareButtons({
   }
 
   function getShareText() {
-    return `Podívejte se na tento inzerát: ${title}\n${getCurrentUrl()}`;
+    return `${t.shareText}: ${title}\n${currentUrl}`;
   }
 
   return (
     <div className="mt-6 rounded-2xl border bg-gray-50 p-5">
-      <h3 className="mb-4 text-xl font-bold">Sdílet inzerát</h3>
+      <h3 className="mb-4 text-xl font-bold">{t.title}</h3>
 
       <div className="grid gap-3 md:grid-cols-3">
         <button
@@ -36,7 +91,7 @@ export default function ShareButtons({
           onClick={copyLink}
           className="rounded-xl border bg-white py-3 font-semibold hover:bg-gray-100"
         >
-          {copied ? "✓ Zkopírováno" : "📋 Kopírovat odkaz"}
+          {copied ? t.copied : t.copyLink}
         </button>
 
         <a
@@ -50,8 +105,8 @@ export default function ShareButtons({
 
         <a
           href={`https://t.me/share/url?url=${encodeURIComponent(
-            getCurrentUrl()
-          )}&text=${encodeURIComponent(`Podívejte se na tento inzerát: ${title}`)}`}
+            currentUrl,
+          )}&text=${encodeURIComponent(`${t.shareText}: ${title}`)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-xl bg-sky-500 py-3 text-center font-semibold text-white hover:bg-sky-600"
