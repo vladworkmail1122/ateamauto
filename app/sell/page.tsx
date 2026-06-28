@@ -1,7 +1,415 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
+
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const translations = {
+  cs: {
+    heroLabel: "ATEAM AUTO",
+    title: "Přidat inzerát",
+    subtitle:
+      "Vyplňte údaje o vozidle, kontakt a fotografie. TOP nabídka a označení Ověřeno ATEAM SERVICE může nastavit pouze správce.",
+    basicTitle: "Základní údaje",
+    basicDescription: "Hlavní informace, podle kterých lidé auto najdou.",
+    brand: "Značka",
+    selectBrand: "Vyberte značku",
+    model: "Model",
+    modelPlaceholder: "Např. A6, Octavia, X5...",
+    productionYear: "Rok výroby",
+    selectYear: "Vyberte rok",
+    mileageKm: "Najeto km",
+    mileagePlaceholder: "Např. 185000",
+    priceCzk: "Cena Kč",
+    pricePlaceholder: "Např. 249000",
+    city: "Město",
+    cityPlaceholder: "Např. Jihlava, Brno, Praha",
+    technicalTitle: "Technické údaje",
+    technicalDescription: "Motor, převodovka, karoserie a další parametry.",
+    fuel: "Palivo",
+    selectFuel: "Vyberte palivo",
+    transmission: "Převodovka",
+    selectTransmission: "Vyberte převodovku",
+    bodyType: "Karoserie",
+    selectBodyType: "Vyberte karoserii",
+    color: "Barva",
+    selectColor: "Vyberte barvu",
+    powerKw: "Výkon kW",
+    powerPlaceholder: "Např. 140",
+    engineVolume: "Objem motoru",
+    enginePlaceholder: "Např. 2.0",
+    driveType: "Pohon",
+    selectDriveType: "Vyberte pohon",
+    documentsTitle: "Stav a dokumenty",
+    documentsDescription: "Status inzerátu, VIN, STK a další údaje.",
+    status: "Status",
+    vinPlaceholder: "17 znaků",
+    vinCharacters: "znaků",
+    ownerCount: "Počet majitelů",
+    ownerPlaceholder: "Např. 2",
+    euroNorm: "Euro norma",
+    selectEuroNorm: "Vyberte normu",
+    stkUntil: "STK do",
+    contactTitle: "Kontakt na prodejce",
+    contactDescription: "Tyto údaje se zobrazí u inzerátu.",
+    sellerName: "Jméno prodejce",
+    sellerNamePlaceholder: "Jméno nebo firma",
+    phone: "Telefon",
+    email: "E-mail",
+    photosTitle: "Fotografie",
+    photosDescription: "Nahrajte více fotek vozidla. První fotka bude hlavní.",
+    vehiclePhotos: "Fotografie vozidla",
+    photosTip:
+      "Doporučení: nahrajte exteriér, interiér, tachometr, motor a případné vady. Maximum je 20 fotek.",
+    selectedPhotos: "Vybráno fotografií",
+    clearPhotos: "Vymazat fotky",
+    mainPhoto: "Hlavní",
+    descriptionTitle: "Popis vozidla",
+    descriptionPlaceholder: "Popis vozidla, servisní historie, výbava, stav...",
+    uploading: "Nahrávání...",
+    submit: "Přidat inzerát",
+    moreThan20Photos:
+      "Vybrali jste více než 20 fotek. Nahraje se prvních 20.",
+    requiredFields:
+      "Vyplňte prosím povinná pole: značka, model, rok, nájezd, cena a palivo.",
+    requiredTransmissionCity: "Vyplňte prosím převodovku a město.",
+    vinLength:
+      "VIN musí mít přesně 17 znaků. Pokud ho nechcete uvádět, nechte pole prázdné.",
+    invalidNumbers: "Cena a nájezd musí být platné číslo.",
+    uploadingListing: "Nahrávám inzerát...",
+    createError: "Chyba při vytváření inzerátu.",
+    success: "Inzerát byl úspěšně přidán.",
+  },
+  en: {
+    heroLabel: "ATEAM AUTO",
+    title: "Add listing",
+    subtitle:
+      "Fill in vehicle details, contact information and photos. TOP offer and Verified by ATEAM SERVICE can only be set by an administrator.",
+    basicTitle: "Basic information",
+    basicDescription: "Main information people use to find the car.",
+    brand: "Brand",
+    selectBrand: "Select brand",
+    model: "Model",
+    modelPlaceholder: "E.g. A6, Octavia, X5...",
+    productionYear: "Year of manufacture",
+    selectYear: "Select year",
+    mileageKm: "Mileage km",
+    mileagePlaceholder: "E.g. 185000",
+    priceCzk: "Price CZK",
+    pricePlaceholder: "E.g. 249000",
+    city: "City",
+    cityPlaceholder: "E.g. Jihlava, Brno, Prague",
+    technicalTitle: "Technical data",
+    technicalDescription: "Engine, transmission, body type and other parameters.",
+    fuel: "Fuel",
+    selectFuel: "Select fuel",
+    transmission: "Transmission",
+    selectTransmission: "Select transmission",
+    bodyType: "Body type",
+    selectBodyType: "Select body type",
+    color: "Color",
+    selectColor: "Select color",
+    powerKw: "Power kW",
+    powerPlaceholder: "E.g. 140",
+    engineVolume: "Engine volume",
+    enginePlaceholder: "E.g. 2.0",
+    driveType: "Drive",
+    selectDriveType: "Select drive",
+    documentsTitle: "Condition and documents",
+    documentsDescription: "Listing status, VIN, inspection and other details.",
+    status: "Status",
+    vinPlaceholder: "17 characters",
+    vinCharacters: "characters",
+    ownerCount: "Number of owners",
+    ownerPlaceholder: "E.g. 2",
+    euroNorm: "Euro norm",
+    selectEuroNorm: "Select norm",
+    stkUntil: "Inspection valid until",
+    contactTitle: "Seller contact",
+    contactDescription: "These details will be shown in the listing.",
+    sellerName: "Seller name",
+    sellerNamePlaceholder: "Name or company",
+    phone: "Phone",
+    email: "E-mail",
+    photosTitle: "Photos",
+    photosDescription: "Upload multiple vehicle photos. The first photo will be the main one.",
+    vehiclePhotos: "Vehicle photos",
+    photosTip:
+      "Recommendation: upload exterior, interior, odometer, engine and possible defects. Maximum is 20 photos.",
+    selectedPhotos: "Selected photos",
+    clearPhotos: "Clear photos",
+    mainPhoto: "Main",
+    descriptionTitle: "Vehicle description",
+    descriptionPlaceholder: "Vehicle description, service history, equipment, condition...",
+    uploading: "Uploading...",
+    submit: "Add listing",
+    moreThan20Photos:
+      "You selected more than 20 photos. The first 20 will be uploaded.",
+    requiredFields:
+      "Please fill in required fields: brand, model, year, mileage, price and fuel.",
+    requiredTransmissionCity: "Please fill in transmission and city.",
+    vinLength:
+      "VIN must have exactly 17 characters. If you do not want to enter it, leave the field empty.",
+    invalidNumbers: "Price and mileage must be valid numbers.",
+    uploadingListing: "Uploading listing...",
+    createError: "Error while creating the listing.",
+    success: "Listing has been added successfully.",
+  },
+  uk: {
+    heroLabel: "ATEAM AUTO",
+    title: "Додати оголошення",
+    subtitle:
+      "Заповніть дані авто, контакти та фотографії. TOP пропозицію і позначку Перевірено ATEAM SERVICE може встановити тільки адміністратор.",
+    basicTitle: "Основні дані",
+    basicDescription: "Головна інформація, за якою люди знайдуть авто.",
+    brand: "Марка",
+    selectBrand: "Виберіть марку",
+    model: "Модель",
+    modelPlaceholder: "Напр. A6, Octavia, X5...",
+    productionYear: "Рік випуску",
+    selectYear: "Виберіть рік",
+    mileageKm: "Пробіг км",
+    mileagePlaceholder: "Напр. 185000",
+    priceCzk: "Ціна Kč",
+    pricePlaceholder: "Напр. 249000",
+    city: "Місто",
+    cityPlaceholder: "Напр. Jihlava, Brno, Praha",
+    technicalTitle: "Технічні дані",
+    technicalDescription: "Двигун, коробка, кузов та інші параметри.",
+    fuel: "Паливо",
+    selectFuel: "Виберіть паливо",
+    transmission: "Коробка",
+    selectTransmission: "Виберіть коробку",
+    bodyType: "Кузов",
+    selectBodyType: "Виберіть кузов",
+    color: "Колір",
+    selectColor: "Виберіть колір",
+    powerKw: "Потужність kW",
+    powerPlaceholder: "Напр. 140",
+    engineVolume: "Обʼєм двигуна",
+    enginePlaceholder: "Напр. 2.0",
+    driveType: "Привід",
+    selectDriveType: "Виберіть привід",
+    documentsTitle: "Стан і документи",
+    documentsDescription: "Статус оголошення, VIN, STK та інші дані.",
+    status: "Статус",
+    vinPlaceholder: "17 символів",
+    vinCharacters: "символів",
+    ownerCount: "Кількість власників",
+    ownerPlaceholder: "Напр. 2",
+    euroNorm: "Євро норма",
+    selectEuroNorm: "Виберіть норму",
+    stkUntil: "STK до",
+    contactTitle: "Контакт продавця",
+    contactDescription: "Ці дані будуть показані в оголошенні.",
+    sellerName: "Імʼя продавця",
+    sellerNamePlaceholder: "Імʼя або компанія",
+    phone: "Телефон",
+    email: "E-mail",
+    photosTitle: "Фотографії",
+    photosDescription: "Завантажте кілька фото авто. Перше фото буде головним.",
+    vehiclePhotos: "Фотографії авто",
+    photosTip:
+      "Рекомендація: завантажте екстерʼєр, інтерʼєр, одометр, двигун і можливі дефекти. Максимум 20 фото.",
+    selectedPhotos: "Вибрано фото",
+    clearPhotos: "Очистити фото",
+    mainPhoto: "Головне",
+    descriptionTitle: "Опис авто",
+    descriptionPlaceholder: "Опис авто, сервісна історія, комплектація, стан...",
+    uploading: "Завантаження...",
+    submit: "Додати оголошення",
+    moreThan20Photos:
+      "Ви вибрали більше ніж 20 фото. Буде завантажено перші 20.",
+    requiredFields:
+      "Заповніть обовʼязкові поля: марка, модель, рік, пробіг, ціна і паливо.",
+    requiredTransmissionCity: "Заповніть коробку передач і місто.",
+    vinLength:
+      "VIN має містити рівно 17 символів. Якщо не хочете його вказувати, залиште поле порожнім.",
+    invalidNumbers: "Ціна і пробіг мають бути коректними числами.",
+    uploadingListing: "Завантажую оголошення...",
+    createError: "Помилка при створенні оголошення.",
+    success: "Оголошення успішно додано.",
+  },
+  ru: {
+    heroLabel: "ATEAM AUTO",
+    title: "Добавить объявление",
+    subtitle:
+      "Заполните данные авто, контакты и фотографии. TOP предложение и отметку Проверено ATEAM SERVICE может установить только администратор.",
+    basicTitle: "Основные данные",
+    basicDescription: "Главная информация, по которой люди найдут авто.",
+    brand: "Марка",
+    selectBrand: "Выберите марку",
+    model: "Модель",
+    modelPlaceholder: "Напр. A6, Octavia, X5...",
+    productionYear: "Год выпуска",
+    selectYear: "Выберите год",
+    mileageKm: "Пробег км",
+    mileagePlaceholder: "Напр. 185000",
+    priceCzk: "Цена Kč",
+    pricePlaceholder: "Напр. 249000",
+    city: "Город",
+    cityPlaceholder: "Напр. Jihlava, Brno, Praha",
+    technicalTitle: "Технические данные",
+    technicalDescription: "Двигатель, коробка, кузов и другие параметры.",
+    fuel: "Топливо",
+    selectFuel: "Выберите топливо",
+    transmission: "Коробка",
+    selectTransmission: "Выберите коробку",
+    bodyType: "Кузов",
+    selectBodyType: "Выберите кузов",
+    color: "Цвет",
+    selectColor: "Выберите цвет",
+    powerKw: "Мощность kW",
+    powerPlaceholder: "Напр. 140",
+    engineVolume: "Объём двигателя",
+    enginePlaceholder: "Напр. 2.0",
+    driveType: "Привод",
+    selectDriveType: "Выберите привод",
+    documentsTitle: "Состояние и документы",
+    documentsDescription: "Статус объявления, VIN, STK и другие данные.",
+    status: "Статус",
+    vinPlaceholder: "17 символов",
+    vinCharacters: "символов",
+    ownerCount: "Количество владельцев",
+    ownerPlaceholder: "Напр. 2",
+    euroNorm: "Евро норма",
+    selectEuroNorm: "Выберите норму",
+    stkUntil: "STK до",
+    contactTitle: "Контакт продавца",
+    contactDescription: "Эти данные будут показаны в объявлении.",
+    sellerName: "Имя продавца",
+    sellerNamePlaceholder: "Имя или компания",
+    phone: "Телефон",
+    email: "E-mail",
+    photosTitle: "Фотографии",
+    photosDescription: "Загрузите несколько фото авто. Первое фото будет главным.",
+    vehiclePhotos: "Фотографии авто",
+    photosTip:
+      "Рекомендация: загрузите экстерьер, интерьер, одометр, двигатель и возможные дефекты. Максимум 20 фото.",
+    selectedPhotos: "Выбрано фото",
+    clearPhotos: "Очистить фото",
+    mainPhoto: "Главное",
+    descriptionTitle: "Описание авто",
+    descriptionPlaceholder: "Описание авто, сервисная история, комплектация, состояние...",
+    uploading: "Загрузка...",
+    submit: "Добавить объявление",
+    moreThan20Photos:
+      "Вы выбрали больше 20 фото. Будут загружены первые 20.",
+    requiredFields:
+      "Заполните обязательные поля: марка, модель, год, пробег, цена и топливо.",
+    requiredTransmissionCity: "Заполните коробку передач и город.",
+    vinLength:
+      "VIN должен содержать ровно 17 символов. Если не хотите указывать VIN, оставьте поле пустым.",
+    invalidNumbers: "Цена и пробег должны быть корректными числами.",
+    uploadingListing: "Загружаю объявление...",
+    createError: "Ошибка при создании объявления.",
+    success: "Объявление успешно добавлено.",
+  },
+};
+
+const valueTranslations = {
+  brand: {
+    Jiné: { cs: "Jiné", en: "Other", uk: "Інше", ru: "Другое" },
+  },
+  fuel: {
+    Benzín: { cs: "Benzín", en: "Petrol", uk: "Бензин", ru: "Бензин" },
+    Nafta: { cs: "Nafta", en: "Diesel", uk: "Дизель", ru: "Дизель" },
+    Hybrid: { cs: "Hybrid", en: "Hybrid", uk: "Гібрид", ru: "Гибрид" },
+    "Plug-in hybrid": {
+      cs: "Plug-in hybrid",
+      en: "Plug-in hybrid",
+      uk: "Plug-in гібрид",
+      ru: "Plug-in гибрид",
+    },
+    Elektro: { cs: "Elektro", en: "Electric", uk: "Електро", ru: "Электро" },
+    LPG: { cs: "LPG", en: "LPG", uk: "LPG", ru: "LPG" },
+    CNG: { cs: "CNG", en: "CNG", uk: "CNG", ru: "CNG" },
+  },
+  transmission: {
+    Manuální: { cs: "Manuální", en: "Manual", uk: "Механіка", ru: "Механика" },
+    Automatická: {
+      cs: "Automatická",
+      en: "Automatic",
+      uk: "Автомат",
+      ru: "Автомат",
+    },
+    DSG: { cs: "DSG", en: "DSG", uk: "DSG", ru: "DSG" },
+    CVT: { cs: "CVT", en: "CVT", uk: "CVT", ru: "CVT" },
+  },
+  bodyType: {
+    Sedan: { cs: "Sedan", en: "Sedan", uk: "Седан", ru: "Седан" },
+    Combi: { cs: "Combi", en: "Estate", uk: "Універсал", ru: "Универсал" },
+    Hatchback: {
+      cs: "Hatchback",
+      en: "Hatchback",
+      uk: "Хетчбек",
+      ru: "Хэтчбек",
+    },
+    SUV: { cs: "SUV", en: "SUV", uk: "SUV", ru: "SUV" },
+    Kupé: { cs: "Kupé", en: "Coupe", uk: "Купе", ru: "Купе" },
+    Kabriolet: {
+      cs: "Kabriolet",
+      en: "Convertible",
+      uk: "Кабріолет",
+      ru: "Кабриолет",
+    },
+    MPV: { cs: "MPV", en: "MPV", uk: "MPV", ru: "MPV" },
+    Pickup: { cs: "Pickup", en: "Pickup", uk: "Пікап", ru: "Пикап" },
+    Dodávka: { cs: "Dodávka", en: "Van", uk: "Фургон", ru: "Фургон" },
+  },
+  color: {
+    Bílá: { cs: "Bílá", en: "White", uk: "Білий", ru: "Белый" },
+    Černá: { cs: "Černá", en: "Black", uk: "Чорний", ru: "Чёрный" },
+    Šedá: { cs: "Šedá", en: "Grey", uk: "Сірий", ru: "Серый" },
+    Stříbrná: {
+      cs: "Stříbrná",
+      en: "Silver",
+      uk: "Срібний",
+      ru: "Серебристый",
+    },
+    Modrá: { cs: "Modrá", en: "Blue", uk: "Синій", ru: "Синий" },
+    Červená: { cs: "Červená", en: "Red", uk: "Червоний", ru: "Красный" },
+    Zelená: { cs: "Zelená", en: "Green", uk: "Зелений", ru: "Зелёный" },
+    Hnědá: { cs: "Hnědá", en: "Brown", uk: "Коричневий", ru: "Коричневый" },
+    Béžová: { cs: "Béžová", en: "Beige", uk: "Бежевий", ru: "Бежевый" },
+    Žlutá: { cs: "Žlutá", en: "Yellow", uk: "Жовтий", ru: "Жёлтый" },
+    Oranžová: {
+      cs: "Oranžová",
+      en: "Orange",
+      uk: "Помаранчевий",
+      ru: "Оранжевый",
+    },
+    Zlatá: { cs: "Zlatá", en: "Gold", uk: "Золотий", ru: "Золотой" },
+    Fialová: { cs: "Fialová", en: "Purple", uk: "Фіолетовий", ru: "Фиолетовый" },
+    Jiná: { cs: "Jiná", en: "Other", uk: "Інший", ru: "Другой" },
+  },
+  status: {
+    Aktivní: { cs: "Aktivní", en: "Active", uk: "Активне", ru: "Активно" },
+    Rezervováno: {
+      cs: "Rezervováno",
+      en: "Reserved",
+      uk: "Зарезервовано",
+      ru: "Зарезервировано",
+    },
+    Prodáno: { cs: "Prodáno", en: "Sold", uk: "Продано", ru: "Продано" },
+  },
+  driveType: {
+    "Přední náhon": {
+      cs: "Přední náhon",
+      en: "Front-wheel drive",
+      uk: "Передній привід",
+      ru: "Передний привод",
+    },
+    "Zadní náhon": {
+      cs: "Zadní náhon",
+      en: "Rear-wheel drive",
+      uk: "Задній привід",
+      ru: "Задний привод",
+    },
+    "4x4 / AWD": { cs: "4x4 / AWD", en: "4x4 / AWD", uk: "4x4 / AWD", ru: "4x4 / AWD" },
+  },
+};
 
 const carBrands = [
   "Audi",
@@ -109,6 +517,22 @@ const driveTypes = ["Přední náhon", "Zadní náhon", "4x4 / AWD"];
 
 const euroNorms = ["Euro 3", "Euro 4", "Euro 5", "Euro 6", "Euro 6d"];
 
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
+function translateOption(
+  group: keyof typeof valueTranslations,
+  value: string,
+  language: LanguageCode,
+) {
+  const translation = valueTranslations[group][
+    value as keyof (typeof valueTranslations)[typeof group]
+  ] as Record<LanguageCode, string> | undefined;
+
+  return translation?.[language] || value;
+}
+
 function createSlug(brand: string, model: string, year: string) {
   return `${brand}-${model}-${year}`
     .toLowerCase()
@@ -176,6 +600,7 @@ const selectClass =
   "w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100";
 
 export default function SellPage() {
+  const [language, setLanguage] = useState<LanguageCode>("cs");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
@@ -208,6 +633,30 @@ export default function SellPage() {
   );
   const [loading, setLoading] = useState(false);
 
+  const t = translations[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
+
   useEffect(() => {
     return () => {
       filePreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
@@ -233,7 +682,7 @@ export default function SellPage() {
 
     if (selectedFiles.length > 20) {
       setMessageType("info");
-      setMessage("Vybrali jste více než 20 fotek. Nahraje se prvních 20.");
+      setMessage(t.moreThan20Photos);
     } else {
       setMessage("");
     }
@@ -241,25 +690,25 @@ export default function SellPage() {
 
   function validateForm() {
     if (!brand || !model || !year || !mileage || !price || !fuel) {
-      return "Vyplňte prosím povinná pole: značka, model, rok, nájezd, cena a palivo.";
+      return t.requiredFields;
     }
 
     if (!transmission || !city) {
-      return "Vyplňte prosím převodovku a město.";
+      return t.requiredTransmissionCity;
     }
 
     if (vin && vin.length !== 17) {
-      return "VIN musí mít přesně 17 znaků. Pokud ho nechcete uvádět, nechte pole prázdné.";
+      return t.vinLength;
     }
 
     if (Number(price) <= 0 || Number(mileage) < 0) {
-      return "Cena a nájezd musí být platné číslo.";
+      return t.invalidNumbers;
     }
 
     return "";
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     const validationError = validateForm();
@@ -272,7 +721,7 @@ export default function SellPage() {
 
     setLoading(true);
     setMessageType("info");
-    setMessage("Nahrávám inzerát...");
+    setMessage(t.uploadingListing);
 
     const { data: userData } = await supabase.auth.getUser();
 
@@ -318,7 +767,7 @@ export default function SellPage() {
     if (carError || !carData) {
       setLoading(false);
       setMessageType("error");
-      setMessage(carError?.message || "Chyba při vytváření inzerátu.");
+      setMessage(carError?.message || t.createError);
       return;
     }
 
@@ -372,7 +821,7 @@ export default function SellPage() {
     }
 
     setMessageType("success");
-    setMessage("Inzerát byl úspěšně přidán.");
+    setMessage(t.success);
     window.location.href = `/cars/${carData.slug || carData.id}`;
   }
 
@@ -388,16 +837,15 @@ export default function SellPage() {
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 overflow-hidden rounded-3xl bg-gray-900 p-6 text-white shadow-sm sm:mb-8 sm:p-8">
           <p className="text-sm font-black uppercase tracking-[0.18em] text-orange-400">
-            ATEAM AUTO
+            {t.heroLabel}
           </p>
 
           <h1 className="mt-3 text-3xl font-black sm:text-5xl">
-            Přidat inzerát
+            {t.title}
           </h1>
 
           <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-300 sm:text-base">
-            Vyplňte údaje o vozidle, kontakt a fotografie. TOP nabídka a
-            označení Ověřeno ATEAM SERVICE může nastavit pouze správce.
+            {t.subtitle}
           </p>
         </div>
 
@@ -408,33 +856,30 @@ export default function SellPage() {
         )}
 
         <form onSubmit={handleSubmit} className="grid gap-5">
-          <FormSection
-            title="Základní údaje"
-            description="Hlavní informace, podle kterých lidé auto najdou."
-          >
+          <FormSection title={t.basicTitle} description={t.basicDescription}>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <FieldLabel required>Značka</FieldLabel>
+                <FieldLabel required>{t.brand}</FieldLabel>
                 <select
                   className={selectClass}
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                   required
                 >
-                  <option value="">Vyberte značku</option>
+                  <option value="">{t.selectBrand}</option>
                   {carBrands.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("brand", item, language)}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <FieldLabel required>Model</FieldLabel>
+                <FieldLabel required>{t.model}</FieldLabel>
                 <input
                   className={inputClass}
-                  placeholder="Např. A6, Octavia, X5..."
+                  placeholder={t.modelPlaceholder}
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
                   required
@@ -442,14 +887,14 @@ export default function SellPage() {
               </div>
 
               <div>
-                <FieldLabel required>Rok výroby</FieldLabel>
+                <FieldLabel required>{t.productionYear}</FieldLabel>
                 <select
                   className={selectClass}
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
                   required
                 >
-                  <option value="">Vyberte rok</option>
+                  <option value="">{t.selectYear}</option>
                   {years.map((item) => (
                     <option key={item} value={item}>
                       {item}
@@ -459,11 +904,11 @@ export default function SellPage() {
               </div>
 
               <div>
-                <FieldLabel required>Najeto km</FieldLabel>
+                <FieldLabel required>{t.mileageKm}</FieldLabel>
                 <input
                   className={inputClass}
                   inputMode="numeric"
-                  placeholder="Např. 185000"
+                  placeholder={t.mileagePlaceholder}
                   value={mileage}
                   onChange={(e) => setMileage(e.target.value)}
                   required
@@ -471,11 +916,11 @@ export default function SellPage() {
               </div>
 
               <div>
-                <FieldLabel required>Cena Kč</FieldLabel>
+                <FieldLabel required>{t.priceCzk}</FieldLabel>
                 <input
                   className={inputClass}
                   inputMode="numeric"
-                  placeholder="Např. 249000"
+                  placeholder={t.pricePlaceholder}
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   required
@@ -483,10 +928,10 @@ export default function SellPage() {
               </div>
 
               <div>
-                <FieldLabel required>Město</FieldLabel>
+                <FieldLabel required>{t.city}</FieldLabel>
                 <input
                   className={inputClass}
-                  placeholder="Např. Jihlava, Brno, Praha"
+                  placeholder={t.cityPlaceholder}
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   required
@@ -496,109 +941,109 @@ export default function SellPage() {
           </FormSection>
 
           <FormSection
-            title="Technické údaje"
-            description="Motor, převodovka, karoserie a další parametry."
+            title={t.technicalTitle}
+            description={t.technicalDescription}
           >
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <FieldLabel required>Palivo</FieldLabel>
+                <FieldLabel required>{t.fuel}</FieldLabel>
                 <select
                   className={selectClass}
                   value={fuel}
                   onChange={(e) => setFuel(e.target.value)}
                   required
                 >
-                  <option value="">Vyberte palivo</option>
+                  <option value="">{t.selectFuel}</option>
                   {fuels.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("fuel", item, language)}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <FieldLabel required>Převodovka</FieldLabel>
+                <FieldLabel required>{t.transmission}</FieldLabel>
                 <select
                   className={selectClass}
                   value={transmission}
                   onChange={(e) => setTransmission(e.target.value)}
                   required
                 >
-                  <option value="">Vyberte převodovku</option>
+                  <option value="">{t.selectTransmission}</option>
                   {transmissions.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("transmission", item, language)}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <FieldLabel>Karoserie</FieldLabel>
+                <FieldLabel>{t.bodyType}</FieldLabel>
                 <select
                   className={selectClass}
                   value={bodyType}
                   onChange={(e) => setBodyType(e.target.value)}
                 >
-                  <option value="">Vyberte karoserii</option>
+                  <option value="">{t.selectBodyType}</option>
                   {bodyTypes.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("bodyType", item, language)}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <FieldLabel>Barva</FieldLabel>
+                <FieldLabel>{t.color}</FieldLabel>
                 <select
                   className={selectClass}
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
                 >
-                  <option value="">Vyberte barvu</option>
+                  <option value="">{t.selectColor}</option>
                   {colors.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("color", item, language)}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <FieldLabel>Výkon kW</FieldLabel>
+                <FieldLabel>{t.powerKw}</FieldLabel>
                 <input
                   className={inputClass}
                   inputMode="numeric"
-                  placeholder="Např. 140"
+                  placeholder={t.powerPlaceholder}
                   value={power}
                   onChange={(e) => setPower(e.target.value)}
                 />
               </div>
 
               <div>
-                <FieldLabel>Objem motoru</FieldLabel>
+                <FieldLabel>{t.engineVolume}</FieldLabel>
                 <input
                   className={inputClass}
                   inputMode="decimal"
-                  placeholder="Např. 2.0"
+                  placeholder={t.enginePlaceholder}
                   value={engineVolume}
                   onChange={(e) => setEngineVolume(e.target.value)}
                 />
               </div>
 
               <div className="md:col-span-2">
-                <FieldLabel>Pohon</FieldLabel>
+                <FieldLabel>{t.driveType}</FieldLabel>
                 <select
                   className={selectClass}
                   value={driveType}
                   onChange={(e) => setDriveType(e.target.value)}
                 >
-                  <option value="">Vyberte pohon</option>
+                  <option value="">{t.selectDriveType}</option>
                   {driveTypes.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("driveType", item, language)}
                     </option>
                   ))}
                 </select>
@@ -607,12 +1052,12 @@ export default function SellPage() {
           </FormSection>
 
           <FormSection
-            title="Stav a dokumenty"
-            description="Status inzerátu, VIN, STK a další údaje."
+            title={t.documentsTitle}
+            description={t.documentsDescription}
           >
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <FieldLabel>Status</FieldLabel>
+                <FieldLabel>{t.status}</FieldLabel>
                 <select
                   className={selectClass}
                   value={status}
@@ -620,7 +1065,7 @@ export default function SellPage() {
                 >
                   {statuses.map((item) => (
                     <option key={item} value={item}>
-                      {item}
+                      {translateOption("status", item, language)}
                     </option>
                   ))}
                 </select>
@@ -630,7 +1075,7 @@ export default function SellPage() {
                 <FieldLabel>VIN</FieldLabel>
                 <input
                   className={inputClass}
-                  placeholder="17 znaků"
+                  placeholder={t.vinPlaceholder}
                   value={vin}
                   maxLength={17}
                   onChange={(e) => setVin(normalizeVin(e.target.value))}
@@ -642,29 +1087,29 @@ export default function SellPage() {
                       : "text-orange-600"
                   }`}
                 >
-                  {vin.length}/17 znaků
+                  {vin.length}/17 {t.vinCharacters}
                 </p>
               </div>
 
               <div>
-                <FieldLabel>Počet majitelů</FieldLabel>
+                <FieldLabel>{t.ownerCount}</FieldLabel>
                 <input
                   className={inputClass}
                   inputMode="numeric"
-                  placeholder="Např. 2"
+                  placeholder={t.ownerPlaceholder}
                   value={ownerCount}
                   onChange={(e) => setOwnerCount(e.target.value)}
                 />
               </div>
 
               <div>
-                <FieldLabel>Euro norma</FieldLabel>
+                <FieldLabel>{t.euroNorm}</FieldLabel>
                 <select
                   className={selectClass}
                   value={euroNorm}
                   onChange={(e) => setEuroNorm(e.target.value)}
                 >
-                  <option value="">Vyberte normu</option>
+                  <option value="">{t.selectEuroNorm}</option>
                   {euroNorms.map((item) => (
                     <option key={item} value={item}>
                       {item}
@@ -674,7 +1119,7 @@ export default function SellPage() {
               </div>
 
               <div>
-                <FieldLabel>STK do</FieldLabel>
+                <FieldLabel>{t.stkUntil}</FieldLabel>
                 <input
                   type="date"
                   className={inputClass}
@@ -685,23 +1130,20 @@ export default function SellPage() {
             </div>
           </FormSection>
 
-          <FormSection
-            title="Kontakt na prodejce"
-            description="Tyto údaje se zobrazí u inzerátu."
-          >
+          <FormSection title={t.contactTitle} description={t.contactDescription}>
             <div className="grid gap-4 md:grid-cols-3">
               <div>
-                <FieldLabel>Jméno prodejce</FieldLabel>
+                <FieldLabel>{t.sellerName}</FieldLabel>
                 <input
                   className={inputClass}
-                  placeholder="Jméno nebo firma"
+                  placeholder={t.sellerNamePlaceholder}
                   value={sellerName}
                   onChange={(e) => setSellerName(e.target.value)}
                 />
               </div>
 
               <div>
-                <FieldLabel>Telefon</FieldLabel>
+                <FieldLabel>{t.phone}</FieldLabel>
                 <input
                   className={inputClass}
                   placeholder="+420..."
@@ -711,7 +1153,7 @@ export default function SellPage() {
               </div>
 
               <div>
-                <FieldLabel>E-mail</FieldLabel>
+                <FieldLabel>{t.email}</FieldLabel>
                 <input
                   className={inputClass}
                   type="email"
@@ -723,19 +1165,13 @@ export default function SellPage() {
             </div>
           </FormSection>
 
-          <FormSection
-            title="Fotografie"
-            description="Nahrajte více fotek vozidla. První fotka bude hlavní."
-          >
+          <FormSection title={t.photosTitle} description={t.photosDescription}>
             <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-5">
               <label className="block font-black text-gray-900">
-                Fotografie vozidla
+                {t.vehiclePhotos}
               </label>
 
-              <p className="mt-1 text-sm text-gray-500">
-                Doporučení: nahrajte exteriér, interiér, tachometr, motor a
-                případné vady. Maximum je 20 fotek.
-              </p>
+              <p className="mt-1 text-sm text-gray-500">{t.photosTip}</p>
 
               <input
                 type="file"
@@ -749,7 +1185,7 @@ export default function SellPage() {
                 <div className="mt-5">
                   <div className="mb-3 flex items-center justify-between gap-3">
                     <p className="text-sm font-bold text-gray-700">
-                      Vybráno fotografií: {filePreviews.length}
+                      {t.selectedPhotos}: {filePreviews.length}
                     </p>
 
                     <button
@@ -763,7 +1199,7 @@ export default function SellPage() {
                       }}
                       className="text-sm font-bold text-red-600 hover:underline"
                     >
-                      Vymazat fotky
+                      {t.clearPhotos}
                     </button>
                   </div>
 
@@ -776,7 +1212,7 @@ export default function SellPage() {
                         <div className="relative">
                           {index === 0 && (
                             <span className="absolute left-2 top-2 rounded-full bg-orange-600 px-2 py-1 text-[10px] font-black text-white">
-                              Hlavní
+                              {t.mainPhoto}
                             </span>
                           )}
 
@@ -798,10 +1234,10 @@ export default function SellPage() {
             </div>
           </FormSection>
 
-          <FormSection title="Popis vozidla">
+          <FormSection title={t.descriptionTitle}>
             <textarea
               className="min-h-40 w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-              placeholder="Popis vozidla, servisní historie, výbava, stav..."
+              placeholder={t.descriptionPlaceholder}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -811,7 +1247,7 @@ export default function SellPage() {
             disabled={loading}
             className="rounded-3xl bg-orange-600 py-4 text-lg font-black text-white shadow-sm transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-400"
           >
-            {loading ? "Nahrávání..." : "Přidat inzerát"}
+            {loading ? t.uploading : t.submit}
           </button>
         </form>
       </div>
