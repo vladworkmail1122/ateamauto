@@ -9,23 +9,28 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "ATEAM AUTO | Prodej a nákup vozidel v Česku",
+    default: "ATEAM AUTO | Auto marketplace Czechia",
     template: "%s | ATEAM AUTO",
   },
   description:
-    "ATEAM AUTO marketplace pro prodej a nákup vozidel v České republice. Inzerce aut, kontrola vozidel, servis, STK, dokumenty a rychlý výkup.",
+    "ATEAM AUTO marketplace for vehicle sales and purchases in Czechia. Prodej a nákup vozidel v České republice, inzerce aut, kontrola vozidel, servis, STK, dokumenty a rychlý výkup.",
   keywords: [
     "auta",
     "prodej aut",
     "nákup aut",
     "ojetá auta",
     "auto marketplace",
+    "car marketplace Czechia",
+    "cars for sale Czech Republic",
+    "продажа авто Чехия",
+    "купить авто Чехия",
+    "продаж авто Чехія",
+    "купити авто Чехія",
     "ATEAM AUTO",
     "Jihlava",
     "autoservis",
@@ -40,9 +45,9 @@ export const metadata: Metadata = {
     locale: "cs_CZ",
     url: siteUrl,
     siteName: "ATEAM AUTO",
-    title: "ATEAM AUTO | Prodej a nákup vozidel v Česku",
+    title: "ATEAM AUTO | Auto marketplace Czechia",
     description:
-      "Moderní marketplace pro prodej a nákup vozidel v České republice.",
+      "Vehicle marketplace in Czechia for selling, buying and presenting cars.",
     images: [
       {
         url: "/logo.png",
@@ -54,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ATEAM AUTO | Prodej a nákup vozidel v Česku",
+    title: "ATEAM AUTO | Auto marketplace Czechia",
     description:
-      "Moderní marketplace pro prodej a nákup vozidel v České republice.",
+      "Vehicle marketplace in Czechia for selling, buying and presenting cars.",
     images: ["/logo.png"],
   },
   icons: {
