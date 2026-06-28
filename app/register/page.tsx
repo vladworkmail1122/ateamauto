@@ -1,17 +1,103 @@
 "use client";
 
-import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+
+type LanguageCode = "cs" | "en" | "uk" | "ru";
+
+const translations = {
+  cs: {
+    title: "Registrace",
+    subtitle: "Vytvořte si účet a začněte přidávat vlastní inzeráty.",
+    email: "E-mail",
+    password: "Heslo",
+    loading: "Vytváření účtu...",
+    submit: "Vytvořit účet",
+    alreadyAccount: "Už máte účet?",
+    login: "Přihlásit se",
+    back: "← Zpět na hlavní stránku",
+    success: "Registrace proběhla úspěšně. Zkontrolujte e-mail.",
+    registerError: "Registrace se nepodařila. Zkontrolujte údaje a zkuste to znovu.",
+  },
+  en: {
+    title: "Register",
+    subtitle: "Create an account and start adding your own listings.",
+    email: "E-mail",
+    password: "Password",
+    loading: "Creating account...",
+    submit: "Create account",
+    alreadyAccount: "Already have an account?",
+    login: "Log in",
+    back: "← Back to home page",
+    success: "Registration was successful. Check your e-mail.",
+    registerError: "Registration failed. Check your details and try again.",
+  },
+  uk: {
+    title: "Реєстрація",
+    subtitle: "Створіть акаунт і почніть додавати власні оголошення.",
+    email: "E-mail",
+    password: "Пароль",
+    loading: "Створення акаунта...",
+    submit: "Створити акаунт",
+    alreadyAccount: "Вже маєте акаунт?",
+    login: "Увійти",
+    back: "← Назад на головну",
+    success: "Реєстрація пройшла успішно. Перевірте e-mail.",
+    registerError: "Не вдалося зареєструватися. Перевірте дані та спробуйте знову.",
+  },
+  ru: {
+    title: "Регистрация",
+    subtitle: "Создайте аккаунт и начните добавлять свои объявления.",
+    email: "E-mail",
+    password: "Пароль",
+    loading: "Создание аккаунта...",
+    submit: "Создать аккаунт",
+    alreadyAccount: "Уже есть аккаунт?",
+    login: "Войти",
+    back: "← Назад на главную",
+    success: "Регистрация прошла успешно. Проверьте e-mail.",
+    registerError: "Не удалось зарегистрироваться. Проверьте данные и попробуйте снова.",
+  },
+};
+
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
 
 export default function RegisterPage() {
+  const [language, setLanguage] = useState<LanguageCode>("cs");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function handleRegister(e: React.FormEvent) {
+  const t = translations[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
+
+  async function handleRegister(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -25,12 +111,12 @@ export default function RegisterPage() {
     setLoading(false);
 
     if (error) {
-      setMessage(error.message);
+      setMessage(t.registerError);
       setSuccess(false);
       return;
     }
 
-    setMessage("Registrace proběhla úspěšně. Zkontrolujte e-mail.");
+    setMessage(t.success);
     setSuccess(true);
   }
 
@@ -40,11 +126,11 @@ export default function RegisterPage() {
         <div className="rounded-3xl bg-white p-6 shadow sm:p-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-              Registrace
+              {t.title}
             </h1>
 
             <p className="mt-3 text-sm text-gray-500 sm:text-base">
-              Vytvořte si účet a začněte přidávat vlastní inzeráty.
+              {t.subtitle}
             </p>
           </div>
 
@@ -63,7 +149,7 @@ export default function RegisterPage() {
           <form onSubmit={handleRegister} className="mt-8 grid gap-4">
             <input
               type="email"
-              placeholder="E-mail"
+              placeholder={t.email}
               className="w-full rounded-xl border px-4 py-3"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +158,7 @@ export default function RegisterPage() {
 
             <input
               type="password"
-              placeholder="Heslo"
+              placeholder={t.password}
               className="w-full rounded-xl border px-4 py-3"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -84,14 +170,14 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full rounded-xl bg-orange-600 py-4 font-semibold text-white shadow hover:bg-orange-700 disabled:bg-gray-400"
             >
-              {loading ? "Vytváření účtu..." : "Vytvořit účet"}
+              {loading ? t.loading : t.submit}
             </button>
           </form>
 
           <div className="mt-6 rounded-2xl bg-gray-50 p-4 text-center text-sm text-gray-600">
-            Už máte účet?{" "}
+            {t.alreadyAccount}{" "}
             <Link href="/login" className="font-semibold text-orange-600">
-              Přihlásit se
+              {t.login}
             </Link>
           </div>
         </div>
@@ -100,7 +186,7 @@ export default function RegisterPage() {
           href="/"
           className="mt-6 block text-center text-sm font-semibold text-gray-500 hover:text-orange-600"
         >
-          ← Zpět na hlavní stránku
+          {t.back}
         </Link>
       </div>
     </main>
