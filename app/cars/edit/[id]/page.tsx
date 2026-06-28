@@ -1,11 +1,339 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { supabase } from "@/lib/supabase";
+
+type LanguageCode = "cs" | "en" | "uk" | "ru";
 
 type CarImage = {
   id: number;
   image_url: string;
+};
+
+const translations = {
+  cs: {
+    title: "Upravit inzerát",
+    subtitle: "Upravte údaje o vozidle, fotografie, kontakt a stav inzerátu.",
+    basicTitle: "Základní údaje",
+    basicDescription: "Hlavní informace, podle kterých lidé auto najdou.",
+    brand: "Značka",
+    model: "Model",
+    productionYear: "Rok výroby",
+    mileageKm: "Najeto km",
+    priceCzk: "Cena Kč",
+    city: "Město",
+    technicalTitle: "Technické údaje",
+    technicalDescription: "Motor, převodovka, karoserie a další parametry.",
+    fuel: "Palivo",
+    transmission: "Převodovka",
+    bodyType: "Karoserie",
+    color: "Barva",
+    powerKw: "Výkon kW",
+    engineVolume: "Objem motoru l, např. 2.0",
+    driveType: "Pohon",
+    documentsTitle: "Stav a dokumenty",
+    documentsDescription: "Status inzerátu, VIN, STK a další údaje.",
+    ownerCount: "Počet majitelů",
+    euroNorm: "Euro norma",
+    stkUntil: "STK do",
+    contactTitle: "Kontakt na prodejce",
+    contactDescription: "Tyto údaje se zobrazí u inzerátu.",
+    sellerName: "Jméno prodejce",
+    phone: "Telefon",
+    email: "E-mail",
+    photosTitle: "Fotografie",
+    photosDescription:
+      "Můžete nastavit hlavní fotku, smazat staré fotky nebo přidat nové.",
+    noPhotos: "Zatím nejsou nahrané žádné fotky.",
+    carPhotoAlt: "Foto vozidla",
+    setMainPhoto: "Nastavit jako hlavní",
+    deletePhoto: "Smazat fotku",
+    addNewPhotos: "Přidat nové fotky",
+    selectedNewPhotos: "Vybráno nových fotek",
+    descriptionTitle: "Popis vozidla",
+    descriptionPlaceholder: "Popis vozidla, servisní historie, výbava, stav...",
+    saving: "Ukládání...",
+    save: "Uložit změny",
+    notFound: "Inzerát nebyl nalezen nebo k němu nemáte přístup.",
+    deletePhotoConfirm: "Opravdu chcete smazat tuto fotku?",
+    mainPhotoSet: "Hlavní fotka byla nastavena.",
+    success: "Inzerát byl úspěšně upraven.",
+    selectBrand: "Značka",
+    selectFuel: "Palivo",
+    selectTransmission: "Převodovka",
+    selectBodyType: "Karoserie",
+    selectColor: "Barva",
+    selectDriveType: "Pohon",
+    selectEuroNorm: "Euro norma",
+  },
+  en: {
+    title: "Edit listing",
+    subtitle: "Edit vehicle details, photos, contact and listing status.",
+    basicTitle: "Basic information",
+    basicDescription: "Main information people use to find the car.",
+    brand: "Brand",
+    model: "Model",
+    productionYear: "Year of manufacture",
+    mileageKm: "Mileage km",
+    priceCzk: "Price CZK",
+    city: "City",
+    technicalTitle: "Technical data",
+    technicalDescription: "Engine, transmission, body type and other parameters.",
+    fuel: "Fuel",
+    transmission: "Transmission",
+    bodyType: "Body type",
+    color: "Color",
+    powerKw: "Power kW",
+    engineVolume: "Engine volume l, e.g. 2.0",
+    driveType: "Drive",
+    documentsTitle: "Condition and documents",
+    documentsDescription: "Listing status, VIN, inspection and other details.",
+    ownerCount: "Number of owners",
+    euroNorm: "Euro norm",
+    stkUntil: "Inspection valid until",
+    contactTitle: "Seller contact",
+    contactDescription: "These details will be shown in the listing.",
+    sellerName: "Seller name",
+    phone: "Phone",
+    email: "E-mail",
+    photosTitle: "Photos",
+    photosDescription:
+      "You can set the main photo, delete old photos or add new ones.",
+    noPhotos: "No photos have been uploaded yet.",
+    carPhotoAlt: "Vehicle photo",
+    setMainPhoto: "Set as main",
+    deletePhoto: "Delete photo",
+    addNewPhotos: "Add new photos",
+    selectedNewPhotos: "Selected new photos",
+    descriptionTitle: "Vehicle description",
+    descriptionPlaceholder: "Vehicle description, service history, equipment, condition...",
+    saving: "Saving...",
+    save: "Save changes",
+    notFound: "The listing was not found or you do not have access to it.",
+    deletePhotoConfirm: "Do you really want to delete this photo?",
+    mainPhotoSet: "The main photo has been set.",
+    success: "Listing has been updated successfully.",
+    selectBrand: "Brand",
+    selectFuel: "Fuel",
+    selectTransmission: "Transmission",
+    selectBodyType: "Body type",
+    selectColor: "Color",
+    selectDriveType: "Drive",
+    selectEuroNorm: "Euro norm",
+  },
+  uk: {
+    title: "Редагувати оголошення",
+    subtitle: "Змініть дані авто, фотографії, контакт і статус оголошення.",
+    basicTitle: "Основні дані",
+    basicDescription: "Головна інформація, за якою люди знайдуть авто.",
+    brand: "Марка",
+    model: "Модель",
+    productionYear: "Рік випуску",
+    mileageKm: "Пробіг км",
+    priceCzk: "Ціна CZK",
+    city: "Місто",
+    technicalTitle: "Технічні дані",
+    technicalDescription: "Двигун, коробка, кузов та інші параметри.",
+    fuel: "Паливо",
+    transmission: "Коробка",
+    bodyType: "Кузов",
+    color: "Колір",
+    powerKw: "Потужність kW",
+    engineVolume: "Обʼєм двигуна л, напр. 2.0",
+    driveType: "Привід",
+    documentsTitle: "Стан і документи",
+    documentsDescription: "Статус оголошення, VIN, STK та інші дані.",
+    ownerCount: "Кількість власників",
+    euroNorm: "Євро норма",
+    stkUntil: "STK до",
+    contactTitle: "Контакт продавця",
+    contactDescription: "Ці дані будуть показані в оголошенні.",
+    sellerName: "Імʼя продавця",
+    phone: "Телефон",
+    email: "E-mail",
+    photosTitle: "Фотографії",
+    photosDescription:
+      "Можна встановити головне фото, видалити старі фото або додати нові.",
+    noPhotos: "Поки немає завантажених фото.",
+    carPhotoAlt: "Фото авто",
+    setMainPhoto: "Зробити головним",
+    deletePhoto: "Видалити фото",
+    addNewPhotos: "Додати нові фото",
+    selectedNewPhotos: "Вибрано нових фото",
+    descriptionTitle: "Опис авто",
+    descriptionPlaceholder: "Опис авто, сервісна історія, комплектація, стан...",
+    saving: "Збереження...",
+    save: "Зберегти зміни",
+    notFound: "Оголошення не знайдено або у вас немає доступу до нього.",
+    deletePhotoConfirm: "Ви дійсно хочете видалити це фото?",
+    mainPhotoSet: "Головне фото встановлено.",
+    success: "Оголошення успішно оновлено.",
+    selectBrand: "Марка",
+    selectFuel: "Паливо",
+    selectTransmission: "Коробка",
+    selectBodyType: "Кузов",
+    selectColor: "Колір",
+    selectDriveType: "Привід",
+    selectEuroNorm: "Євро норма",
+  },
+  ru: {
+    title: "Редактировать объявление",
+    subtitle: "Измените данные авто, фотографии, контакт и статус объявления.",
+    basicTitle: "Основные данные",
+    basicDescription: "Главная информация, по которой люди найдут авто.",
+    brand: "Марка",
+    model: "Модель",
+    productionYear: "Год выпуска",
+    mileageKm: "Пробег км",
+    priceCzk: "Цена CZK",
+    city: "Город",
+    technicalTitle: "Технические данные",
+    technicalDescription: "Двигатель, коробка, кузов и другие параметры.",
+    fuel: "Топливо",
+    transmission: "Коробка",
+    bodyType: "Кузов",
+    color: "Цвет",
+    powerKw: "Мощность kW",
+    engineVolume: "Объём двигателя л, напр. 2.0",
+    driveType: "Привод",
+    documentsTitle: "Состояние и документы",
+    documentsDescription: "Статус объявления, VIN, STK и другие данные.",
+    ownerCount: "Количество владельцев",
+    euroNorm: "Евро норма",
+    stkUntil: "STK до",
+    contactTitle: "Контакт продавца",
+    contactDescription: "Эти данные будут показаны в объявлении.",
+    sellerName: "Имя продавца",
+    phone: "Телефон",
+    email: "E-mail",
+    photosTitle: "Фотографии",
+    photosDescription:
+      "Можно установить главное фото, удалить старые фото или добавить новые.",
+    noPhotos: "Пока нет загруженных фотографий.",
+    carPhotoAlt: "Фото авто",
+    setMainPhoto: "Сделать главным",
+    deletePhoto: "Удалить фото",
+    addNewPhotos: "Добавить новые фото",
+    selectedNewPhotos: "Выбрано новых фото",
+    descriptionTitle: "Описание авто",
+    descriptionPlaceholder: "Описание авто, сервисная история, комплектация, состояние...",
+    saving: "Сохранение...",
+    save: "Сохранить изменения",
+    notFound: "Объявление не найдено или у вас нет доступа к нему.",
+    deletePhotoConfirm: "Вы действительно хотите удалить это фото?",
+    mainPhotoSet: "Главное фото установлено.",
+    success: "Объявление успешно обновлено.",
+    selectBrand: "Марка",
+    selectFuel: "Топливо",
+    selectTransmission: "Коробка",
+    selectBodyType: "Кузов",
+    selectColor: "Цвет",
+    selectDriveType: "Привод",
+    selectEuroNorm: "Евро норма",
+  },
+};
+
+const valueTranslations = {
+  brand: {
+    Jiné: { cs: "Jiné", en: "Other", uk: "Інше", ru: "Другое" },
+  },
+  fuel: {
+    Benzín: { cs: "Benzín", en: "Petrol", uk: "Бензин", ru: "Бензин" },
+    Nafta: { cs: "Nafta", en: "Diesel", uk: "Дизель", ru: "Дизель" },
+    Hybrid: { cs: "Hybrid", en: "Hybrid", uk: "Гібрид", ru: "Гибрид" },
+    "Plug-in hybrid": {
+      cs: "Plug-in hybrid",
+      en: "Plug-in hybrid",
+      uk: "Plug-in гібрид",
+      ru: "Plug-in гибрид",
+    },
+    Elektro: { cs: "Elektro", en: "Electric", uk: "Електро", ru: "Электро" },
+    LPG: { cs: "LPG", en: "LPG", uk: "LPG", ru: "LPG" },
+    CNG: { cs: "CNG", en: "CNG", uk: "CNG", ru: "CNG" },
+  },
+  transmission: {
+    Manuální: { cs: "Manuální", en: "Manual", uk: "Механіка", ru: "Механика" },
+    Automatická: {
+      cs: "Automatická",
+      en: "Automatic",
+      uk: "Автомат",
+      ru: "Автомат",
+    },
+    DSG: { cs: "DSG", en: "DSG", uk: "DSG", ru: "DSG" },
+    CVT: { cs: "CVT", en: "CVT", uk: "CVT", ru: "CVT" },
+  },
+  bodyType: {
+    Sedan: { cs: "Sedan", en: "Sedan", uk: "Седан", ru: "Седан" },
+    Combi: { cs: "Combi", en: "Estate", uk: "Універсал", ru: "Универсал" },
+    Hatchback: {
+      cs: "Hatchback",
+      en: "Hatchback",
+      uk: "Хетчбек",
+      ru: "Хэтчбек",
+    },
+    SUV: { cs: "SUV", en: "SUV", uk: "SUV", ru: "SUV" },
+    Kupé: { cs: "Kupé", en: "Coupe", uk: "Купе", ru: "Купе" },
+    Kabriolet: {
+      cs: "Kabriolet",
+      en: "Convertible",
+      uk: "Кабріолет",
+      ru: "Кабриолет",
+    },
+    MPV: { cs: "MPV", en: "MPV", uk: "MPV", ru: "MPV" },
+    Pickup: { cs: "Pickup", en: "Pickup", uk: "Пікап", ru: "Пикап" },
+    Dodávka: { cs: "Dodávka", en: "Van", uk: "Фургон", ru: "Фургон" },
+  },
+  color: {
+    Bílá: { cs: "Bílá", en: "White", uk: "Білий", ru: "Белый" },
+    Černá: { cs: "Černá", en: "Black", uk: "Чорний", ru: "Чёрный" },
+    Šedá: { cs: "Šedá", en: "Grey", uk: "Сірий", ru: "Серый" },
+    Stříbrná: {
+      cs: "Stříbrná",
+      en: "Silver",
+      uk: "Срібний",
+      ru: "Серебристый",
+    },
+    Modrá: { cs: "Modrá", en: "Blue", uk: "Синій", ru: "Синий" },
+    Červená: { cs: "Červená", en: "Red", uk: "Червоний", ru: "Красный" },
+    Zelená: { cs: "Zelená", en: "Green", uk: "Зелений", ru: "Зелёный" },
+    Hnědá: { cs: "Hnědá", en: "Brown", uk: "Коричневий", ru: "Коричневый" },
+    Béžová: { cs: "Béžová", en: "Beige", uk: "Бежевий", ru: "Бежевый" },
+    Žlutá: { cs: "Žlutá", en: "Yellow", uk: "Жовтий", ru: "Жёлтый" },
+    Oranžová: {
+      cs: "Oranžová",
+      en: "Orange",
+      uk: "Помаранчевий",
+      ru: "Оранжевый",
+    },
+    Zlatá: { cs: "Zlatá", en: "Gold", uk: "Золотий", ru: "Золотой" },
+    Fialová: { cs: "Fialová", en: "Purple", uk: "Фіолетовий", ru: "Фиолетовый" },
+    Jiná: { cs: "Jiná", en: "Other", uk: "Інший", ru: "Другой" },
+  },
+  status: {
+    Aktivní: { cs: "Aktivní", en: "Active", uk: "Активне", ru: "Активно" },
+    Rezervováno: {
+      cs: "Rezervováno",
+      en: "Reserved",
+      uk: "Зарезервовано",
+      ru: "Зарезервировано",
+    },
+    Prodáno: { cs: "Prodáno", en: "Sold", uk: "Продано", ru: "Продано" },
+  },
+  driveType: {
+    "Přední náhon": {
+      cs: "Přední náhon",
+      en: "Front-wheel drive",
+      uk: "Передній привід",
+      ru: "Передний привод",
+    },
+    "Zadní náhon": {
+      cs: "Zadní náhon",
+      en: "Rear-wheel drive",
+      uk: "Задній привід",
+      ru: "Задний привод",
+    },
+    "4x4 / AWD": { cs: "4x4 / AWD", en: "4x4 / AWD", uk: "4x4 / AWD", ru: "4x4 / AWD" },
+  },
 };
 
 const carBrands = [
@@ -114,14 +442,37 @@ const driveTypes = ["Přední náhon", "Zadní náhon", "4x4 / AWD"];
 
 const euroNorms = ["Euro 3", "Euro 4", "Euro 5", "Euro 6", "Euro 6d"];
 
+function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
+function translateOption(
+  group: keyof typeof valueTranslations,
+  value: string,
+  language: LanguageCode,
+) {
+  const translation = valueTranslations[group][
+    value as keyof (typeof valueTranslations)[typeof group]
+  ] as Record<LanguageCode, string> | undefined;
+
+  return translation?.[language] || value;
+}
+
 function createSlug(brand: string, model: string, year: string) {
   return `${brand}-${model}-${year}`
     .toLowerCase()
     .trim()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function normalizeVin(value: string) {
+  return value
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 17);
 }
 
 function FormSection({
@@ -148,7 +499,11 @@ function FormSection({
   );
 }
 
+const inputClass = "rounded-xl border px-4 py-3";
+const selectClass = "rounded-xl border px-4 py-3";
+
 export default function EditCarPage({ params }: { params: { id: string } }) {
+  const [language, setLanguage] = useState<LanguageCode>("cs");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
@@ -176,6 +531,30 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const t = translations[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("site-language");
+
+    if (isLanguageCode(savedLanguage)) {
+      setLanguage(savedLanguage);
+    }
+
+    function handleLanguageChange(event: Event) {
+      const customEvent = event as CustomEvent<LanguageCode>;
+
+      if (isLanguageCode(customEvent.detail)) {
+        setLanguage(customEvent.detail);
+      }
+    }
+
+    window.addEventListener("languagechange", handleLanguageChange);
+
+    return () => {
+      window.removeEventListener("languagechange", handleLanguageChange);
+    };
+  }, []);
+
   useEffect(() => {
     loadCar();
   }, [params.id]);
@@ -196,7 +575,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
       .single();
 
     if (error || !car) {
-      setMessage("Inzerát nebyl nalezen nebo k němu nemáte přístup.");
+      setMessage(t.notFound);
       return;
     }
 
@@ -233,7 +612,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
   }
 
   async function deleteImage(imageId: number, imageUrl: string) {
-    const confirmDelete = window.confirm("Opravdu chcete smazat tuto fotku?");
+    const confirmDelete = window.confirm(t.deletePhotoConfirm);
 
     if (!confirmDelete) return;
 
@@ -276,7 +655,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
       return;
     }
 
-    setMessage("Hlavní fotka byla nastavena.");
+    setMessage(t.mainPhotoSet);
   }
 
   async function uploadNewImages() {
@@ -333,7 +712,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
     return true;
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -389,7 +768,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
       return;
     }
 
-    setMessage("Inzerát byl úspěšně upraven.");
+    setMessage(t.success);
     window.location.href = "/dashboard";
   }
 
@@ -397,10 +776,10 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
     <main className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-3xl font-bold sm:text-4xl">Upravit inzerát</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">{t.title}</h1>
 
           <p className="mt-2 text-sm text-gray-500 sm:text-base">
-            Upravte údaje o vozidle, fotografie, kontakt a stav inzerátu.
+            {t.subtitle}
           </p>
         </div>
 
@@ -411,37 +790,34 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
         )}
 
         <form onSubmit={handleSubmit} className="grid gap-5">
-          <FormSection
-            title="Základní údaje"
-            description="Hlavní informace, podle kterých lidé auto najdou."
-          >
+          <FormSection title={t.basicTitle} description={t.basicDescription}>
             <div className="grid gap-4 md:grid-cols-2">
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               >
-                <option value="">Značka</option>
+                <option value="">{t.selectBrand}</option>
                 {carBrands.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("brand", item, language)}
                   </option>
                 ))}
               </select>
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Model"
+                className={inputClass}
+                placeholder={t.model}
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
               />
 
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
               >
-                <option value="">Rok výroby</option>
+                <option value="">{t.productionYear}</option>
                 {years.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -450,22 +826,22 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
               </select>
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Najeto km"
+                className={inputClass}
+                placeholder={t.mileageKm}
                 value={mileage}
                 onChange={(e) => setMileage(e.target.value)}
               />
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Cena Kč"
+                className={inputClass}
+                placeholder={t.priceCzk}
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Město"
+                className={inputClass}
+                placeholder={t.city}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
@@ -473,72 +849,72 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
           </FormSection>
 
           <FormSection
-            title="Technické údaje"
-            description="Motor, převodovka, karoserie a další parametry."
+            title={t.technicalTitle}
+            description={t.technicalDescription}
           >
             <div className="grid gap-4 md:grid-cols-2">
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={fuel}
                 onChange={(e) => setFuel(e.target.value)}
               >
-                <option value="">Palivo</option>
+                <option value="">{t.selectFuel}</option>
                 {fuels.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("fuel", item, language)}
                   </option>
                 ))}
               </select>
 
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={transmission}
                 onChange={(e) => setTransmission(e.target.value)}
               >
-                <option value="">Převodovka</option>
+                <option value="">{t.selectTransmission}</option>
                 {transmissions.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("transmission", item, language)}
                   </option>
                 ))}
               </select>
 
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={bodyType}
                 onChange={(e) => setBodyType(e.target.value)}
               >
-                <option value="">Karoserie</option>
+                <option value="">{t.selectBodyType}</option>
                 {bodyTypes.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("bodyType", item, language)}
                   </option>
                 ))}
               </select>
 
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
               >
-                <option value="">Barva</option>
+                <option value="">{t.selectColor}</option>
                 {colors.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("color", item, language)}
                   </option>
                 ))}
               </select>
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Výkon kW"
+                className={inputClass}
+                placeholder={t.powerKw}
                 value={power}
                 onChange={(e) => setPower(e.target.value)}
               />
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Objem motoru l, např. 2.0"
+                className={inputClass}
+                placeholder={t.engineVolume}
                 value={engineVolume}
                 onChange={(e) => setEngineVolume(e.target.value)}
               />
@@ -548,10 +924,10 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
                 value={driveType}
                 onChange={(e) => setDriveType(e.target.value)}
               >
-                <option value="">Pohon</option>
+                <option value="">{t.selectDriveType}</option>
                 {driveTypes.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("driveType", item, language)}
                   </option>
                 ))}
               </select>
@@ -559,42 +935,43 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
           </FormSection>
 
           <FormSection
-            title="Stav a dokumenty"
-            description="Status inzerátu, VIN, STK a další údaje."
+            title={t.documentsTitle}
+            description={t.documentsDescription}
           >
             <div className="grid gap-4 md:grid-cols-2">
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
                 {statuses.map((item) => (
                   <option key={item} value={item}>
-                    {item}
+                    {translateOption("status", item, language)}
                   </option>
                 ))}
               </select>
 
               <input
-                className="rounded-xl border px-4 py-3"
+                className={inputClass}
                 placeholder="VIN"
                 value={vin}
-                onChange={(e) => setVin(e.target.value.toUpperCase())}
+                maxLength={17}
+                onChange={(e) => setVin(normalizeVin(e.target.value))}
               />
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Počet majitelů"
+                className={inputClass}
+                placeholder={t.ownerCount}
                 value={ownerCount}
                 onChange={(e) => setOwnerCount(e.target.value)}
               />
 
               <select
-                className="rounded-xl border px-4 py-3"
+                className={selectClass}
                 value={euroNorm}
                 onChange={(e) => setEuroNorm(e.target.value)}
               >
-                <option value="">Euro norma</option>
+                <option value="">{t.selectEuroNorm}</option>
                 {euroNorms.map((item) => (
                   <option key={item} value={item}>
                     {item}
@@ -604,7 +981,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-600">
-                  STK do
+                  {t.stkUntil}
                 </label>
 
                 <input
@@ -617,41 +994,35 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
             </div>
           </FormSection>
 
-          <FormSection
-            title="Kontakt na prodejce"
-            description="Tyto údaje se zobrazí u inzerátu."
-          >
+          <FormSection title={t.contactTitle} description={t.contactDescription}>
             <div className="grid gap-4 md:grid-cols-3">
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Jméno prodejce"
+                className={inputClass}
+                placeholder={t.sellerName}
                 value={sellerName}
                 onChange={(e) => setSellerName(e.target.value)}
               />
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="Telefon"
+                className={inputClass}
+                placeholder={t.phone}
                 value={sellerPhone}
                 onChange={(e) => setSellerPhone(e.target.value)}
               />
 
               <input
-                className="rounded-xl border px-4 py-3"
-                placeholder="E-mail"
+                className={inputClass}
+                placeholder={t.email}
                 value={sellerEmail}
                 onChange={(e) => setSellerEmail(e.target.value)}
               />
             </div>
           </FormSection>
 
-          <FormSection
-            title="Fotografie"
-            description="Můžete nastavit hlavní fotku, smazat staré fotky nebo přidat nové."
-          >
+          <FormSection title={t.photosTitle} description={t.photosDescription}>
             {images.length === 0 ? (
               <div className="rounded-xl border bg-gray-50 p-4 text-gray-500">
-                Zatím nejsou nahrané žádné fotky.
+                {t.noPhotos}
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -662,7 +1033,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
                   >
                     <img
                       src={image.image_url}
-                      alt="Foto vozidla"
+                      alt={t.carPhotoAlt}
                       className="h-40 w-full object-cover"
                     />
 
@@ -672,7 +1043,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
                         onClick={() => setMainImage(image.image_url)}
                         className="rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-gray-100"
                       >
-                        Nastavit jako hlavní
+                        {t.setMainPhoto}
                       </button>
 
                       <button
@@ -680,7 +1051,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
                         onClick={() => deleteImage(image.id, image.image_url)}
                         className="rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
                       >
-                        Smazat fotku
+                        {t.deletePhoto}
                       </button>
                     </div>
                   </div>
@@ -689,7 +1060,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
             )}
 
             <div className="mt-5 rounded-xl border bg-gray-50 p-4">
-              <label className="block font-semibold">Přidat nové fotky</label>
+              <label className="block font-semibold">{t.addNewPhotos}</label>
 
               <input
                 type="file"
@@ -701,16 +1072,16 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
 
               {newFiles.length > 0 && (
                 <p className="mt-3 text-sm text-gray-500">
-                  Vybráno nových fotek: {newFiles.length}
+                  {t.selectedNewPhotos}: {newFiles.length}
                 </p>
               )}
             </div>
           </FormSection>
 
-          <FormSection title="Popis vozidla">
+          <FormSection title={t.descriptionTitle}>
             <textarea
               className="min-h-40 w-full rounded-xl border px-4 py-3"
-              placeholder="Popis vozidla, servisní historie, výbava, stav..."
+              placeholder={t.descriptionPlaceholder}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -720,7 +1091,7 @@ export default function EditCarPage({ params }: { params: { id: string } }) {
             disabled={loading}
             className="rounded-2xl bg-orange-600 py-4 text-lg font-semibold text-white shadow hover:bg-orange-700 disabled:bg-gray-400"
           >
-            {loading ? "Ukládání..." : "Uložit změny"}
+            {loading ? t.saving : t.save}
           </button>
         </form>
       </div>
