@@ -12,7 +12,6 @@ const translations = {
   cs: {
     home: "Hlavní",
     cars: "Vozidla",
-    service: "Service",
     sell: "Prodat auto",
     contact: "Kontakt",
     loginOrRegister: "Přihlášení / registrace",
@@ -23,7 +22,6 @@ const translations = {
   en: {
     home: "Home",
     cars: "Cars",
-    service: "Service",
     sell: "Sell car",
     contact: "Contact",
     loginOrRegister: "Login / Register",
@@ -34,7 +32,6 @@ const translations = {
   uk: {
     home: "Головна",
     cars: "Авто",
-    service: "Сервіс",
     sell: "Продати авто",
     contact: "Контакти",
     loginOrRegister: "Вхід / реєстрація",
@@ -45,7 +42,6 @@ const translations = {
   ru: {
     home: "Главная",
     cars: "Авто",
-    service: "Сервис",
     sell: "Продать авто",
     contact: "Контакты",
     loginOrRegister: "Вход / регистрация",
@@ -58,7 +54,6 @@ const translations = {
 const menuKeys = [
   { href: "/", key: "home" },
   { href: "/cars", key: "cars" },
-  { href: "/service", key: "service" },
   { href: "/sell", key: "sell" },
   { href: "/contact", key: "contact" },
 ] as const;
@@ -78,6 +73,48 @@ function getSavedLanguage(): LanguageCode {
   }
 
   return "cs";
+}
+
+function ServiceButton({
+  onClick,
+  mobile = false,
+}: {
+  onClick?: () => void;
+  mobile?: boolean;
+}) {
+  return (
+    <Link
+      href="/service"
+      onClick={onClick}
+      className={`group relative overflow-hidden rounded-2xl border border-orange-300 bg-gradient-to-r from-gray-950 via-gray-900 to-orange-700 text-white shadow-lg shadow-orange-600/20 transition hover:-translate-y-0.5 hover:shadow-orange-600/30 ${
+        mobile
+          ? "flex items-center gap-4 px-4 py-4"
+          : "hidden items-center gap-3 px-4 py-3 xl:flex"
+      }`}
+    >
+      <div className="absolute inset-0 bg-white/0 transition group-hover:bg-white/10" />
+
+      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5">
+        <Image
+          src="/logo.png"
+          alt="ATEAM Service & Detailing"
+          width={90}
+          height={90}
+          className="h-full w-full object-contain"
+        />
+      </div>
+
+      <div className="relative leading-none">
+        <div className="text-xl font-black tracking-wide text-white">
+          ATEAM
+        </div>
+
+        <div className="mt-1 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em] text-orange-100">
+          Service & Detailing
+        </div>
+      </div>
+    </Link>
+  );
 }
 
 export default function Header() {
@@ -153,16 +190,20 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between py-3">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/logo.png"
-              alt="ATEAM AUTO"
-              width={500}
-              height={140}
-              className="h-14 w-auto object-contain sm:h-20"
-              priority
-            />
-          </Link>
+          <div className="flex items-center gap-3 lg:gap-5">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="ATEAM AUTO"
+                width={500}
+                height={140}
+                className="h-14 w-auto object-contain sm:h-20"
+                priority
+              />
+            </Link>
+
+            <ServiceButton />
+          </div>
 
           <nav className="hidden items-center gap-5 text-sm font-semibold lg:flex">
             {menuKeys.map((link) => (
@@ -210,6 +251,8 @@ export default function Header() {
 
         {isOpen && (
           <nav className="grid gap-2 border-t py-4 text-base font-semibold lg:hidden">
+            <ServiceButton mobile onClick={() => setIsOpen(false)} />
+
             {menuKeys.map((link) => (
               <Link
                 key={link.href}
