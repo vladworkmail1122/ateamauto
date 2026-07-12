@@ -42,84 +42,84 @@ const translations = {
     serviceItems: [
       {
         title: "Autoservis",
-        icon: "🔧",
+        icon: "wrench",
         text: "Údržba, mechanické opravy, brzdy, podvozek, motor a běžné servisní práce.",
       },
       {
         title: "Diagnostika",
-        icon: "🖥️",
+        icon: "diagnostic",
         text: "Čtení závad, měření parametrů, hledání příčiny problému před výměnou dílů.",
       },
       {
         title: "Diagnostika před koupí auta",
-        icon: "🔍",
+        icon: "search",
         text: "Kontrola vozidla před nákupem, diagnostika, technický stav, rizika a doporučení.",
       },
       {
         title: "Předprodejní příprava",
-        icon: "🚗",
+        icon: "car",
         text: "Kontrola, základní servis, příprava auta na prodej a doporučení pro lepší prezentaci.",
       },
       {
         title: "Chip tuning",
-        icon: "⚡",
+        icon: "tuning",
         text: "Stage úpravy, diagnostika výkonu a EGR/DPF/AdBlue řešení dle technického stavu.",
       },
       {
         title: "Elektrika a kódování",
-        icon: "🔌",
+        icon: "electric",
         text: "Řešení elektroniky, řídicích jednotek, retrofitů a základního kódování.",
       },
       {
         title: "Odtah vozidel",
-        icon: "🚚",
+        icon: "tow",
         text: "Pomoc s nepojízdným autem, převoz vozidel a servisní logistika dle domluvy.",
       },
     ],
     detailingItems: [
       {
         title: "Detailing",
-        icon: "✨",
+        icon: "sparkle",
         text: "Kompletní péče o exteriér i interiér, dekontaminace, ochrana a finální úprava.",
       },
       {
         title: "Leštění laku",
-        icon: "🧽",
+        icon: "polish",
         text: "Jednokrokové, dvoukrokové i vícekrokové leštění podle stavu laku.",
       },
       {
         title: "Čištění interiéru",
-        icon: "🛋️",
+        icon: "seat",
         text: "Hloubkové čištění, tepování, péče o plasty, kůži, textil a zápachy.",
       },
       {
         title: "Lakování a lokální opravy",
-        icon: "🎨",
+        icon: "paint",
         text: "Lokální opravy, příprava dílů, lakýrnické práce a opravy poškození.",
       },
       {
         title: "Tónování a fólie",
-        icon: "🪟",
+        icon: "tint",
         text: "Tónování oken, fólie na světla, ochranné fólie a změna vzhledu.",
       },
       {
         title: "Renovace světel a PPF",
-        icon: "💡",
+        icon: "headlight",
         text: "Leštění světlometů, obnova průhlednosti a ochranná fólie na světla.",
       },
       {
         title: "Anti-rain ochrana",
-        icon: "🌧️",
+        icon: "rain",
         text: "Hydrofobní ochrana skel pro lepší odvod vody a komfort při jízdě v dešti.",
       },
       {
         title: "Ambientní osvětlení",
-        icon: "🌈",
+        icon: "ambient",
         text: "Montáž ambientního osvětlení interiéru a individuální světelné úpravy.",
       },
       {
         title: "Auto audio",
-        icon: "🔊",
+        icon: "audio",
         text: "Multimédia, kamery, DSP, zesilovače, subwoofery a odhlučnění.",
       },
     ],
@@ -171,84 +171,84 @@ const translations = {
     serviceItems: [
       {
         title: "Car service",
-        icon: "🔧",
+        icon: "wrench",
         text: "Maintenance, mechanical repairs, brakes, suspension, engine and routine service work.",
       },
       {
         title: "Diagnostics",
-        icon: "🖥️",
+        icon: "diagnostic",
         text: "Fault reading, live data checks and finding the real cause before replacing parts.",
       },
       {
         title: "Pre-purchase diagnostics",
-        icon: "🔍",
+        icon: "search",
         text: "Vehicle inspection before purchase, diagnostics, technical condition, risks and recommendations.",
       },
       {
         title: "Pre-sale preparation",
-        icon: "🚗",
+        icon: "car",
         text: "Inspection, basic service, preparation for sale and recommendations for better presentation.",
       },
       {
         title: "Chip tuning",
-        icon: "⚡",
+        icon: "tuning",
         text: "Stage tuning, performance diagnostics and EGR/DPF/AdBlue solutions based on technical condition.",
       },
       {
         title: "Electrics and coding",
-        icon: "🔌",
+        icon: "electric",
         text: "Electronics, control units, retrofits and basic vehicle coding.",
       },
       {
         title: "Towing",
-        icon: "🚚",
+        icon: "tow",
         text: "Help with non-running cars, vehicle transport and service logistics by arrangement.",
       },
     ],
     detailingItems: [
       {
         title: "Detailing",
-        icon: "✨",
+        icon: "sparkle",
         text: "Complete exterior and interior care, decontamination, protection and final finish.",
       },
       {
         title: "Paint polishing",
-        icon: "🧽",
+        icon: "polish",
         text: "One-step, two-step and multi-step polishing based on paint condition.",
       },
       {
         title: "Interior deep cleaning",
-        icon: "🛋️",
+        icon: "seat",
         text: "Deep cleaning, wet vacuuming, plastics, leather, textile care and odour removal.",
       },
       {
         title: "Paint work and local repairs",
-        icon: "🎨",
+        icon: "paint",
         text: "Local repairs, part preparation, paint work and damage repairs.",
       },
       {
         title: "Tinting and films",
-        icon: "🪟",
+        icon: "tint",
         text: "Window tinting, headlight films, protective films and visual changes.",
       },
       {
         title: "Headlight restoration and PPF",
-        icon: "💡",
+        icon: "headlight",
         text: "Headlight polishing, clarity restoration and protective film for headlights.",
       },
       {
         title: "Anti-rain protection",
-        icon: "🌧️",
+        icon: "rain",
         text: "Hydrophobic glass protection for better water runoff and comfort in rain.",
       },
       {
         title: "Ambient lighting",
-        icon: "🌈",
+        icon: "ambient",
         text: "Interior ambient lighting installation and individual lighting upgrades.",
       },
       {
         title: "Car audio",
-        icon: "🔊",
+        icon: "audio",
         text: "Multimedia, cameras, DSP, amplifiers, subwoofers and sound insulation.",
       },
     ],
@@ -301,84 +301,84 @@ const translations = {
     serviceItems: [
       {
         title: "Автосервіс",
-        icon: "🔧",
+        icon: "wrench",
         text: "Обслуговування, механічні ремонти, гальма, підвіска, двигун і типові сервісні роботи.",
       },
       {
         title: "Діагностика",
-        icon: "🖥️",
+        icon: "diagnostic",
         text: "Зчитування помилок, перевірка параметрів і пошук причини до заміни деталей.",
       },
       {
         title: "Діагностика перед купівлею авто",
-        icon: "🔍",
+        icon: "search",
         text: "Перевірка автомобіля перед купівлею, діагностика, технічний стан, ризики та рекомендації.",
       },
       {
         title: "Передпродажна підготовка",
-        icon: "🚗",
+        icon: "car",
         text: "Перевірка, базовий сервіс, підготовка авто до продажу і рекомендації для кращої презентації.",
       },
       {
         title: "Chip tuning",
-        icon: "⚡",
+        icon: "tuning",
         text: "Stage налаштування, діагностика потужності та рішення EGR/DPF/AdBlue за технічним станом.",
       },
       {
         title: "Електрика і кодування",
-        icon: "🔌",
+        icon: "electric",
         text: "Електроніка, блоки керування, retrofit і базове кодування авто.",
       },
       {
         title: "Евакуатор",
-        icon: "🚚",
+        icon: "tow",
         text: "Допомога з нерухомим авто, перевезення автомобілів і сервісна логістика.",
       },
     ],
     detailingItems: [
       {
         title: "Детейлінг",
-        icon: "✨",
+        icon: "sparkle",
         text: "Повний догляд за екстерʼєром та інтерʼєром, деконтамінація, захист і фінальний вигляд.",
       },
       {
         title: "Полірування лаку",
-        icon: "🧽",
+        icon: "polish",
         text: "Однокрокове, двокрокове і багатокрокове полірування залежно від стану лаку.",
       },
       {
         title: "Хімчистка салону",
-        icon: "🛋️",
+        icon: "seat",
         text: "Глибоке очищення, хімчистка, догляд за пластиком, шкірою, тканиною і запахами.",
       },
       {
         title: "Фарбування і локальні ремонти",
-        icon: "🎨",
+        icon: "paint",
         text: "Локальні ремонти, підготовка деталей, малярні роботи і ремонт пошкоджень.",
       },
       {
         title: "Тонування і плівки",
-        icon: "🪟",
+        icon: "tint",
         text: "Тонування скла, плівки на фари, захисні плівки і зміна вигляду авто.",
       },
       {
         title: "Відновлення фар і PPF",
-        icon: "💡",
+        icon: "headlight",
         text: "Полірування фар, відновлення прозорості та бронеплівка на фари.",
       },
       {
         title: "Антидощ",
-        icon: "🌧️",
+        icon: "rain",
         text: "Гідрофобний захист скла для кращого відведення води і комфорту під час дощу.",
       },
       {
         title: "Ambient-підсвітка",
-        icon: "🌈",
+        icon: "ambient",
         text: "Встановлення ambient-підсвітки салону та індивідуальні світлові доопрацювання.",
       },
       {
         title: "Автозвук",
-        icon: "🔊",
+        icon: "audio",
         text: "Мультимедіа, камери, DSP, підсилювачі, сабвуфери і шумоізоляція.",
       },
     ],
@@ -431,84 +431,84 @@ const translations = {
     serviceItems: [
       {
         title: "Автосервис",
-        icon: "🔧",
+        icon: "wrench",
         text: "Обслуживание, механический ремонт, тормоза, подвеска, двигатель и типовые сервисные работы.",
       },
       {
         title: "Диагностика",
-        icon: "🖥️",
+        icon: "diagnostic",
         text: "Чтение ошибок, проверка параметров и поиск причины до замены деталей.",
       },
       {
         title: "Диагностика перед покупкой авто",
-        icon: "🔍",
+        icon: "search",
         text: "Проверка автомобиля перед покупкой, диагностика, техническое состояние, риски и рекомендации.",
       },
       {
         title: "Предпродажная подготовка",
-        icon: "🚗",
+        icon: "car",
         text: "Проверка, базовый сервис, подготовка авто к продаже и рекомендации для лучшей презентации.",
       },
       {
         title: "Chip tuning",
-        icon: "⚡",
+        icon: "tuning",
         text: "Stage-настройки, диагностика мощности и решения EGR/DPF/AdBlue по техническому состоянию.",
       },
       {
         title: "Электрика и кодирование",
-        icon: "🔌",
+        icon: "electric",
         text: "Электроника, блоки управления, retrofit и базовое кодирование автомобиля.",
       },
       {
         title: "Эвакуатор",
-        icon: "🚚",
+        icon: "tow",
         text: "Помощь с неходовым авто, перевозка автомобилей и сервисная логистика.",
       },
     ],
     detailingItems: [
       {
         title: "Детейлинг",
-        icon: "✨",
+        icon: "sparkle",
         text: "Полный уход за экстерьером и интерьером, деконтаминация, защита и финальный внешний вид.",
       },
       {
         title: "Полировка лака",
-        icon: "🧽",
+        icon: "polish",
         text: "Одноэтапная, двухэтапная и многоэтапная полировка по состоянию лака.",
       },
       {
         title: "Химчистка салона",
-        icon: "🛋️",
+        icon: "seat",
         text: "Глубокая чистка, химчистка, уход за пластиком, кожей, тканью и удаление запахов.",
       },
       {
         title: "Покраска и локальные ремонты",
-        icon: "🎨",
+        icon: "paint",
         text: "Локальные ремонты, подготовка деталей, малярные работы и устранение повреждений.",
       },
       {
         title: "Тонировка и плёнки",
-        icon: "🪟",
+        icon: "tint",
         text: "Тонировка стёкол, плёнки на фары, защитные плёнки и изменение внешнего вида.",
       },
       {
         title: "Восстановление фар и бронеплёнка",
-        icon: "💡",
+        icon: "headlight",
         text: "Полировка фар, восстановление прозрачности и бронеплёнка на фары.",
       },
       {
         title: "Антидождь",
-        icon: "🌧️",
+        icon: "rain",
         text: "Гидрофобная защита стекла для лучшего отвода воды и комфорта во время дождя.",
       },
       {
         title: "Ambient-подсветка",
-        icon: "🌈",
+        icon: "ambient",
         text: "Установка ambient-подсветки салона и индивидуальные световые доработки.",
       },
       {
         title: "Автозвук",
-        icon: "🔊",
+        icon: "audio",
         text: "Мультимедиа, камеры, DSP, усилители, сабвуферы и шумоизоляция.",
       },
     ],
@@ -557,6 +557,170 @@ function SectionTitle({
   );
 }
 
+
+function Icon({ name }: { name: string }) {
+  const commonProps = {
+    className: "h-7 w-7",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  switch (name) {
+    case "wrench":
+      return (
+        <svg {...commonProps}>
+          <path d="M14.7 6.3a4.5 4.5 0 0 0-5.8 5.8L3 18l3 3 5.9-5.9a4.5 4.5 0 0 0 5.8-5.8l-3.1 3.1-3-3 3.1-3.1Z" />
+        </svg>
+      );
+    case "diagnostic":
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="4" width="18" height="12" rx="2" />
+          <path d="M8 20h8" />
+          <path d="M12 16v4" />
+          <path d="m8 10 2 2 4-5 2 3" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg {...commonProps}>
+          <circle cx="11" cy="11" r="6" />
+          <path d="m16 16 4 4" />
+          <path d="M8.5 11h5" />
+        </svg>
+      );
+    case "car":
+      return (
+        <svg {...commonProps}>
+          <path d="M5 16h14" />
+          <path d="M7 16l1.5-5h7L17 16" />
+          <path d="M8 11l1.4-3h5.2L16 11" />
+          <circle cx="8" cy="17.5" r="1.5" />
+          <circle cx="16" cy="17.5" r="1.5" />
+        </svg>
+      );
+    case "tuning":
+      return (
+        <svg {...commonProps}>
+          <path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z" />
+        </svg>
+      );
+    case "electric":
+      return (
+        <svg {...commonProps}>
+          <path d="M8 2v7" />
+          <path d="M16 2v7" />
+          <path d="M6 9h12v4a6 6 0 0 1-12 0V9Z" />
+          <path d="M12 19v3" />
+        </svg>
+      );
+    case "tow":
+      return (
+        <svg {...commonProps}>
+          <path d="M3 16h10V7H8L6 10H3v6Z" />
+          <path d="M13 11h4l4 5v0h-8" />
+          <circle cx="7" cy="17" r="2" />
+          <circle cx="17" cy="17" r="2" />
+          <path d="M9 7h4" />
+        </svg>
+      );
+    case "sparkle":
+      return (
+        <svg {...commonProps}>
+          <path d="M12 2 14 8l6 2-6 2-2 6-2-6-6-2 6-2 2-6Z" />
+          <path d="M19 15v4" />
+          <path d="M17 17h4" />
+          <path d="M5 3v3" />
+          <path d="M3.5 4.5h3" />
+        </svg>
+      );
+    case "polish":
+      return (
+        <svg {...commonProps}>
+          <path d="M5 16h14" />
+          <path d="M8 16c0-4 2-7 4-7s4 3 4 7" />
+          <path d="M10 9V5h4v4" />
+          <path d="M7 19h10" />
+          <path d="M4 12l2-2" />
+          <path d="M18 10l2 2" />
+        </svg>
+      );
+    case "seat":
+      return (
+        <svg {...commonProps}>
+          <path d="M7 4h6a3 3 0 0 1 3 3v5H8a3 3 0 0 1-3-3V6a2 2 0 0 1 2-2Z" />
+          <path d="M5 12v6" />
+          <path d="M16 12l3 6" />
+          <path d="M5 18h14" />
+        </svg>
+      );
+    case "paint":
+      return (
+        <svg {...commonProps}>
+          <path d="M4 14h12a4 4 0 0 0 0-8H9" />
+          <path d="M4 14v5a2 2 0 0 0 4 0v-5" />
+          <path d="M9 6V4h6v2" />
+        </svg>
+      );
+    case "tint":
+      return (
+        <svg {...commonProps}>
+          <path d="M5 6h14l-2 12H7L5 6Z" />
+          <path d="M8 9h8" />
+          <path d="M8 13h7" />
+          <path d="M17 4v2" />
+        </svg>
+      );
+    case "headlight":
+      return (
+        <svg {...commonProps}>
+          <path d="M4 8c4-3 9-3 14 0v8c-5 3-10 3-14 0V8Z" />
+          <path d="M18 10h3" />
+          <path d="M18 14h3" />
+          <path d="M8 9v6" />
+        </svg>
+      );
+    case "rain":
+      return (
+        <svg {...commonProps}>
+          <path d="M7 15a4 4 0 0 1 .7-7.9A5.5 5.5 0 0 1 18 10a3 3 0 0 1-1 5" />
+          <path d="M8 19l1-2" />
+          <path d="M12 20l1-3" />
+          <path d="M16 19l1-2" />
+        </svg>
+      );
+    case "ambient":
+      return (
+        <svg {...commonProps}>
+          <path d="M4 12a8 8 0 0 1 16 0" />
+          <path d="M7 12a5 5 0 0 1 10 0" />
+          <path d="M10 12a2 2 0 0 1 4 0" />
+          <path d="M4 16h16" />
+          <path d="M8 20h8" />
+        </svg>
+      );
+    case "audio":
+      return (
+        <svg {...commonProps}>
+          <path d="M5 9v6h4l5 4V5L9 9H5Z" />
+          <path d="M17 9a4 4 0 0 1 0 6" />
+          <path d="M19.5 6.5a8 8 0 0 1 0 11" />
+        </svg>
+      );
+    default:
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="12" r="8" />
+          <path d="M8 12h8" />
+        </svg>
+      );
+  }
+}
+
 function ServiceCard({
   title,
   text,
@@ -572,13 +736,13 @@ function ServiceCard({
     <div className="group rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-xl shadow-black/10 transition hover:-translate-y-1 hover:border-orange-500/60 hover:bg-white/[0.07]">
       <div className="flex items-start gap-4">
         <div
-          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl shadow-lg ${
+          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-lg ${
             variant === "service"
               ? "bg-orange-500/15 text-orange-400 ring-1 ring-orange-500/30"
               : "bg-white/10 text-white ring-1 ring-white/15"
           }`}
         >
-          {icon}
+          <Icon name={icon} />
         </div>
 
         <div className="min-w-0">
