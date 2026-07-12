@@ -62,6 +62,8 @@ const menuKeys = [
   { href: "/contact", key: "contact" },
 ] as const;
 
+const serviceButtonClipPath = "polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%)";
+
 function getSavedLanguage(): LanguageCode {
   if (typeof window === "undefined") return "cs";
 
@@ -93,24 +95,38 @@ function ServiceButton({
       href="/service"
       onClick={onClick}
       aria-label={label}
-      className={`group relative overflow-hidden rounded-2xl border border-orange-300 bg-white shadow-lg shadow-orange-500/15 ring-1 ring-orange-100 transition hover:-translate-y-0.5 hover:border-orange-500 hover:shadow-xl hover:shadow-orange-500/25 ${
-        mobile
-          ? "block h-[92px] w-full"
-          : "hidden h-[70px] w-[270px] xl:block"
+      className={`group relative shrink-0 transition hover:-translate-y-0.5 ${
+        mobile ? "block w-full" : "hidden xl:block"
       }`}
     >
-      <span className="pointer-events-none absolute inset-0 z-10 rounded-2xl bg-gradient-to-r from-orange-500/10 via-transparent to-orange-600/10 opacity-0 transition group-hover:opacity-100" />
-
-      <Image
-        src="/service-button.png"
-        alt={label}
-        width={540}
-        height={180}
-        className={`h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.04] ${
-          mobile ? "scale-[1.08]" : "scale-[1.12]"
+      <div
+        className={`bg-orange-500 p-[2px] shadow-lg shadow-orange-500/20 transition group-hover:bg-orange-600 group-hover:shadow-xl group-hover:shadow-orange-500/30 ${
+          mobile ? "h-[96px] w-full" : "h-[72px] w-[280px]"
         }`}
-        priority={false}
-      />
+        style={{
+          clipPath: serviceButtonClipPath,
+        }}
+      >
+        <div
+          className="relative h-full w-full overflow-hidden bg-white"
+          style={{
+            clipPath: serviceButtonClipPath,
+          }}
+        >
+          <span className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10 opacity-0 transition group-hover:opacity-100" />
+
+          <Image
+            src="/service-button.png"
+            alt={label}
+            width={560}
+            height={180}
+            className={`h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.04] ${
+              mobile ? "scale-[1.08]" : "scale-[1.13]"
+            }`}
+            priority={false}
+          />
+        </div>
+      </div>
     </Link>
   );
 }
