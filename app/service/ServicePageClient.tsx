@@ -21,7 +21,7 @@ const translations = {
     titleTop: "Prémiový autoservis",
     titleBottom: "detailing a úpravy vozidel",
     subtitle:
-      "Servis, diagnostika, odtah, detailing, leštění, čištění interiéru, tónování, lakování, chip tuning a auto audio — vše na jednom místě.",
+      "Technický servis, diagnostika, odtah, chip tuning, kontrola před koupí a předprodejní příprava. Vedle toho detailing, leštění, čištění, lakování, fólie, světla, ambientní osvětlení a auto audio.",
     book: "Objednat se",
     call: "Zavolat",
     write: "Napsat na WhatsApp",
@@ -32,12 +32,13 @@ const translations = {
     premiumBadge: "Service • Detailing • Tuning",
     heroCardTitle: "ATEAM studio",
     heroCardText:
-      "Jedna dílna pro technický servis i vizuální péči o auto.",
+      "Jedna dílna pro technický servis, kontrolu auta, vizuální péči a individuální úpravy.",
     serviceColumnTitle: "ATEAM Service",
-    serviceColumnSubtitle: "Technika, diagnostika, opravy a logistika vozidla.",
+    serviceColumnSubtitle:
+      "Technika, diagnostika, odtah, chip tuning, kontrola a příprava vozidla.",
     detailingColumnTitle: "ATEAM Detailing",
     detailingColumnSubtitle:
-      "Vzhled, ochrana, interiér, lak a individuální úpravy.",
+      "Vzhled, lak, interiér, fólie, světla, ambient, ochrana a auto audio.",
     serviceItems: [
       {
         title: "Autoservis",
@@ -46,6 +47,18 @@ const translations = {
       {
         title: "Diagnostika",
         text: "Čtení závad, měření parametrů, hledání příčiny problému před výměnou dílů.",
+      },
+      {
+        title: "Diagnostika před koupí auta",
+        text: "Kontrola vozidla před nákupem, diagnostika, technický stav, rizika a doporučení.",
+      },
+      {
+        title: "Předprodejní příprava",
+        text: "Kontrola, základní servis, příprava auta na prodej a doporučení pro lepší prezentaci.",
+      },
+      {
+        title: "Chip tuning",
+        text: "Stage úpravy, diagnostika výkonu a EGR/DPF/AdBlue řešení dle technického stavu.",
       },
       {
         title: "Elektrika a kódování",
@@ -70,21 +83,24 @@ const translations = {
         text: "Hloubkové čištění, tepování, péče o plasty, kůži, textil a zápachy.",
       },
       {
-        title: "Tónování a fólie",
-        text: "Tónování oken, fólie na světla, ochranné fólie a změna vzhledu.",
-      },
-    ],
-    extraTitle: "Tuning, lakování a auto audio",
-    extraSubtitle:
-      "Pro auta, která mají nejen dobře fungovat, ale i dobře vypadat a znít.",
-    extraItems: [
-      {
         title: "Lakování a lokální opravy",
         text: "Lokální opravy, příprava dílů, lakýrnické práce a opravy poškození.",
       },
       {
-        title: "Chip tuning",
-        text: "Stage úpravy, diagnostika výkonu, EGR/DPF/AdBlue řešení dle technického stavu.",
+        title: "Tónování a fólie",
+        text: "Tónování oken, fólie na světla, ochranné fólie a změna vzhledu.",
+      },
+      {
+        title: "Renovace světel a PPF",
+        text: "Leštění světlometů, obnova průhlednosti a ochranná fólie na světla.",
+      },
+      {
+        title: "Anti-rain ochrana",
+        text: "Hydrofobní ochrana skel pro lepší odvod vody a komfort při jízdě v dešti.",
+      },
+      {
+        title: "Ambientní osvětlení",
+        text: "Montáž ambientního osvětlení interiéru a individuální světelné úpravy.",
       },
       {
         title: "Auto audio",
@@ -93,7 +109,7 @@ const translations = {
     ],
     whyTitle: "Proč vybrat ATEAM",
     whyItems: [
-      "Servis, detailing a úpravy v jednom místě",
+      "Servis, kontrola auta, detailing a úpravy v jednom místě",
       "Diagnostika před zbytečnou výměnou dílů",
       "Fotodokumentace práce a jasná domluva",
       "Možnost domluvit servis, odtah i následnou péči",
@@ -113,13 +129,12 @@ const translations = {
       "Pošlete nám fotky auta, požadovanou službu nebo popis závady. Odpovíme s možností termínu a orientační cenou.",
   },
   en: {
-    whatsappMessage:
-      "Hello, I want to book ATEAM Service & Detailing.",
+    whatsappMessage: "Hello, I want to book ATEAM Service & Detailing.",
     eyebrow: "ATEAM SERVICE & DETAILING",
     titleTop: "Premium car service",
     titleBottom: "detailing and vehicle upgrades",
     subtitle:
-      "Service, diagnostics, towing, detailing, polishing, interior cleaning, tinting, paint work, chip tuning and car audio — all in one place.",
+      "Technical service, diagnostics, towing, chip tuning, pre-purchase inspection and pre-sale preparation. Plus detailing, polishing, cleaning, paint work, films, headlights, ambient lighting and car audio.",
     book: "Book now",
     call: "Call",
     write: "Message on WhatsApp",
@@ -130,12 +145,13 @@ const translations = {
     premiumBadge: "Service • Detailing • Tuning",
     heroCardTitle: "ATEAM studio",
     heroCardText:
-      "One workshop for technical service and visual car care.",
+      "One workshop for technical service, vehicle inspection, visual care and individual upgrades.",
     serviceColumnTitle: "ATEAM Service",
-    serviceColumnSubtitle: "Technical work, diagnostics, repairs and vehicle logistics.",
+    serviceColumnSubtitle:
+      "Technical work, diagnostics, towing, chip tuning, inspection and vehicle preparation.",
     detailingColumnTitle: "ATEAM Detailing",
     detailingColumnSubtitle:
-      "Appearance, protection, interior, paint and individual upgrades.",
+      "Appearance, paint, interior, films, headlights, ambient, protection and car audio.",
     serviceItems: [
       {
         title: "Car service",
@@ -144,6 +160,18 @@ const translations = {
       {
         title: "Diagnostics",
         text: "Fault reading, live data checks and finding the real cause before replacing parts.",
+      },
+      {
+        title: "Pre-purchase diagnostics",
+        text: "Vehicle inspection before purchase, diagnostics, technical condition, risks and recommendations.",
+      },
+      {
+        title: "Pre-sale preparation",
+        text: "Inspection, basic service, preparation for sale and recommendations for better presentation.",
+      },
+      {
+        title: "Chip tuning",
+        text: "Stage tuning, performance diagnostics and EGR/DPF/AdBlue solutions based on technical condition.",
       },
       {
         title: "Electrics and coding",
@@ -168,21 +196,24 @@ const translations = {
         text: "Deep cleaning, wet vacuuming, plastics, leather, textile care and odour removal.",
       },
       {
-        title: "Tinting and films",
-        text: "Window tinting, headlight films, protective films and visual changes.",
-      },
-    ],
-    extraTitle: "Tuning, paint work and car audio",
-    extraSubtitle:
-      "For cars that should not only work well, but also look and sound right.",
-    extraItems: [
-      {
         title: "Paint work and local repairs",
         text: "Local repairs, part preparation, paint work and damage repairs.",
       },
       {
-        title: "Chip tuning",
-        text: "Stage tuning, performance diagnostics and EGR/DPF/AdBlue solutions based on technical condition.",
+        title: "Tinting and films",
+        text: "Window tinting, headlight films, protective films and visual changes.",
+      },
+      {
+        title: "Headlight restoration and PPF",
+        text: "Headlight polishing, clarity restoration and protective film for headlights.",
+      },
+      {
+        title: "Anti-rain protection",
+        text: "Hydrophobic glass protection for better water runoff and comfort in rain.",
+      },
+      {
+        title: "Ambient lighting",
+        text: "Interior ambient lighting installation and individual lighting upgrades.",
       },
       {
         title: "Car audio",
@@ -191,7 +222,7 @@ const translations = {
     ],
     whyTitle: "Why choose ATEAM",
     whyItems: [
-      "Service, detailing and upgrades in one place",
+      "Service, inspection, detailing and upgrades in one place",
       "Diagnostics before unnecessary part replacement",
       "Work photo documentation and clear communication",
       "Service, towing and aftercare can be arranged together",
@@ -217,7 +248,7 @@ const translations = {
     titleTop: "Преміальний автосервіс",
     titleBottom: "детейлінг і доопрацювання авто",
     subtitle:
-      "Сервіс, діагностика, евакуатор, детейлінг, полірування, хімчистка, тонування, фарбування, chip tuning та автозвук — все в одному місці.",
+      "Технічний сервіс, діагностика, евакуатор, chip tuning, перевірка перед купівлею і передпродажна підготовка. Плюс детейлінг, полірування, хімчистка, фарбування, плівки, фари, ambient-підсвітка та автозвук.",
     book: "Записатися",
     call: "Подзвонити",
     write: "Написати в WhatsApp",
@@ -228,12 +259,13 @@ const translations = {
     premiumBadge: "Service • Detailing • Tuning",
     heroCardTitle: "ATEAM studio",
     heroCardText:
-      "Одна майстерня для технічного сервісу та візуального догляду за авто.",
+      "Одна майстерня для технічного сервісу, перевірки авто, візуального догляду та індивідуальних доопрацювань.",
     serviceColumnTitle: "ATEAM Service",
-    serviceColumnSubtitle: "Техніка, діагностика, ремонт і логістика автомобіля.",
+    serviceColumnSubtitle:
+      "Техніка, діагностика, евакуатор, chip tuning, перевірка і підготовка автомобіля.",
     detailingColumnTitle: "ATEAM Detailing",
     detailingColumnSubtitle:
-      "Зовнішній вигляд, захист, салон, лак і індивідуальні доопрацювання.",
+      "Зовнішній вигляд, лак, салон, плівки, фари, ambient, захист і автозвук.",
     serviceItems: [
       {
         title: "Автосервіс",
@@ -242,6 +274,18 @@ const translations = {
       {
         title: "Діагностика",
         text: "Зчитування помилок, перевірка параметрів і пошук причини до заміни деталей.",
+      },
+      {
+        title: "Діагностика перед купівлею авто",
+        text: "Перевірка автомобіля перед купівлею, діагностика, технічний стан, ризики та рекомендації.",
+      },
+      {
+        title: "Передпродажна підготовка",
+        text: "Перевірка, базовий сервіс, підготовка авто до продажу і рекомендації для кращої презентації.",
+      },
+      {
+        title: "Chip tuning",
+        text: "Stage налаштування, діагностика потужності та рішення EGR/DPF/AdBlue за технічним станом.",
       },
       {
         title: "Електрика і кодування",
@@ -266,21 +310,24 @@ const translations = {
         text: "Глибоке очищення, хімчистка, догляд за пластиком, шкірою, тканиною і запахами.",
       },
       {
-        title: "Тонування і плівки",
-        text: "Тонування скла, плівки на фари, захисні плівки і зміна вигляду авто.",
-      },
-    ],
-    extraTitle: "Тюнінг, фарбування і автозвук",
-    extraSubtitle:
-      "Для авто, які мають не тільки добре працювати, але й добре виглядати та звучати.",
-    extraItems: [
-      {
         title: "Фарбування і локальні ремонти",
         text: "Локальні ремонти, підготовка деталей, малярні роботи і ремонт пошкоджень.",
       },
       {
-        title: "Chip tuning",
-        text: "Stage налаштування, діагностика потужності та рішення EGR/DPF/AdBlue за технічним станом.",
+        title: "Тонування і плівки",
+        text: "Тонування скла, плівки на фари, захисні плівки і зміна вигляду авто.",
+      },
+      {
+        title: "Відновлення фар і PPF",
+        text: "Полірування фар, відновлення прозорості та бронеплівка на фари.",
+      },
+      {
+        title: "Антидощ",
+        text: "Гідрофобний захист скла для кращого відведення води і комфорту під час дощу.",
+      },
+      {
+        title: "Ambient-підсвітка",
+        text: "Встановлення ambient-підсвітки салону та індивідуальні світлові доопрацювання.",
       },
       {
         title: "Автозвук",
@@ -289,7 +336,7 @@ const translations = {
     ],
     whyTitle: "Чому обирають ATEAM",
     whyItems: [
-      "Сервіс, детейлінг і доопрацювання в одному місці",
+      "Сервіс, перевірка авто, детейлінг і доопрацювання в одному місці",
       "Діагностика перед зайвою заміною деталей",
       "Фотофіксація роботи і зрозуміла комунікація",
       "Можна домовитися про сервіс, евакуатор і подальший догляд",
@@ -315,7 +362,7 @@ const translations = {
     titleTop: "Премиальный автосервис",
     titleBottom: "детейлинг и доработки авто",
     subtitle:
-      "Сервис, диагностика, эвакуатор, детейлинг, полировка, химчистка, тонировка, покраска, chip tuning и автозвук — всё в одном месте.",
+      "Технический сервис, диагностика, эвакуатор, chip tuning, проверка перед покупкой и предпродажная подготовка. Плюс детейлинг, полировка, химчистка, покраска, плёнки, фары, ambient-подсветка и автозвук.",
     book: "Записаться",
     call: "Позвонить",
     write: "Написать в WhatsApp",
@@ -326,12 +373,13 @@ const translations = {
     premiumBadge: "Service • Detailing • Tuning",
     heroCardTitle: "ATEAM studio",
     heroCardText:
-      "Одна мастерская для технического сервиса и визуального ухода за автомобилем.",
+      "Одна мастерская для технического сервиса, проверки авто, визуального ухода и индивидуальных доработок.",
     serviceColumnTitle: "ATEAM Service",
-    serviceColumnSubtitle: "Техника, диагностика, ремонт и логистика автомобиля.",
+    serviceColumnSubtitle:
+      "Техника, диагностика, эвакуатор, chip tuning, проверка и подготовка автомобиля.",
     detailingColumnTitle: "ATEAM Detailing",
     detailingColumnSubtitle:
-      "Внешний вид, защита, салон, лак и индивидуальные доработки.",
+      "Внешний вид, лак, салон, плёнки, фары, ambient, защита и автозвук.",
     serviceItems: [
       {
         title: "Автосервис",
@@ -340,6 +388,18 @@ const translations = {
       {
         title: "Диагностика",
         text: "Чтение ошибок, проверка параметров и поиск причины до замены деталей.",
+      },
+      {
+        title: "Диагностика перед покупкой авто",
+        text: "Проверка автомобиля перед покупкой, диагностика, техническое состояние, риски и рекомендации.",
+      },
+      {
+        title: "Предпродажная подготовка",
+        text: "Проверка, базовый сервис, подготовка авто к продаже и рекомендации для лучшей презентации.",
+      },
+      {
+        title: "Chip tuning",
+        text: "Stage-настройки, диагностика мощности и решения EGR/DPF/AdBlue по техническому состоянию.",
       },
       {
         title: "Электрика и кодирование",
@@ -364,21 +424,24 @@ const translations = {
         text: "Глубокая чистка, химчистка, уход за пластиком, кожей, тканью и удаление запахов.",
       },
       {
-        title: "Тонировка и плёнки",
-        text: "Тонировка стёкол, плёнки на фары, защитные плёнки и изменение внешнего вида.",
-      },
-    ],
-    extraTitle: "Тюнинг, покраска и автозвук",
-    extraSubtitle:
-      "Для автомобилей, которые должны не только хорошо работать, но и хорошо выглядеть и звучать.",
-    extraItems: [
-      {
         title: "Покраска и локальные ремонты",
         text: "Локальные ремонты, подготовка деталей, малярные работы и устранение повреждений.",
       },
       {
-        title: "Chip tuning",
-        text: "Stage-настройки, диагностика мощности и решения EGR/DPF/AdBlue по техническому состоянию.",
+        title: "Тонировка и плёнки",
+        text: "Тонировка стёкол, плёнки на фары, защитные плёнки и изменение внешнего вида.",
+      },
+      {
+        title: "Восстановление фар и бронеплёнка",
+        text: "Полировка фар, восстановление прозрачности и бронеплёнка на фары.",
+      },
+      {
+        title: "Антидождь",
+        text: "Гидрофобная защита стекла для лучшего отвода воды и комфорта во время дождя.",
+      },
+      {
+        title: "Ambient-подсветка",
+        text: "Установка ambient-подсветки салона и индивидуальные световые доработки.",
       },
       {
         title: "Автозвук",
@@ -387,7 +450,7 @@ const translations = {
     ],
     whyTitle: "Почему выбирают ATEAM",
     whyItems: [
-      "Сервис, детейлинг и доработки в одном месте",
+      "Сервис, проверка авто, детейлинг и доработки в одном месте",
       "Диагностика перед лишней заменой деталей",
       "Фотофиксация работы и понятная коммуникация",
       "Можно договориться о сервисе, эвакуаторе и дальнейшем уходе",
@@ -687,27 +750,6 @@ export default function ServicePageClient() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-white/10 bg-white/[0.03] px-4 py-14 sm:px-6 lg:py-20">
-        <div className="mx-auto max-w-7xl">
-          <SectionTitle title={t.extraTitle} text={t.extraSubtitle} />
-
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {t.extraItems.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-[2rem] border border-white/10 bg-gray-950 p-7 shadow-2xl shadow-black/20 transition hover:-translate-y-1 hover:border-orange-500/60"
-              >
-                <div className="mb-6 h-1 w-16 rounded-full bg-orange-500" />
-                <h3 className="text-2xl font-black text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-4 leading-7 text-gray-400">{item.text}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
