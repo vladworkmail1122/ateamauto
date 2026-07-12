@@ -18,6 +18,7 @@ const translations = {
     account: "Můj účet",
     admin: "Admin",
     openMenu: "Otevřít menu",
+    serviceTitle: "ATEAM Service & Detailing",
   },
   en: {
     home: "Home",
@@ -28,6 +29,7 @@ const translations = {
     account: "My account",
     admin: "Admin",
     openMenu: "Open menu",
+    serviceTitle: "ATEAM Service & Detailing",
   },
   uk: {
     home: "Головна",
@@ -38,6 +40,7 @@ const translations = {
     account: "Мій кабінет",
     admin: "Адмін",
     openMenu: "Відкрити меню",
+    serviceTitle: "ATEAM Service & Detailing",
   },
   ru: {
     home: "Главная",
@@ -48,6 +51,7 @@ const translations = {
     account: "Мой кабинет",
     admin: "Админ",
     openMenu: "Открыть меню",
+    serviceTitle: "ATEAM Service & Detailing",
   },
 };
 
@@ -76,9 +80,11 @@ function getSavedLanguage(): LanguageCode {
 }
 
 function ServiceButton({
+  label,
   onClick,
   mobile = false,
 }: {
+  label: string;
   onClick?: () => void;
   mobile?: boolean;
 }) {
@@ -86,33 +92,25 @@ function ServiceButton({
     <Link
       href="/service"
       onClick={onClick}
-      className={`group relative overflow-hidden rounded-2xl border border-orange-300 bg-gradient-to-r from-gray-950 via-gray-900 to-orange-700 text-white shadow-lg shadow-orange-600/20 transition hover:-translate-y-0.5 hover:shadow-orange-600/30 ${
+      aria-label={label}
+      className={`group relative overflow-hidden rounded-2xl border border-orange-300 bg-white shadow-lg shadow-orange-500/15 ring-1 ring-orange-100 transition hover:-translate-y-0.5 hover:border-orange-500 hover:shadow-xl hover:shadow-orange-500/25 ${
         mobile
-          ? "flex items-center gap-4 px-4 py-4"
-          : "hidden items-center gap-3 px-4 py-3 xl:flex"
+          ? "block h-[92px] w-full"
+          : "hidden h-[70px] w-[270px] xl:block"
       }`}
     >
-      <div className="absolute inset-0 bg-white/0 transition group-hover:bg-white/10" />
+      <span className="pointer-events-none absolute inset-0 z-10 rounded-2xl bg-gradient-to-r from-orange-500/10 via-transparent to-orange-600/10 opacity-0 transition group-hover:opacity-100" />
 
-      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5">
-        <Image
-          src="/logo.png"
-          alt="ATEAM Service & Detailing"
-          width={90}
-          height={90}
-          className="h-full w-full object-contain"
-        />
-      </div>
-
-      <div className="relative leading-none">
-        <div className="text-xl font-black tracking-wide text-white">
-          ATEAM
-        </div>
-
-        <div className="mt-1 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em] text-orange-100">
-          Service & Detailing
-        </div>
-      </div>
+      <Image
+        src="/service-button.png"
+        alt={label}
+        width={540}
+        height={180}
+        className={`h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.04] ${
+          mobile ? "scale-[1.08]" : "scale-[1.12]"
+        }`}
+        priority={false}
+      />
     </Link>
   );
 }
@@ -187,11 +185,11 @@ export default function Header() {
   const accountLabel = isLoggedIn ? t.account : t.loginOrRegister;
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex items-center justify-between py-3">
-          <div className="flex items-center gap-3 lg:gap-5">
-            <Link href="/" className="flex items-center">
+        <div className="flex items-center justify-between gap-4 py-3">
+          <div className="flex min-w-0 items-center gap-3 lg:gap-5">
+            <Link href="/" className="flex shrink-0 items-center">
               <Image
                 src="/logo.png"
                 alt="ATEAM AUTO"
@@ -202,7 +200,7 @@ export default function Header() {
               />
             </Link>
 
-            <ServiceButton />
+            <ServiceButton label={t.serviceTitle} />
           </div>
 
           <nav className="hidden items-center gap-5 text-sm font-semibold lg:flex">
@@ -210,7 +208,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition hover:text-orange-600"
+                className="whitespace-nowrap transition hover:text-orange-600"
               >
                 {t[link.key]}
               </Link>
@@ -229,7 +227,7 @@ export default function Header() {
 
             <Link
               href={accountHref}
-              className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white transition hover:bg-orange-700"
+              className="whitespace-nowrap rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white transition hover:bg-orange-700"
             >
               {accountLabel}
             </Link>
@@ -251,7 +249,11 @@ export default function Header() {
 
         {isOpen && (
           <nav className="grid gap-2 border-t py-4 text-base font-semibold lg:hidden">
-            <ServiceButton mobile onClick={() => setIsOpen(false)} />
+            <ServiceButton
+              label={t.serviceTitle}
+              mobile
+              onClick={() => setIsOpen(false)}
+            />
 
             {menuKeys.map((link) => (
               <Link
