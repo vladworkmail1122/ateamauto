@@ -62,8 +62,6 @@ const menuKeys = [
   { href: "/contact", key: "contact" },
 ] as const;
 
-const serviceButtonClipPath = "polygon(6% 0%, 100% 0%, 94% 100%, 0% 100%)";
-
 function getSavedLanguage(): LanguageCode {
   if (typeof window === "undefined") return "cs";
 
@@ -100,19 +98,13 @@ function ServiceButton({
       }`}
     >
       <div
-        className={`bg-orange-500 p-[2px] shadow-lg shadow-orange-500/20 transition group-hover:bg-orange-600 group-hover:shadow-xl group-hover:shadow-orange-500/30 ${
-          mobile ? "h-[96px] w-full" : "h-[72px] w-[280px]"
+        className={`overflow-hidden rounded-[18px] border-2 border-orange-500 bg-white shadow-lg shadow-orange-500/20 ring-1 ring-orange-100 transition group-hover:border-orange-600 group-hover:shadow-xl group-hover:shadow-orange-500/30 ${
+          mobile
+            ? "h-[96px] w-full -skew-x-[7deg]"
+            : "h-[72px] w-[280px] -skew-x-[7deg]"
         }`}
-        style={{
-          clipPath: serviceButtonClipPath,
-        }}
       >
-        <div
-          className="relative h-full w-full overflow-hidden bg-white"
-          style={{
-            clipPath: serviceButtonClipPath,
-          }}
-        >
+        <div className="relative h-full w-[116%] -translate-x-[8%] skew-x-[7deg] overflow-hidden bg-white">
           <span className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10 opacity-0 transition group-hover:opacity-100" />
 
           <Image
