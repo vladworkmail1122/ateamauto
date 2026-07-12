@@ -79,6 +79,25 @@ function getSavedLanguage(): LanguageCode {
   return "cs";
 }
 
+function ServiceFrame() {
+  return (
+    <svg
+      className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+      viewBox="0 0 340 78"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M 36 2 L 318 2 Q 336 2 332 18 L 320 60 Q 316 76 298 76 L 22 76 Q 4 76 8 60 L 20 18 Q 24 2 36 2 Z"
+        fill="white"
+        stroke="#f97316"
+        strokeWidth="2.5"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
 function ServiceButton({
   label,
   onClick,
@@ -98,22 +117,24 @@ function ServiceButton({
       }`}
     >
       <div
-        className={`overflow-hidden rounded-[18px] border-2 border-orange-500 bg-white shadow-lg shadow-orange-500/20 ring-1 ring-orange-100 transition group-hover:border-orange-600 group-hover:shadow-xl group-hover:shadow-orange-500/30 ${
-          mobile
-            ? "h-[112px] w-full -skew-x-[12deg]"
-            : "h-[78px] w-[330px] -skew-x-[12deg]"
+        className={`relative overflow-visible drop-shadow-[0_10px_14px_rgba(249,115,22,0.18)] transition group-hover:drop-shadow-[0_12px_18px_rgba(249,115,22,0.28)] ${
+          mobile ? "h-[112px] w-full" : "h-[78px] w-[340px]"
         }`}
       >
-        <div className="relative h-full w-[126%] -translate-x-[13%] skew-x-[12deg] overflow-hidden bg-white">
-          <span className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10 opacity-0 transition group-hover:opacity-100" />
+        <ServiceFrame />
 
-          <div className={`relative z-0 h-full w-full ${mobile ? "px-2 py-1.5" : "px-2 py-1"}`}>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className={`relative flex h-full w-full items-center justify-center ${
+              mobile ? "px-10 py-4" : "px-9 py-2.5"
+            }`}
+          >
             <Image
               src="/service-button.png"
               alt={label}
               width={660}
               height={140}
-              className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.02]"
+              className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.025]"
               priority={false}
             />
           </div>
