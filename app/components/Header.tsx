@@ -125,16 +125,20 @@ function ServiceButton({
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div
-            className={`relative flex h-full w-full items-center justify-center ${
-              mobile ? "px-7 py-2.5" : "px-6 py-1"
+            className={`relative flex h-full w-full items-center justify-center overflow-hidden ${
+              mobile ? "px-8 py-3" : "px-7 py-1.5"
             }`}
+            style={{
+              clipPath:
+                "polygon(11% 6%, 93% 6%, 89% 94%, 6% 94%)",
+            }}
           >
             <Image
               src="/service-button.png"
               alt={label}
               width={660}
               height={140}
-              className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.025]"
+              className="h-full w-full object-contain object-center"
               priority={false}
             />
           </div>
