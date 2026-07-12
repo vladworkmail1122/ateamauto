@@ -107,16 +107,16 @@ function ServiceButton({
         <div className="relative h-full w-[116%] -translate-x-[8%] skew-x-[7deg] overflow-hidden bg-white">
           <span className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10 opacity-0 transition group-hover:opacity-100" />
 
-          <Image
-            src="/service-button.png"
-            alt={label}
-            width={560}
-            height={180}
-            className={`h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.04] ${
-              mobile ? "scale-[1.08]" : "scale-[1.13]"
-            }`}
-            priority={false}
-          />
+          <div className={`relative z-0 h-full w-full ${mobile ? "px-3 py-2" : "px-3 py-1.5"}`}>
+            <Image
+              src="/service-button.png"
+              alt={label}
+              width={560}
+              height={180}
+              className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.02]"
+              priority={false}
+            />
+          </div>
         </div>
       </div>
     </Link>
