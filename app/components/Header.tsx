@@ -12,6 +12,7 @@ const translations = {
   cs: {
     home: "Hlavní",
     cars: "Vozidla",
+    service: "Service",
     sell: "Prodat auto",
     contact: "Kontakt",
     loginOrRegister: "Přihlášení / registrace",
@@ -22,6 +23,7 @@ const translations = {
   en: {
     home: "Home",
     cars: "Cars",
+    service: "Service",
     sell: "Sell car",
     contact: "Contact",
     loginOrRegister: "Login / Register",
@@ -32,6 +34,7 @@ const translations = {
   uk: {
     home: "Головна",
     cars: "Авто",
+    service: "Сервіс",
     sell: "Продати авто",
     contact: "Контакти",
     loginOrRegister: "Вхід / реєстрація",
@@ -42,6 +45,7 @@ const translations = {
   ru: {
     home: "Главная",
     cars: "Авто",
+    service: "Сервис",
     sell: "Продать авто",
     contact: "Контакты",
     loginOrRegister: "Вход / регистрация",
@@ -54,6 +58,7 @@ const translations = {
 const menuKeys = [
   { href: "/", key: "home" },
   { href: "/cars", key: "cars" },
+  { href: "/service", key: "service" },
   { href: "/sell", key: "sell" },
   { href: "/contact", key: "contact" },
 ] as const;
@@ -159,7 +164,7 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-6 text-sm font-semibold lg:flex">
+          <nav className="hidden items-center gap-5 text-sm font-semibold lg:flex">
             {menuKeys.map((link) => (
               <Link
                 key={link.href}
