@@ -103,9 +103,14 @@ export default function RegisterPage() {
     setMessage("");
     setSuccess(false);
 
+    const siteUrl = window.location.origin;
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${siteUrl}/login`,
+      },
     });
 
     setLoading(false);
