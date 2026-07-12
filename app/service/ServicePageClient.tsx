@@ -61,6 +61,11 @@ const translations = {
         text: "Kontrola, základní servis, příprava auta na prodej a doporučení pro lepší prezentaci.",
       },
       {
+        title: "Příprava na STK",
+        icon: "stk",
+        text: "Kontrola auta před technickou kontrolou, odstranění závad a příprava na úspěšné absolvování STK.",
+      },
+      {
         title: "Chip tuning",
         icon: "tuning",
         text: "Stage úpravy, diagnostika výkonu a EGR/DPF/AdBlue řešení dle technického stavu.",
@@ -188,6 +193,11 @@ const translations = {
         title: "Pre-sale preparation",
         icon: "car",
         text: "Inspection, basic service, preparation for sale and recommendations for better presentation.",
+      },
+      {
+        title: "STK / technical inspection preparation",
+        icon: "stk",
+        text: "Pre-inspection vehicle check, fixing issues and preparing the car for the Czech technical inspection.",
       },
       {
         title: "Chip tuning",
@@ -320,6 +330,11 @@ const translations = {
         text: "Перевірка, базовий сервіс, підготовка авто до продажу і рекомендації для кращої презентації.",
       },
       {
+        title: "Підготовка до STK",
+        icon: "stk",
+        text: "Перевірка авто перед техоглядом, усунення несправностей і підготовка до проходження STK.",
+      },
+      {
         title: "Chip tuning",
         icon: "tuning",
         text: "Stage налаштування, діагностика потужності та рішення EGR/DPF/AdBlue за технічним станом.",
@@ -448,6 +463,11 @@ const translations = {
         title: "Предпродажная подготовка",
         icon: "car",
         text: "Проверка, базовый сервис, подготовка авто к продаже и рекомендации для лучшей презентации.",
+      },
+      {
+        title: "Подготовка к STK",
+        icon: "stk",
+        text: "Проверка автомобиля перед техосмотром, устранение неисправностей и подготовка к прохождению STK.",
       },
       {
         title: "Chip tuning",
@@ -709,6 +729,16 @@ function Icon({ name }: { name: string }) {
           <path d="M5 9v6h4l5 4V5L9 9H5Z" />
           <path d="M17 9a4 4 0 0 1 0 6" />
           <path d="M19.5 6.5a8 8 0 0 1 0 11" />
+        </svg>
+      );
+    case "stk":
+      return (
+        <svg {...commonProps}>
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <path d="M8 8h8" />
+          <path d="M8 12h5" />
+          <path d="M8 16h4" />
+          <path d="M15 15l1.5 1.5L20 13" />
         </svg>
       );
     default:
