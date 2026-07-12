@@ -93,33 +93,28 @@ function ServiceButton({
       href="/service"
       onClick={onClick}
       aria-label={label}
-      className={`group shrink-0 transition hover:-translate-y-0.5 ${
+      className={`group relative shrink-0 transition hover:-translate-y-0.5 ${
         mobile ? "block w-full" : "hidden xl:block"
       }`}
     >
       <div
-        className={`relative border-2 border-orange-500 bg-white shadow-lg shadow-orange-500/20 transition group-hover:border-orange-600 group-hover:shadow-xl group-hover:shadow-orange-500/30 ${
-          mobile ? "h-[110px] w-full" : "h-[78px] w-[330px]"
+        className={`overflow-hidden rounded-[18px] border-2 border-orange-500 bg-white shadow-lg shadow-orange-500/20 ring-1 ring-orange-100 transition group-hover:border-orange-600 group-hover:shadow-xl group-hover:shadow-orange-500/30 ${
+          mobile
+            ? "h-[112px] w-full -skew-x-[6deg]"
+            : "h-[78px] w-[330px] -skew-x-[6deg]"
         }`}
-        style={{
-          clipPath: "polygon(7% 0%, 100% 0%, 93% 100%, 0% 100%)",
-          borderRadius: "18px",
-        }}
       >
-        <div
-          className="absolute inset-[2px] bg-white"
-          style={{
-            clipPath: "polygon(7% 0%, 100% 0%, 93% 100%, 0% 100%)",
-            borderRadius: "16px",
-          }}
-        >
-          <div className={`h-full w-full ${mobile ? "px-3 py-2" : "px-3 py-1.5"}`}>
+        <div className="relative h-full w-[112%] -translate-x-[6%] skew-x-[6deg] overflow-hidden bg-white">
+          <span className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10 opacity-0 transition group-hover:opacity-100" />
+
+          <div className={`relative z-0 h-full w-full ${mobile ? "px-2 py-1.5" : "px-2 py-1"}`}>
             <Image
               src="/service-button.png"
               alt={label}
               width={660}
               height={140}
               className="h-full w-full object-contain object-center transition duration-300 group-hover:scale-[1.02]"
+              priority={false}
             />
           </div>
         </div>
