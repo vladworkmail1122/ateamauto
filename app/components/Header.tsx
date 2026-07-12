@@ -14,8 +14,7 @@ const translations = {
     cars: "Vozidla",
     sell: "Prodat auto",
     contact: "Kontakt",
-    login: "Přihlášení",
-    register: "Registrace",
+    loginOrRegister: "Přihlášení / registrace",
     account: "Můj účet",
     admin: "Admin",
     openMenu: "Otevřít menu",
@@ -25,8 +24,7 @@ const translations = {
     cars: "Cars",
     sell: "Sell car",
     contact: "Contact",
-    login: "Login",
-    register: "Register",
+    loginOrRegister: "Login / Register",
     account: "My account",
     admin: "Admin",
     openMenu: "Open menu",
@@ -36,8 +34,7 @@ const translations = {
     cars: "Авто",
     sell: "Продати авто",
     contact: "Контакти",
-    login: "Вхід",
-    register: "Реєстрація",
+    loginOrRegister: "Вхід / реєстрація",
     account: "Мій кабінет",
     admin: "Адмін",
     openMenu: "Відкрити меню",
@@ -47,8 +44,7 @@ const translations = {
     cars: "Авто",
     sell: "Продать авто",
     contact: "Контакты",
-    login: "Вход",
-    register: "Регистрация",
+    loginOrRegister: "Вход / регистрация",
     account: "Мой кабинет",
     admin: "Админ",
     openMenu: "Открыть меню",
@@ -60,8 +56,6 @@ const menuKeys = [
   { href: "/cars", key: "cars" },
   { href: "/sell", key: "sell" },
   { href: "/contact", key: "contact" },
-  { href: "/login", key: "login" },
-  { href: "/register", key: "register" },
 ] as const;
 
 function getSavedLanguage(): LanguageCode {
@@ -85,6 +79,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [language, setLanguage] = useState<LanguageCode>("cs");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setLanguage(getSavedLanguage());
@@ -110,13 +105,16 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    async function checkAdmin() {
+    async function checkUserAndAdmin() {
       const { data: userData } = await supabase.auth.getUser();
 
       if (!userData.user) {
+        setIsLoggedIn(false);
         setIsAdmin(false);
         return;
       }
+
+      setIsLoggedIn(true);
 
       const { data, error } = await supabase.rpc("is_admin");
 
@@ -128,12 +126,12 @@ export default function Header() {
       setIsAdmin(!!data);
     }
 
-    checkAdmin();
+    checkUserAndAdmin();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(() => {
-      checkAdmin();
+      checkUserAndAdmin();
     });
 
     return () => {
@@ -142,6 +140,9 @@ export default function Header() {
   }, []);
 
   const t = translations[language];
+
+  const accountHref = isLoggedIn ? "/dashboard" : "/login";
+  const accountLabel = isLoggedIn ? t.account : t.loginOrRegister;
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
@@ -181,10 +182,10 @@ export default function Header() {
             <LanguageSwitcher />
 
             <Link
-              href="/dashboard"
+              href={accountHref}
               className="rounded-xl bg-orange-600 px-4 py-3 font-semibold text-white transition hover:bg-orange-700"
             >
-              {t.account}
+              {accountLabel}
             </Link>
           </nav>
 
@@ -226,11 +227,11 @@ export default function Header() {
             )}
 
             <Link
-              href="/dashboard"
+              href={accountHref}
               onClick={() => setIsOpen(false)}
               className="rounded-xl bg-orange-600 px-4 py-3 text-center font-semibold text-white hover:bg-orange-700"
             >
-              {t.account}
+              {accountLabel}
             </Link>
           </nav>
         )}
