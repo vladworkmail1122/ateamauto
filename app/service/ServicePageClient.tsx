@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -8,357 +9,501 @@ type LanguageCode = "cs" | "en" | "uk" | "ru";
 const phone = "+420 723 964 647";
 const phoneHref = "tel:+420723964647";
 
-const whatsappText = encodeURIComponent(
-  "Dobrý den, chci se objednat do ATEAM Service & Detailing.",
-);
-
-const whatsappHref = `https://wa.me/420723964647?text=${whatsappText}`;
+function createWhatsAppLink(message: string) {
+  return `https://wa.me/420723964647?text=${encodeURIComponent(message)}`;
+}
 
 const translations = {
   cs: {
+    whatsappMessage:
+      "Dobrý den, chci se objednat do ATEAM Service & Detailing.",
     eyebrow: "ATEAM SERVICE & DETAILING",
-    title: "Autoservis, detailing a úpravy vozidel",
+    titleTop: "Prémiový autoservis",
+    titleBottom: "detailing a úpravy vozidel",
     subtitle:
-      "Kompletní péče o vaše auto: diagnostika, servis, detailing, leštění, lakování, fólie, chip tuning, audio a další služby.",
+      "Servis, diagnostika, odtah, detailing, leštění, čištění interiéru, tónování, lakování, chip tuning a auto audio — vše na jednom místě.",
     book: "Objednat se",
     call: "Zavolat",
-    whatsapp: "Napsat na WhatsApp",
-    viewCars: "Zobrazit auta",
+    write: "Napsat na WhatsApp",
+    cars: "Prohlédnout auta",
     locationLabel: "Lokalita",
     location: "Jihlava / Česká republika",
     phoneLabel: "Telefon",
-    fastContact: "Rychlá domluva přes telefon nebo WhatsApp.",
-    servicesTitle: "Naše služby",
-    servicesSubtitle:
-      "Vyberte službu, napište nám a domluvíme termín podle auta a rozsahu práce.",
-    whyTitle: "Proč ATEAM?",
-    whySubtitle:
-      "Praktický servis, reálná diagnostika a individuální přístup ke každému autu.",
-    processTitle: "Jak probíhá objednávka",
-    galleryTitle: "Co umíme pro vaše auto",
-    ctaTitle: "Chcete se objednat?",
-    ctaText:
-      "Pošlete nám fotky auta, popis problému nebo požadovanou službu. Ozveme se s možností termínu a orientační cenou.",
-    services: [
+    premiumBadge: "Service • Detailing • Tuning",
+    heroCardTitle: "ATEAM studio",
+    heroCardText:
+      "Jedna dílna pro technický servis i vizuální péči o auto.",
+    serviceColumnTitle: "ATEAM Service",
+    serviceColumnSubtitle: "Technika, diagnostika, opravy a logistika vozidla.",
+    detailingColumnTitle: "ATEAM Detailing",
+    detailingColumnSubtitle:
+      "Vzhled, ochrana, interiér, lak a individuální úpravy.",
+    serviceItems: [
       {
-        title: "Autoservis a diagnostika",
-        text: "Diagnostika závad, mechanické opravy, servisní údržba, brzdy, podvozek, motor a běžné opravy.",
+        title: "Autoservis",
+        text: "Údržba, mechanické opravy, brzdy, podvozek, motor a běžné servisní práce.",
       },
       {
-        title: "Detailing interiéru a exteriéru",
-        text: "Čištění interiéru, tepování, dekontaminace laku, ochrana povrchů a kompletní péče o vzhled auta.",
+        title: "Diagnostika",
+        text: "Čtení závad, měření parametrů, hledání příčiny problému před výměnou dílů.",
       },
       {
-        title: "Leštění a renovace laku",
-        text: "Jednokrokové, dvoukrokové a vícekrokové leštění podle stavu laku a požadovaného výsledku.",
+        title: "Elektrika a kódování",
+        text: "Řešení elektroniky, řídicích jednotek, retrofitů a základního kódování.",
       },
+      {
+        title: "Odtah vozidel",
+        text: "Pomoc s nepojízdným autem, převoz vozidel a servisní logistika dle domluvy.",
+      },
+    ],
+    detailingItems: [
+      {
+        title: "Detailing",
+        text: "Kompletní péče o exteriér i interiér, dekontaminace, ochrana a finální úprava.",
+      },
+      {
+        title: "Leštění laku",
+        text: "Jednokrokové, dvoukrokové i vícekrokové leštění podle stavu laku.",
+      },
+      {
+        title: "Čištění interiéru",
+        text: "Hloubkové čištění, tepování, péče o plasty, kůži, textil a zápachy.",
+      },
+      {
+        title: "Tónování a fólie",
+        text: "Tónování oken, fólie na světla, ochranné fólie a změna vzhledu.",
+      },
+    ],
+    extraTitle: "Tuning, lakování a auto audio",
+    extraSubtitle:
+      "Pro auta, která mají nejen dobře fungovat, ale i dobře vypadat a znít.",
+    extraItems: [
       {
         title: "Lakování a lokální opravy",
-        text: "Opravy poškození, lokální opravy, příprava dílů a lakýrnické práce dle domluvy.",
+        text: "Lokální opravy, příprava dílů, lakýrnické práce a opravy poškození.",
       },
       {
-        title: "Fólie, tónování a ochrana",
-        text: "Tónování oken, fólie na světla, ochranné fólie PPF a změna vzhledu auta.",
+        title: "Chip tuning",
+        text: "Stage úpravy, diagnostika výkonu, EGR/DPF/AdBlue řešení dle technického stavu.",
       },
       {
-        title: "Renovace světlometů",
-        text: "Leštění světel, obnova průhlednosti a možnost ochrany fólií.",
-      },
-      {
-        title: "Chip tuning a úpravy",
-        text: "Stage úpravy, diagnostika výkonu, EGR/DPF/AdBlue řešení dle technického stavu a legislativních možností.",
-      },
-      {
-        title: "Auto audio a doplňky",
-        text: "Montáž multimédií, kamer, ambientního osvětlení, DSP, zesilovačů a odhlučnění.",
-      },
-      {
-        title: "Odtah a pomoc s vozidlem",
-        text: "Pomoc s nepojízdným autem, převoz vozidel a řešení servisní logistiky dle domluvy.",
+        title: "Auto audio",
+        text: "Multimédia, kamery, DSP, zesilovače, subwoofery a odhlučnění.",
       },
     ],
+    whyTitle: "Proč vybrat ATEAM",
     whyItems: [
-      "Vlastní dílna a technické zázemí",
-      "Diagnostika před výměnou dílů",
-      "Možnost kombinovat servis, detailing a úpravy",
-      "Srozumitelná domluva a fotodokumentace práce",
+      "Servis, detailing a úpravy v jednom místě",
+      "Diagnostika před zbytečnou výměnou dílů",
+      "Fotodokumentace práce a jasná domluva",
+      "Možnost domluvit servis, odtah i následnou péči",
     ],
+    processTitle: "Jak probíhá objednávka",
     process: [
-      "Napíšete nebo zavoláte",
-      "Pošlete fotky / popis problému",
-      "Domluvíme rozsah práce a termín",
+      "Pošlete fotky auta nebo popis problému",
+      "Doporučíme vhodný postup a orientační cenu",
+      "Domluvíme termín a rozsah práce",
       "Auto předáme po kontrole výsledku",
     ],
-    highlights: [
-      "Diagnostika",
-      "Leštění",
-      "Detailing",
-      "Lakování",
-      "Fólie",
-      "Chip tuning",
-      "Audio",
-      "STK pomoc",
-    ],
+    galleryTitle: "Dvě hlavní zóny",
+    serviceZone: "Service zone",
+    detailingZone: "Detailing studio",
+    ctaTitle: "Chcete se objednat?",
+    ctaText:
+      "Pošlete nám fotky auta, požadovanou službu nebo popis závady. Odpovíme s možností termínu a orientační cenou.",
   },
   en: {
+    whatsappMessage:
+      "Hello, I want to book ATEAM Service & Detailing.",
     eyebrow: "ATEAM SERVICE & DETAILING",
-    title: "Car service, detailing and vehicle upgrades",
+    titleTop: "Premium car service",
+    titleBottom: "detailing and vehicle upgrades",
     subtitle:
-      "Complete care for your car: diagnostics, service, detailing, polishing, paint work, wraps, chip tuning, audio and more.",
+      "Service, diagnostics, towing, detailing, polishing, interior cleaning, tinting, paint work, chip tuning and car audio — all in one place.",
     book: "Book now",
     call: "Call",
-    whatsapp: "Message on WhatsApp",
-    viewCars: "View cars",
+    write: "Message on WhatsApp",
+    cars: "View cars",
     locationLabel: "Location",
     location: "Jihlava / Czech Republic",
     phoneLabel: "Phone",
-    fastContact: "Fast arrangement by phone or WhatsApp.",
-    servicesTitle: "Our services",
-    servicesSubtitle:
-      "Choose a service, message us and we will arrange a time based on the vehicle and scope of work.",
-    whyTitle: "Why ATEAM?",
-    whySubtitle:
-      "Practical service, real diagnostics and an individual approach to every car.",
-    processTitle: "How booking works",
-    galleryTitle: "What we can do for your car",
-    ctaTitle: "Want to book?",
-    ctaText:
-      "Send us photos of the car, a problem description or the service you need. We will reply with an available time and an estimated price.",
-    services: [
+    premiumBadge: "Service • Detailing • Tuning",
+    heroCardTitle: "ATEAM studio",
+    heroCardText:
+      "One workshop for technical service and visual car care.",
+    serviceColumnTitle: "ATEAM Service",
+    serviceColumnSubtitle: "Technical work, diagnostics, repairs and vehicle logistics.",
+    detailingColumnTitle: "ATEAM Detailing",
+    detailingColumnSubtitle:
+      "Appearance, protection, interior, paint and individual upgrades.",
+    serviceItems: [
       {
-        title: "Car service and diagnostics",
-        text: "Fault diagnostics, mechanical repairs, maintenance, brakes, suspension, engine and common repairs.",
+        title: "Car service",
+        text: "Maintenance, mechanical repairs, brakes, suspension, engine and routine service work.",
       },
       {
-        title: "Interior and exterior detailing",
-        text: "Interior cleaning, wet vacuuming, paint decontamination, surface protection and full visual care.",
+        title: "Diagnostics",
+        text: "Fault reading, live data checks and finding the real cause before replacing parts.",
       },
       {
-        title: "Paint polishing and restoration",
-        text: "One-step, two-step and multi-step polishing based on paint condition and desired result.",
+        title: "Electrics and coding",
+        text: "Electronics, control units, retrofits and basic vehicle coding.",
       },
       {
-        title: "Paint work and local repairs",
-        text: "Damage repairs, local paint corrections, part preparation and paint work by arrangement.",
-      },
-      {
-        title: "Wraps, tinting and protection",
-        text: "Window tinting, headlight films, PPF protection and visual changes.",
-      },
-      {
-        title: "Headlight restoration",
-        text: "Headlight polishing, clarity restoration and optional film protection.",
-      },
-      {
-        title: "Chip tuning and modifications",
-        text: "Stage tuning, performance diagnostics and EGR/DPF/AdBlue solutions according to technical condition and legal possibilities.",
-      },
-      {
-        title: "Car audio and accessories",
-        text: "Multimedia, cameras, ambient lighting, DSP, amplifiers and sound insulation installation.",
-      },
-      {
-        title: "Towing and vehicle help",
+        title: "Towing",
         text: "Help with non-running cars, vehicle transport and service logistics by arrangement.",
       },
     ],
+    detailingItems: [
+      {
+        title: "Detailing",
+        text: "Complete exterior and interior care, decontamination, protection and final finish.",
+      },
+      {
+        title: "Paint polishing",
+        text: "One-step, two-step and multi-step polishing based on paint condition.",
+      },
+      {
+        title: "Interior deep cleaning",
+        text: "Deep cleaning, wet vacuuming, plastics, leather, textile care and odour removal.",
+      },
+      {
+        title: "Tinting and films",
+        text: "Window tinting, headlight films, protective films and visual changes.",
+      },
+    ],
+    extraTitle: "Tuning, paint work and car audio",
+    extraSubtitle:
+      "For cars that should not only work well, but also look and sound right.",
+    extraItems: [
+      {
+        title: "Paint work and local repairs",
+        text: "Local repairs, part preparation, paint work and damage repairs.",
+      },
+      {
+        title: "Chip tuning",
+        text: "Stage tuning, performance diagnostics and EGR/DPF/AdBlue solutions based on technical condition.",
+      },
+      {
+        title: "Car audio",
+        text: "Multimedia, cameras, DSP, amplifiers, subwoofers and sound insulation.",
+      },
+    ],
+    whyTitle: "Why choose ATEAM",
     whyItems: [
-      "Own workshop and technical equipment",
-      "Diagnostics before replacing parts",
       "Service, detailing and upgrades in one place",
-      "Clear communication and work photo documentation",
+      "Diagnostics before unnecessary part replacement",
+      "Work photo documentation and clear communication",
+      "Service, towing and aftercare can be arranged together",
     ],
+    processTitle: "How booking works",
     process: [
-      "You message or call us",
-      "You send photos / problem description",
-      "We agree on scope and date",
-      "The car is handed over after final check",
+      "Send photos of the car or describe the problem",
+      "We recommend the right approach and estimated price",
+      "We agree on date and scope of work",
+      "The car is handed over after a final check",
     ],
-    highlights: [
-      "Diagnostics",
-      "Polishing",
-      "Detailing",
-      "Paint work",
-      "Wraps",
-      "Chip tuning",
-      "Audio",
-      "STK help",
-    ],
+    galleryTitle: "Two main zones",
+    serviceZone: "Service zone",
+    detailingZone: "Detailing studio",
+    ctaTitle: "Want to book?",
+    ctaText:
+      "Send us photos of the car, the service you need or a fault description. We will reply with an available time and an estimated price.",
   },
   uk: {
+    whatsappMessage:
+      "Добрий день, хочу записатися в ATEAM Service & Detailing.",
     eyebrow: "ATEAM SERVICE & DETAILING",
-    title: "Автосервіс, детейлінг та доопрацювання авто",
+    titleTop: "Преміальний автосервіс",
+    titleBottom: "детейлінг і доопрацювання авто",
     subtitle:
-      "Комплексний догляд за авто: діагностика, сервіс, детейлінг, полірування, фарбування, плівки, chip tuning, аудіо та інші послуги.",
+      "Сервіс, діагностика, евакуатор, детейлінг, полірування, хімчистка, тонування, фарбування, chip tuning та автозвук — все в одному місці.",
     book: "Записатися",
     call: "Подзвонити",
-    whatsapp: "Написати в WhatsApp",
-    viewCars: "Дивитися авто",
+    write: "Написати в WhatsApp",
+    cars: "Дивитися авто",
     locationLabel: "Локація",
     location: "Їглава / Чеська Республіка",
     phoneLabel: "Телефон",
-    fastContact: "Швидка домовленість телефоном або через WhatsApp.",
-    servicesTitle: "Наші послуги",
-    servicesSubtitle:
-      "Оберіть послугу, напишіть нам — і ми домовимося про час залежно від авто та обсягу роботи.",
-    whyTitle: "Чому ATEAM?",
-    whySubtitle:
-      "Практичний сервіс, реальна діагностика та індивідуальний підхід до кожного авто.",
+    premiumBadge: "Service • Detailing • Tuning",
+    heroCardTitle: "ATEAM studio",
+    heroCardText:
+      "Одна майстерня для технічного сервісу та візуального догляду за авто.",
+    serviceColumnTitle: "ATEAM Service",
+    serviceColumnSubtitle: "Техніка, діагностика, ремонт і логістика автомобіля.",
+    detailingColumnTitle: "ATEAM Detailing",
+    detailingColumnSubtitle:
+      "Зовнішній вигляд, захист, салон, лак і індивідуальні доопрацювання.",
+    serviceItems: [
+      {
+        title: "Автосервіс",
+        text: "Обслуговування, механічні ремонти, гальма, підвіска, двигун і типові сервісні роботи.",
+      },
+      {
+        title: "Діагностика",
+        text: "Зчитування помилок, перевірка параметрів і пошук причини до заміни деталей.",
+      },
+      {
+        title: "Електрика і кодування",
+        text: "Електроніка, блоки керування, retrofit і базове кодування авто.",
+      },
+      {
+        title: "Евакуатор",
+        text: "Допомога з нерухомим авто, перевезення автомобілів і сервісна логістика.",
+      },
+    ],
+    detailingItems: [
+      {
+        title: "Детейлінг",
+        text: "Повний догляд за екстерʼєром та інтерʼєром, деконтамінація, захист і фінальний вигляд.",
+      },
+      {
+        title: "Полірування лаку",
+        text: "Однокрокове, двокрокове і багатокрокове полірування залежно від стану лаку.",
+      },
+      {
+        title: "Хімчистка салону",
+        text: "Глибоке очищення, хімчистка, догляд за пластиком, шкірою, тканиною і запахами.",
+      },
+      {
+        title: "Тонування і плівки",
+        text: "Тонування скла, плівки на фари, захисні плівки і зміна вигляду авто.",
+      },
+    ],
+    extraTitle: "Тюнінг, фарбування і автозвук",
+    extraSubtitle:
+      "Для авто, які мають не тільки добре працювати, але й добре виглядати та звучати.",
+    extraItems: [
+      {
+        title: "Фарбування і локальні ремонти",
+        text: "Локальні ремонти, підготовка деталей, малярні роботи і ремонт пошкоджень.",
+      },
+      {
+        title: "Chip tuning",
+        text: "Stage налаштування, діагностика потужності та рішення EGR/DPF/AdBlue за технічним станом.",
+      },
+      {
+        title: "Автозвук",
+        text: "Мультимедіа, камери, DSP, підсилювачі, сабвуфери і шумоізоляція.",
+      },
+    ],
+    whyTitle: "Чому обирають ATEAM",
+    whyItems: [
+      "Сервіс, детейлінг і доопрацювання в одному місці",
+      "Діагностика перед зайвою заміною деталей",
+      "Фотофіксація роботи і зрозуміла комунікація",
+      "Можна домовитися про сервіс, евакуатор і подальший догляд",
+    ],
     processTitle: "Як проходить запис",
-    galleryTitle: "Що ми можемо зробити для вашого авто",
+    process: [
+      "Надсилаєте фото авто або опис проблеми",
+      "Ми рекомендуємо підхід і орієнтовну ціну",
+      "Домовляємося про дату та обсяг роботи",
+      "Видаємо авто після фінальної перевірки",
+    ],
+    galleryTitle: "Дві основні зони",
+    serviceZone: "Service zone",
+    detailingZone: "Detailing studio",
     ctaTitle: "Хочете записатися?",
     ctaText:
-      "Надішліть фото авто, опис проблеми або потрібну послугу. Ми відповімо з можливим терміном і орієнтовною ціною.",
-    services: [
-      {
-        title: "Автосервіс і діагностика",
-        text: "Діагностика несправностей, механічні ремонти, обслуговування, гальма, підвіска, двигун та типові ремонти.",
-      },
-      {
-        title: "Детейлінг інтерʼєру та екстерʼєру",
-        text: "Чистка салону, хімчистка, деконтамінація лаку, захист поверхонь і повний догляд за виглядом авто.",
-      },
-      {
-        title: "Полірування та відновлення лаку",
-        text: "Однокрокове, двокрокове та багатокрокове полірування залежно від стану лаку й бажаного результату.",
-      },
-      {
-        title: "Фарбування та локальні ремонти",
-        text: "Ремонт пошкоджень, локальне відновлення, підготовка деталей і малярні роботи за домовленістю.",
-      },
-      {
-        title: "Плівки, тонування та захист",
-        text: "Тонування скла, плівки на фари, захисна PPF-плівка і зміна зовнішнього вигляду авто.",
-      },
-      {
-        title: "Відновлення фар",
-        text: "Полірування фар, відновлення прозорості та можливий захист плівкою.",
-      },
-      {
-        title: "Chip tuning та модифікації",
-        text: "Stage налаштування, діагностика потужності, рішення EGR/DPF/AdBlue відповідно до технічного стану та законодавчих можливостей.",
-      },
-      {
-        title: "Автоаудіо та доповнення",
-        text: "Встановлення мультимедіа, камер, ambient-підсвітки, DSP, підсилювачів і шумоізоляції.",
-      },
-      {
-        title: "Евакуатор і допомога з авто",
-        text: "Допомога з нерухомим авто, перевезення авто і сервісна логістика за домовленістю.",
-      },
-    ],
-    whyItems: [
-      "Власна майстерня та технічна база",
-      "Діагностика перед заміною деталей",
-      "Сервіс, детейлінг і доопрацювання в одному місці",
-      "Зрозуміла комунікація та фотофіксація роботи",
-    ],
-    process: [
-      "Ви пишете або телефонуєте",
-      "Надсилаєте фото / опис проблеми",
-      "Домовляємося про обсяг і дату",
-      "Авто передається після перевірки результату",
-    ],
-    highlights: [
-      "Діагностика",
-      "Полірування",
-      "Детейлінг",
-      "Фарбування",
-      "Плівки",
-      "Chip tuning",
-      "Аудіо",
-      "STK допомога",
-    ],
+      "Надішліть фото авто, потрібну послугу або опис несправності. Ми відповімо з можливим терміном і орієнтовною ціною.",
   },
   ru: {
+    whatsappMessage:
+      "Здравствуйте, хочу записаться в ATEAM Service & Detailing.",
     eyebrow: "ATEAM SERVICE & DETAILING",
-    title: "Автосервис, детейлинг и доработки авто",
+    titleTop: "Премиальный автосервис",
+    titleBottom: "детейлинг и доработки авто",
     subtitle:
-      "Комплексный уход за автомобилем: диагностика, сервис, детейлинг, полировка, покраска, плёнки, chip tuning, аудио и другие услуги.",
+      "Сервис, диагностика, эвакуатор, детейлинг, полировка, химчистка, тонировка, покраска, chip tuning и автозвук — всё в одном месте.",
     book: "Записаться",
     call: "Позвонить",
-    whatsapp: "Написать в WhatsApp",
-    viewCars: "Смотреть авто",
+    write: "Написать в WhatsApp",
+    cars: "Смотреть авто",
     locationLabel: "Локация",
     location: "Йиглава / Чешская Республика",
     phoneLabel: "Телефон",
-    fastContact: "Быстрая договорённость по телефону или через WhatsApp.",
-    servicesTitle: "Наши услуги",
-    servicesSubtitle:
-      "Выберите услугу, напишите нам — и мы договоримся о времени в зависимости от автомобиля и объёма работы.",
-    whyTitle: "Почему ATEAM?",
-    whySubtitle:
-      "Практичный сервис, реальная диагностика и индивидуальный подход к каждому автомобилю.",
-    processTitle: "Как проходит запись",
-    galleryTitle: "Что мы можем сделать для вашего авто",
-    ctaTitle: "Хотите записаться?",
-    ctaText:
-      "Отправьте нам фото автомобиля, описание проблемы или нужную услугу. Мы ответим с возможным временем и ориентировочной ценой.",
-    services: [
+    premiumBadge: "Service • Detailing • Tuning",
+    heroCardTitle: "ATEAM studio",
+    heroCardText:
+      "Одна мастерская для технического сервиса и визуального ухода за автомобилем.",
+    serviceColumnTitle: "ATEAM Service",
+    serviceColumnSubtitle: "Техника, диагностика, ремонт и логистика автомобиля.",
+    detailingColumnTitle: "ATEAM Detailing",
+    detailingColumnSubtitle:
+      "Внешний вид, защита, салон, лак и индивидуальные доработки.",
+    serviceItems: [
       {
-        title: "Автосервис и диагностика",
-        text: "Диагностика неисправностей, механические ремонты, обслуживание, тормоза, подвеска, двигатель и типовые ремонты.",
+        title: "Автосервис",
+        text: "Обслуживание, механический ремонт, тормоза, подвеска, двигатель и типовые сервисные работы.",
       },
       {
-        title: "Детейлинг интерьера и экстерьера",
-        text: "Чистка салона, химчистка, деконтаминация лака, защита поверхностей и полный уход за внешним видом авто.",
+        title: "Диагностика",
+        text: "Чтение ошибок, проверка параметров и поиск причины до замены деталей.",
       },
       {
-        title: "Полировка и восстановление лака",
-        text: "Одноэтапная, двухэтапная и многоэтапная полировка по состоянию лака и желаемому результату.",
+        title: "Электрика и кодирование",
+        text: "Электроника, блоки управления, retrofit и базовое кодирование автомобиля.",
       },
+      {
+        title: "Эвакуатор",
+        text: "Помощь с неходовым авто, перевозка автомобилей и сервисная логистика.",
+      },
+    ],
+    detailingItems: [
+      {
+        title: "Детейлинг",
+        text: "Полный уход за экстерьером и интерьером, деконтаминация, защита и финальный внешний вид.",
+      },
+      {
+        title: "Полировка лака",
+        text: "Одноэтапная, двухэтапная и многоэтапная полировка по состоянию лака.",
+      },
+      {
+        title: "Химчистка салона",
+        text: "Глубокая чистка, химчистка, уход за пластиком, кожей, тканью и удаление запахов.",
+      },
+      {
+        title: "Тонировка и плёнки",
+        text: "Тонировка стёкол, плёнки на фары, защитные плёнки и изменение внешнего вида.",
+      },
+    ],
+    extraTitle: "Тюнинг, покраска и автозвук",
+    extraSubtitle:
+      "Для автомобилей, которые должны не только хорошо работать, но и хорошо выглядеть и звучать.",
+    extraItems: [
       {
         title: "Покраска и локальные ремонты",
-        text: "Ремонт повреждений, локальное восстановление, подготовка деталей и малярные работы по договорённости.",
+        text: "Локальные ремонты, подготовка деталей, малярные работы и устранение повреждений.",
       },
       {
-        title: "Плёнки, тонировка и защита",
-        text: "Тонировка стёкол, плёнки на фары, защитная PPF-плёнка и изменение внешнего вида авто.",
+        title: "Chip tuning",
+        text: "Stage-настройки, диагностика мощности и решения EGR/DPF/AdBlue по техническому состоянию.",
       },
       {
-        title: "Восстановление фар",
-        text: "Полировка фар, восстановление прозрачности и возможная защита плёнкой.",
-      },
-      {
-        title: "Chip tuning и модификации",
-        text: "Stage-настройки, диагностика мощности, решения EGR/DPF/AdBlue с учётом технического состояния и законодательных возможностей.",
-      },
-      {
-        title: "Автоаудио и дооснащение",
-        text: "Установка мультимедиа, камер, ambient-подсветки, DSP, усилителей и шумоизоляции.",
-      },
-      {
-        title: "Эвакуатор и помощь с авто",
-        text: "Помощь с неходовым авто, перевозка автомобилей и сервисная логистика по договорённости.",
+        title: "Автозвук",
+        text: "Мультимедиа, камеры, DSP, усилители, сабвуферы и шумоизоляция.",
       },
     ],
+    whyTitle: "Почему выбирают ATEAM",
     whyItems: [
-      "Своя мастерская и техническая база",
-      "Диагностика перед заменой деталей",
       "Сервис, детейлинг и доработки в одном месте",
-      "Понятная коммуникация и фотофиксация работы",
+      "Диагностика перед лишней заменой деталей",
+      "Фотофиксация работы и понятная коммуникация",
+      "Можно договориться о сервисе, эвакуаторе и дальнейшем уходе",
     ],
+    processTitle: "Как проходит запись",
     process: [
-      "Вы пишете или звоните",
-      "Отправляете фото / описание проблемы",
-      "Согласовываем объём и дату",
-      "Авто отдаётся после проверки результата",
+      "Вы отправляете фото авто или описание проблемы",
+      "Мы предлагаем подход и ориентировочную цену",
+      "Согласовываем дату и объём работ",
+      "Выдаём авто после финальной проверки",
     ],
-    highlights: [
-      "Диагностика",
-      "Полировка",
-      "Детейлинг",
-      "Покраска",
-      "Плёнки",
-      "Chip tuning",
-      "Аудио",
-      "STK помощь",
-    ],
+    galleryTitle: "Две основные зоны",
+    serviceZone: "Service zone",
+    detailingZone: "Detailing studio",
+    ctaTitle: "Хотите записаться?",
+    ctaText:
+      "Отправьте фото автомобиля, нужную услугу или описание неисправности. Мы ответим с возможным сроком и ориентировочной ценой.",
   },
 };
 
 function isLanguageCode(value: string | null): value is LanguageCode {
   return value === "cs" || value === "en" || value === "uk" || value === "ru";
+}
+
+function SectionTitle({
+  eyebrow,
+  title,
+  text,
+}: {
+  eyebrow?: string;
+  title: string;
+  text?: string;
+}) {
+  return (
+    <div className="mx-auto max-w-3xl text-center">
+      {eyebrow && (
+        <p className="text-sm font-black uppercase tracking-[0.35em] text-orange-500">
+          {eyebrow}
+        </p>
+      )}
+
+      <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl">
+        {title}
+      </h2>
+
+      {text && <p className="mt-4 text-lg leading-8 text-gray-400">{text}</p>}
+    </div>
+  );
+}
+
+function ServiceCard({
+  title,
+  text,
+  index,
+  variant,
+}: {
+  title: string;
+  text: string;
+  index: number;
+  variant: "service" | "detailing";
+}) {
+  return (
+    <div className="group rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-2xl shadow-black/20 transition hover:-translate-y-1 hover:border-orange-500/60 hover:bg-white/[0.07]">
+      <div className="flex items-start gap-4">
+        <div
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-sm font-black ${
+            variant === "service"
+              ? "bg-orange-500 text-white"
+              : "bg-white text-gray-950"
+          }`}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </div>
+
+        <div>
+          <h3 className="text-xl font-black text-white">{title}</h3>
+          <p className="mt-2 leading-7 text-gray-400">{text}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function VisualPanel({
+  title,
+  subtitle,
+  align = "left",
+}: {
+  title: string;
+  subtitle: string;
+  align?: "left" | "right";
+}) {
+  return (
+    <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.03] p-6 shadow-2xl shadow-black/30">
+      <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-orange-500/30 blur-3xl" />
+      <div className="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-white/10 blur-3xl" />
+
+      <div
+        className={`relative min-h-[230px] rounded-[1.5rem] border border-white/10 bg-gray-950/80 p-6 ${
+          align === "right" ? "text-right" : "text-left"
+        }`}
+      >
+        <div className="absolute inset-0 rounded-[1.5rem] bg-[linear-gradient(135deg,rgba(249,115,22,0.22),transparent_42%,rgba(255,255,255,0.08))]" />
+        <div className="absolute bottom-5 left-5 right-5 h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
+
+        <div className="relative">
+          <p className="text-sm font-black uppercase tracking-[0.3em] text-orange-400">
+            {subtitle}
+          </p>
+          <h3 className="mt-4 text-4xl font-black uppercase tracking-tight text-white sm:text-5xl">
+            {title}
+          </h3>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ServicePageClient() {
@@ -387,147 +532,231 @@ export default function ServicePageClient() {
   }, []);
 
   const t = translations[language];
+  const whatsappHref = createWhatsAppLink(t.whatsappMessage);
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <section className="relative overflow-hidden bg-gray-950 px-4 py-16 text-white sm:px-6 lg:py-24">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-orange-600 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-orange-500 blur-3xl" />
-        </div>
+    <main className="min-h-screen bg-gray-950 text-white">
+      <section className="relative overflow-hidden px-4 py-16 sm:px-6 lg:py-24">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.24),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_28%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(3,7,18,0.35),#030712)]" />
 
-        <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.35em] text-orange-400">
+            <div className="inline-flex rounded-full border border-orange-500/40 bg-orange-500/10 px-4 py-2 text-xs font-black uppercase tracking-[0.28em] text-orange-300">
               {t.eyebrow}
-            </p>
+            </div>
 
-            <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight sm:text-6xl">
-              {t.title}
+            <h1 className="mt-6 max-w-5xl text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl">
+              <span className="block">{t.titleTop}</span>
+              <span className="block bg-gradient-to-r from-orange-400 via-orange-500 to-white bg-clip-text text-transparent">
+                {t.titleBottom}
+              </span>
             </h1>
 
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-300">
+            <p className="mt-7 max-w-3xl text-lg leading-8 text-gray-300 sm:text-xl">
               {t.subtitle}
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-2xl bg-orange-600 px-6 py-4 text-center text-lg font-bold text-white shadow-lg shadow-orange-600/20 hover:bg-orange-700"
+                className="rounded-2xl bg-orange-600 px-7 py-4 text-center text-lg font-black text-white shadow-lg shadow-orange-600/25 transition hover:bg-orange-700"
               >
                 {t.book}
               </a>
 
               <a
                 href={phoneHref}
-                className="rounded-2xl border border-white/20 px-6 py-4 text-center text-lg font-bold text-white hover:bg-white hover:text-gray-950"
+                className="rounded-2xl border border-white/15 bg-white/5 px-7 py-4 text-center text-lg font-black text-white transition hover:bg-white hover:text-gray-950"
               >
                 {t.call}
               </a>
 
               <Link
                 href="/cars"
-                className="rounded-2xl border border-white/20 px-6 py-4 text-center text-lg font-bold text-white hover:bg-white hover:text-gray-950"
+                className="rounded-2xl border border-white/15 bg-white/5 px-7 py-4 text-center text-lg font-black text-white transition hover:bg-white hover:text-gray-950"
               >
-                {t.viewCars}
+                {t.cars}
               </Link>
             </div>
-          </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur">
-            <div className="grid gap-4">
-              <div className="rounded-2xl bg-white p-5 text-gray-900">
-                <p className="text-sm font-bold uppercase text-gray-500">
+            <div className="mt-10 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
                   {t.phoneLabel}
                 </p>
                 <a
                   href={phoneHref}
-                  className="mt-2 block text-2xl font-black text-orange-600 hover:underline"
+                  className="mt-2 block text-lg font-black text-white hover:text-orange-400"
                 >
                   {phone}
                 </a>
-                <p className="mt-2 text-sm text-gray-500">{t.fastContact}</p>
               </div>
 
-              <div className="rounded-2xl bg-white p-5 text-gray-900">
-                <p className="text-sm font-bold uppercase text-gray-500">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:col-span-2">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
                   {t.locationLabel}
                 </p>
-                <p className="mt-2 text-2xl font-black">{t.location}</p>
+                <p className="mt-2 text-lg font-black text-white">
+                  {t.location}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[3rem] bg-orange-500/20 blur-3xl" />
+
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.06] p-5 shadow-2xl shadow-black/40 backdrop-blur">
+              <div className="rounded-[2rem] bg-white p-5">
+                <Image
+                  src="/service-button.png"
+                  alt="ATEAM Service & Detailing"
+                  width={900}
+                  height={360}
+                  className="h-auto w-full object-contain"
+                  priority
+                />
               </div>
 
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-2xl bg-green-600 px-5 py-4 text-center text-lg font-bold text-white hover:bg-green-700"
-              >
-                {t.whatsapp}
-              </a>
+              <div className="mt-5 rounded-[2rem] border border-white/10 bg-gray-950 p-6">
+                <p className="text-sm font-black uppercase tracking-[0.3em] text-orange-400">
+                  {t.premiumBadge}
+                </p>
+                <h2 className="mt-4 text-3xl font-black">{t.heroCardTitle}</h2>
+                <p className="mt-3 leading-7 text-gray-400">{t.heroCardText}</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="px-4 py-12 sm:px-6 lg:py-16">
+      <section className="px-4 py-14 sm:px-6 lg:py-20">
         <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-black text-gray-900 sm:text-4xl">
-              {t.servicesTitle}
-            </h2>
-            <p className="mt-3 text-lg leading-8 text-gray-600">
-              {t.servicesSubtitle}
-            </p>
-          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div className="rounded-[2.2rem] border border-orange-500/30 bg-gradient-to-br from-orange-500/15 to-white/[0.03] p-5 shadow-2xl shadow-black/30 sm:p-7">
+              <div className="rounded-[1.7rem] border border-white/10 bg-gray-950/80 p-6">
+                <p className="text-sm font-black uppercase tracking-[0.32em] text-orange-400">
+                  Service
+                </p>
+                <h2 className="mt-3 text-4xl font-black text-white">
+                  {t.serviceColumnTitle}
+                </h2>
+                <p className="mt-3 leading-7 text-gray-400">
+                  {t.serviceColumnSubtitle}
+                </p>
+              </div>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {t.services.map((service) => (
+              <div className="mt-5 grid gap-4">
+                {t.serviceItems.map((item, index) => (
+                  <ServiceCard
+                    key={item.title}
+                    title={item.title}
+                    text={item.text}
+                    index={index}
+                    variant="service"
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[2.2rem] border border-white/15 bg-gradient-to-br from-white/12 to-orange-500/[0.06] p-5 shadow-2xl shadow-black/30 sm:p-7">
+              <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.06] p-6">
+                <p className="text-sm font-black uppercase tracking-[0.32em] text-gray-300">
+                  Detailing
+                </p>
+                <h2 className="mt-3 text-4xl font-black text-white">
+                  {t.detailingColumnTitle}
+                </h2>
+                <p className="mt-3 leading-7 text-gray-400">
+                  {t.detailingColumnSubtitle}
+                </p>
+              </div>
+
+              <div className="mt-5 grid gap-4">
+                {t.detailingItems.map((item, index) => (
+                  <ServiceCard
+                    key={item.title}
+                    title={item.title}
+                    text={item.text}
+                    index={index}
+                    variant="detailing"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/10 bg-white/[0.03] px-4 py-14 sm:px-6 lg:py-20">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle title={t.extraTitle} text={t.extraSubtitle} />
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {t.extraItems.map((item) => (
               <div
-                key={service.title}
-                className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 transition hover:-translate-y-1 hover:shadow-md"
+                key={item.title}
+                className="rounded-[2rem] border border-white/10 bg-gray-950 p-7 shadow-2xl shadow-black/20 transition hover:-translate-y-1 hover:border-orange-500/60"
               >
-                <h3 className="text-xl font-black text-gray-900">
-                  {service.title}
+                <div className="mb-6 h-1 w-16 rounded-full bg-orange-500" />
+                <h3 className="text-2xl font-black text-white">
+                  {item.title}
                 </h3>
-                <p className="mt-3 leading-7 text-gray-600">{service.text}</p>
+                <p className="mt-4 leading-7 text-gray-400">{item.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-white px-4 py-12 sm:px-6 lg:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2">
-          <div className="rounded-3xl bg-gray-950 p-6 text-white sm:p-8">
-            <h2 className="text-3xl font-black">{t.whyTitle}</h2>
-            <p className="mt-3 leading-7 text-gray-300">{t.whySubtitle}</p>
+      <section className="px-4 py-14 sm:px-6 lg:py-20">
+        <div className="mx-auto max-w-7xl">
+          <SectionTitle title={t.galleryTitle} />
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            <VisualPanel title="SERVICE" subtitle={t.serviceZone} />
+            <VisualPanel
+              title="DETAILING"
+              subtitle={t.detailingZone}
+              align="right"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-14 sm:px-6 lg:pb-20">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-7">
+            <h2 className="text-3xl font-black text-white">{t.whyTitle}</h2>
 
             <div className="mt-6 grid gap-3">
               {t.whyItems.map((item) => (
                 <div
                   key={item}
-                  className="rounded-2xl border border-white/10 bg-white/10 p-4 font-semibold"
+                  className="rounded-2xl border border-white/10 bg-gray-950 p-4 font-semibold text-gray-200"
                 >
-                  ✓ {item}
+                  <span className="text-orange-400">✓</span> {item}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-3xl bg-gray-50 p-6 sm:p-8">
-            <h2 className="text-3xl font-black text-gray-900">
+          <div className="rounded-[2rem] border border-orange-500/30 bg-orange-500/10 p-7">
+            <h2 className="text-3xl font-black text-white">
               {t.processTitle}
             </h2>
 
             <div className="mt-6 grid gap-4">
               {t.process.map((item, index) => (
                 <div key={item} className="flex gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-600 font-black text-white">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-orange-600 font-black text-white">
                     {index + 1}
                   </div>
-                  <div className="rounded-2xl bg-white p-4 font-semibold text-gray-800 shadow-sm ring-1 ring-gray-100">
+
+                  <div className="rounded-2xl border border-white/10 bg-gray-950 p-4 font-semibold text-gray-200">
                     {item}
                   </div>
                 </div>
@@ -537,47 +766,28 @@ export default function ServicePageClient() {
         </div>
       </section>
 
-      <section className="px-4 py-12 sm:px-6 lg:py-16">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-black text-gray-900 sm:text-4xl">
-            {t.galleryTitle}
-          </h2>
-
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {t.highlights.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl bg-white p-5 text-center font-black text-gray-900 shadow-sm ring-1 ring-gray-100"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="px-4 pb-16 sm:px-6 lg:pb-24">
-        <div className="mx-auto max-w-7xl rounded-3xl bg-orange-600 p-8 text-white shadow-xl sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-10">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700 p-8 shadow-2xl shadow-orange-600/20 sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-10">
           <div>
-            <h2 className="text-3xl font-black sm:text-4xl">{t.ctaTitle}</h2>
-            <p className="mt-3 max-w-3xl text-lg leading-8 text-orange-50">
+            <h2 className="text-4xl font-black text-white">{t.ctaTitle}</h2>
+            <p className="mt-4 max-w-3xl text-lg leading-8 text-orange-50">
               {t.ctaText}
             </p>
           </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-0">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-0">
             <a
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-2xl bg-white px-6 py-4 text-center text-lg font-black text-orange-600 hover:bg-orange-50"
+              className="rounded-2xl bg-white px-7 py-4 text-center text-lg font-black text-orange-600 transition hover:bg-orange-50"
             >
-              {t.whatsapp}
+              {t.write}
             </a>
 
             <a
               href={phoneHref}
-              className="rounded-2xl border border-white/40 px-6 py-4 text-center text-lg font-black text-white hover:bg-white hover:text-orange-600"
+              className="rounded-2xl border border-white/40 px-7 py-4 text-center text-lg font-black text-white transition hover:bg-white hover:text-orange-600"
             >
               {phone}
             </a>

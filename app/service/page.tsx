@@ -1,9 +1,9 @@
 import ServicePageClient from "./ServicePageClient";
 
 export const metadata = {
-  title: "ATEAM Service & Detailing | ATEAM AUTO",
+  title: "ATEAM Service & Detailing | Autoservis, detailing, tuning",
   description:
-    "ATEAM Service & Detailing — autoservis, diagnostika, detailing, leštění, lakování, fólie, chip tuning, audio a další služby v České republice.",
+    "ATEAM Service & Detailing — autoservis, diagnostika, odtah, detailing, leštění, čištění interiéru, tónování, lakování, chip tuning a auto audio.",
 };
 
 export default function ServicePage() {
