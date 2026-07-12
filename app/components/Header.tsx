@@ -126,7 +126,7 @@ function ServiceButton({
         <div className="absolute inset-0 flex items-center justify-center">
           <div
             className={`relative flex h-full w-full items-center justify-center ${
-              mobile ? "px-10 py-4" : "px-9 py-2.5"
+              mobile ? "px-7 py-2.5" : "px-6 py-1"
             }`}
           >
             <Image
