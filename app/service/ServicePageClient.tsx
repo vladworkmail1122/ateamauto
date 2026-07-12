@@ -42,68 +42,84 @@ const translations = {
     serviceItems: [
       {
         title: "Autoservis",
+        icon: "🔧",
         text: "Údržba, mechanické opravy, brzdy, podvozek, motor a běžné servisní práce.",
       },
       {
         title: "Diagnostika",
+        icon: "🖥️",
         text: "Čtení závad, měření parametrů, hledání příčiny problému před výměnou dílů.",
       },
       {
         title: "Diagnostika před koupí auta",
+        icon: "🔍",
         text: "Kontrola vozidla před nákupem, diagnostika, technický stav, rizika a doporučení.",
       },
       {
         title: "Předprodejní příprava",
+        icon: "🚗",
         text: "Kontrola, základní servis, příprava auta na prodej a doporučení pro lepší prezentaci.",
       },
       {
         title: "Chip tuning",
+        icon: "⚡",
         text: "Stage úpravy, diagnostika výkonu a EGR/DPF/AdBlue řešení dle technického stavu.",
       },
       {
         title: "Elektrika a kódování",
+        icon: "🔌",
         text: "Řešení elektroniky, řídicích jednotek, retrofitů a základního kódování.",
       },
       {
         title: "Odtah vozidel",
+        icon: "🚚",
         text: "Pomoc s nepojízdným autem, převoz vozidel a servisní logistika dle domluvy.",
       },
     ],
     detailingItems: [
       {
         title: "Detailing",
+        icon: "✨",
         text: "Kompletní péče o exteriér i interiér, dekontaminace, ochrana a finální úprava.",
       },
       {
         title: "Leštění laku",
+        icon: "🧽",
         text: "Jednokrokové, dvoukrokové i vícekrokové leštění podle stavu laku.",
       },
       {
         title: "Čištění interiéru",
+        icon: "🛋️",
         text: "Hloubkové čištění, tepování, péče o plasty, kůži, textil a zápachy.",
       },
       {
         title: "Lakování a lokální opravy",
+        icon: "🎨",
         text: "Lokální opravy, příprava dílů, lakýrnické práce a opravy poškození.",
       },
       {
         title: "Tónování a fólie",
+        icon: "🪟",
         text: "Tónování oken, fólie na světla, ochranné fólie a změna vzhledu.",
       },
       {
         title: "Renovace světel a PPF",
+        icon: "💡",
         text: "Leštění světlometů, obnova průhlednosti a ochranná fólie na světla.",
       },
       {
         title: "Anti-rain ochrana",
+        icon: "🌧️",
         text: "Hydrofobní ochrana skel pro lepší odvod vody a komfort při jízdě v dešti.",
       },
       {
         title: "Ambientní osvětlení",
+        icon: "🌈",
         text: "Montáž ambientního osvětlení interiéru a individuální světelné úpravy.",
       },
       {
         title: "Auto audio",
+        icon: "🔊",
         text: "Multimédia, kamery, DSP, zesilovače, subwoofery a odhlučnění.",
       },
     ],
@@ -155,68 +171,84 @@ const translations = {
     serviceItems: [
       {
         title: "Car service",
+        icon: "🔧",
         text: "Maintenance, mechanical repairs, brakes, suspension, engine and routine service work.",
       },
       {
         title: "Diagnostics",
+        icon: "🖥️",
         text: "Fault reading, live data checks and finding the real cause before replacing parts.",
       },
       {
         title: "Pre-purchase diagnostics",
+        icon: "🔍",
         text: "Vehicle inspection before purchase, diagnostics, technical condition, risks and recommendations.",
       },
       {
         title: "Pre-sale preparation",
+        icon: "🚗",
         text: "Inspection, basic service, preparation for sale and recommendations for better presentation.",
       },
       {
         title: "Chip tuning",
+        icon: "⚡",
         text: "Stage tuning, performance diagnostics and EGR/DPF/AdBlue solutions based on technical condition.",
       },
       {
         title: "Electrics and coding",
+        icon: "🔌",
         text: "Electronics, control units, retrofits and basic vehicle coding.",
       },
       {
         title: "Towing",
+        icon: "🚚",
         text: "Help with non-running cars, vehicle transport and service logistics by arrangement.",
       },
     ],
     detailingItems: [
       {
         title: "Detailing",
+        icon: "✨",
         text: "Complete exterior and interior care, decontamination, protection and final finish.",
       },
       {
         title: "Paint polishing",
+        icon: "🧽",
         text: "One-step, two-step and multi-step polishing based on paint condition.",
       },
       {
         title: "Interior deep cleaning",
+        icon: "🛋️",
         text: "Deep cleaning, wet vacuuming, plastics, leather, textile care and odour removal.",
       },
       {
         title: "Paint work and local repairs",
+        icon: "🎨",
         text: "Local repairs, part preparation, paint work and damage repairs.",
       },
       {
         title: "Tinting and films",
+        icon: "🪟",
         text: "Window tinting, headlight films, protective films and visual changes.",
       },
       {
         title: "Headlight restoration and PPF",
+        icon: "💡",
         text: "Headlight polishing, clarity restoration and protective film for headlights.",
       },
       {
         title: "Anti-rain protection",
+        icon: "🌧️",
         text: "Hydrophobic glass protection for better water runoff and comfort in rain.",
       },
       {
         title: "Ambient lighting",
+        icon: "🌈",
         text: "Interior ambient lighting installation and individual lighting upgrades.",
       },
       {
         title: "Car audio",
+        icon: "🔊",
         text: "Multimedia, cameras, DSP, amplifiers, subwoofers and sound insulation.",
       },
     ],
@@ -269,68 +301,84 @@ const translations = {
     serviceItems: [
       {
         title: "Автосервіс",
+        icon: "🔧",
         text: "Обслуговування, механічні ремонти, гальма, підвіска, двигун і типові сервісні роботи.",
       },
       {
         title: "Діагностика",
+        icon: "🖥️",
         text: "Зчитування помилок, перевірка параметрів і пошук причини до заміни деталей.",
       },
       {
         title: "Діагностика перед купівлею авто",
+        icon: "🔍",
         text: "Перевірка автомобіля перед купівлею, діагностика, технічний стан, ризики та рекомендації.",
       },
       {
         title: "Передпродажна підготовка",
+        icon: "🚗",
         text: "Перевірка, базовий сервіс, підготовка авто до продажу і рекомендації для кращої презентації.",
       },
       {
         title: "Chip tuning",
+        icon: "⚡",
         text: "Stage налаштування, діагностика потужності та рішення EGR/DPF/AdBlue за технічним станом.",
       },
       {
         title: "Електрика і кодування",
+        icon: "🔌",
         text: "Електроніка, блоки керування, retrofit і базове кодування авто.",
       },
       {
         title: "Евакуатор",
+        icon: "🚚",
         text: "Допомога з нерухомим авто, перевезення автомобілів і сервісна логістика.",
       },
     ],
     detailingItems: [
       {
         title: "Детейлінг",
+        icon: "✨",
         text: "Повний догляд за екстерʼєром та інтерʼєром, деконтамінація, захист і фінальний вигляд.",
       },
       {
         title: "Полірування лаку",
+        icon: "🧽",
         text: "Однокрокове, двокрокове і багатокрокове полірування залежно від стану лаку.",
       },
       {
         title: "Хімчистка салону",
+        icon: "🛋️",
         text: "Глибоке очищення, хімчистка, догляд за пластиком, шкірою, тканиною і запахами.",
       },
       {
         title: "Фарбування і локальні ремонти",
+        icon: "🎨",
         text: "Локальні ремонти, підготовка деталей, малярні роботи і ремонт пошкоджень.",
       },
       {
         title: "Тонування і плівки",
+        icon: "🪟",
         text: "Тонування скла, плівки на фари, захисні плівки і зміна вигляду авто.",
       },
       {
         title: "Відновлення фар і PPF",
+        icon: "💡",
         text: "Полірування фар, відновлення прозорості та бронеплівка на фари.",
       },
       {
         title: "Антидощ",
+        icon: "🌧️",
         text: "Гідрофобний захист скла для кращого відведення води і комфорту під час дощу.",
       },
       {
         title: "Ambient-підсвітка",
+        icon: "🌈",
         text: "Встановлення ambient-підсвітки салону та індивідуальні світлові доопрацювання.",
       },
       {
         title: "Автозвук",
+        icon: "🔊",
         text: "Мультимедіа, камери, DSP, підсилювачі, сабвуфери і шумоізоляція.",
       },
     ],
@@ -383,68 +431,84 @@ const translations = {
     serviceItems: [
       {
         title: "Автосервис",
+        icon: "🔧",
         text: "Обслуживание, механический ремонт, тормоза, подвеска, двигатель и типовые сервисные работы.",
       },
       {
         title: "Диагностика",
+        icon: "🖥️",
         text: "Чтение ошибок, проверка параметров и поиск причины до замены деталей.",
       },
       {
         title: "Диагностика перед покупкой авто",
+        icon: "🔍",
         text: "Проверка автомобиля перед покупкой, диагностика, техническое состояние, риски и рекомендации.",
       },
       {
         title: "Предпродажная подготовка",
+        icon: "🚗",
         text: "Проверка, базовый сервис, подготовка авто к продаже и рекомендации для лучшей презентации.",
       },
       {
         title: "Chip tuning",
+        icon: "⚡",
         text: "Stage-настройки, диагностика мощности и решения EGR/DPF/AdBlue по техническому состоянию.",
       },
       {
         title: "Электрика и кодирование",
+        icon: "🔌",
         text: "Электроника, блоки управления, retrofit и базовое кодирование автомобиля.",
       },
       {
         title: "Эвакуатор",
+        icon: "🚚",
         text: "Помощь с неходовым авто, перевозка автомобилей и сервисная логистика.",
       },
     ],
     detailingItems: [
       {
         title: "Детейлинг",
+        icon: "✨",
         text: "Полный уход за экстерьером и интерьером, деконтаминация, защита и финальный внешний вид.",
       },
       {
         title: "Полировка лака",
+        icon: "🧽",
         text: "Одноэтапная, двухэтапная и многоэтапная полировка по состоянию лака.",
       },
       {
         title: "Химчистка салона",
+        icon: "🛋️",
         text: "Глубокая чистка, химчистка, уход за пластиком, кожей, тканью и удаление запахов.",
       },
       {
         title: "Покраска и локальные ремонты",
+        icon: "🎨",
         text: "Локальные ремонты, подготовка деталей, малярные работы и устранение повреждений.",
       },
       {
         title: "Тонировка и плёнки",
+        icon: "🪟",
         text: "Тонировка стёкол, плёнки на фары, защитные плёнки и изменение внешнего вида.",
       },
       {
         title: "Восстановление фар и бронеплёнка",
+        icon: "💡",
         text: "Полировка фар, восстановление прозрачности и бронеплёнка на фары.",
       },
       {
         title: "Антидождь",
+        icon: "🌧️",
         text: "Гидрофобная защита стекла для лучшего отвода воды и комфорта во время дождя.",
       },
       {
         title: "Ambient-подсветка",
+        icon: "🌈",
         text: "Установка ambient-подсветки салона и индивидуальные световые доработки.",
       },
       {
         title: "Автозвук",
+        icon: "🔊",
         text: "Мультимедиа, камеры, DSP, усилители, сабвуферы и шумоизоляция.",
       },
     ],
@@ -476,23 +540,15 @@ function isLanguageCode(value: string | null): value is LanguageCode {
 }
 
 function SectionTitle({
-  eyebrow,
   title,
   text,
 }: {
-  eyebrow?: string;
   title: string;
   text?: string;
 }) {
   return (
     <div className="mx-auto max-w-3xl text-center">
-      {eyebrow && (
-        <p className="text-sm font-black uppercase tracking-[0.35em] text-orange-500">
-          {eyebrow}
-        </p>
-      )}
-
-      <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl">
+      <h2 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
         {title}
       </h2>
 
@@ -504,28 +560,28 @@ function SectionTitle({
 function ServiceCard({
   title,
   text,
-  index,
+  icon,
   variant,
 }: {
   title: string;
   text: string;
-  index: number;
+  icon: string;
   variant: "service" | "detailing";
 }) {
   return (
-    <div className="group rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-2xl shadow-black/20 transition hover:-translate-y-1 hover:border-orange-500/60 hover:bg-white/[0.07]">
+    <div className="group rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-xl shadow-black/10 transition hover:-translate-y-1 hover:border-orange-500/60 hover:bg-white/[0.07]">
       <div className="flex items-start gap-4">
         <div
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-sm font-black ${
+          className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-2xl shadow-lg ${
             variant === "service"
-              ? "bg-orange-500 text-white"
-              : "bg-white text-gray-950"
+              ? "bg-orange-500/15 text-orange-400 ring-1 ring-orange-500/30"
+              : "bg-white/10 text-white ring-1 ring-white/15"
           }`}
         >
-          {String(index + 1).padStart(2, "0")}
+          {icon}
         </div>
 
-        <div>
+        <div className="min-w-0">
           <h3 className="text-xl font-black text-white">{title}</h3>
           <p className="mt-2 leading-7 text-gray-400">{text}</p>
         </div>
@@ -549,7 +605,7 @@ function VisualPanel({
       <div className="absolute -bottom-20 -left-20 h-52 w-52 rounded-full bg-white/10 blur-3xl" />
 
       <div
-        className={`relative min-h-[230px] rounded-[1.5rem] border border-white/10 bg-gray-950/80 p-6 ${
+        className={`relative min-h-[210px] rounded-[1.5rem] border border-white/10 bg-gray-950/80 p-6 ${
           align === "right" ? "text-right" : "text-left"
         }`}
       >
@@ -599,7 +655,7 @@ export default function ServicePageClient() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
-      <section className="relative overflow-hidden px-4 py-16 sm:px-6 lg:py-24">
+      <section className="relative overflow-hidden px-4 py-12 sm:px-6 lg:py-16">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.24),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_28%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(3,7,18,0.35),#030712)]" />
 
@@ -620,7 +676,7 @@ export default function ServicePageClient() {
               {t.subtitle}
             </p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
                 href={whatsappHref}
                 target="_blank"
@@ -645,20 +701,20 @@ export default function ServicePageClient() {
               </Link>
             </div>
 
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid gap-3 sm:grid-cols-[0.85fr_1.15fr]">
               <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
                   {t.phoneLabel}
                 </p>
                 <a
                   href={phoneHref}
-                  className="mt-2 block text-lg font-black text-white hover:text-orange-400"
+                  className="mt-2 block whitespace-nowrap text-xl font-black leading-none tracking-tight text-white hover:text-orange-400"
                 >
                   {phone}
                 </a>
               </div>
 
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:col-span-2">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
                   {t.locationLabel}
                 </p>
@@ -696,11 +752,11 @@ export default function ServicePageClient() {
         </div>
       </section>
 
-      <section className="px-4 py-14 sm:px-6 lg:py-20">
+      <section className="px-4 py-10 sm:px-6 lg:py-14">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[2.2rem] border border-orange-500/30 bg-gradient-to-br from-orange-500/15 to-white/[0.03] p-5 shadow-2xl shadow-black/30 sm:p-7">
-              <div className="rounded-[1.7rem] border border-white/10 bg-gray-950/80 p-6">
+            <div className="rounded-[2.2rem] border border-orange-500/30 bg-gradient-to-br from-orange-500/15 to-white/[0.03] p-4 shadow-2xl shadow-black/30 sm:p-6">
+              <div className="rounded-[1.7rem] border border-white/10 bg-gray-950/80 p-5">
                 <p className="text-sm font-black uppercase tracking-[0.32em] text-orange-400">
                   Service
                 </p>
@@ -713,20 +769,20 @@ export default function ServicePageClient() {
               </div>
 
               <div className="mt-5 grid gap-4">
-                {t.serviceItems.map((item, index) => (
+                {t.serviceItems.map((item) => (
                   <ServiceCard
                     key={item.title}
                     title={item.title}
                     text={item.text}
-                    index={index}
+                    icon={item.icon}
                     variant="service"
                   />
                 ))}
               </div>
             </div>
 
-            <div className="rounded-[2.2rem] border border-white/15 bg-gradient-to-br from-white/12 to-orange-500/[0.06] p-5 shadow-2xl shadow-black/30 sm:p-7">
-              <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.06] p-6">
+            <div className="rounded-[2.2rem] border border-white/15 bg-gradient-to-br from-white/12 to-orange-500/[0.06] p-4 shadow-2xl shadow-black/30 sm:p-6">
+              <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.06] p-5">
                 <p className="text-sm font-black uppercase tracking-[0.32em] text-gray-300">
                   Detailing
                 </p>
@@ -739,12 +795,12 @@ export default function ServicePageClient() {
               </div>
 
               <div className="mt-5 grid gap-4">
-                {t.detailingItems.map((item, index) => (
+                {t.detailingItems.map((item) => (
                   <ServiceCard
                     key={item.title}
                     title={item.title}
                     text={item.text}
-                    index={index}
+                    icon={item.icon}
                     variant="detailing"
                   />
                 ))}
@@ -754,11 +810,11 @@ export default function ServicePageClient() {
         </div>
       </section>
 
-      <section className="px-4 py-14 sm:px-6 lg:py-20">
+      <section className="px-4 py-10 sm:px-6 lg:py-14">
         <div className="mx-auto max-w-7xl">
           <SectionTitle title={t.galleryTitle} />
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
             <VisualPanel title="SERVICE" subtitle={t.serviceZone} />
             <VisualPanel
               title="DETAILING"
@@ -769,7 +825,7 @@ export default function ServicePageClient() {
         </div>
       </section>
 
-      <section className="px-4 pb-14 sm:px-6 lg:pb-20">
+      <section className="px-4 pb-10 sm:px-6 lg:pb-14">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-7">
             <h2 className="text-3xl font-black text-white">{t.whyTitle}</h2>
@@ -808,7 +864,7 @@ export default function ServicePageClient() {
         </div>
       </section>
 
-      <section className="px-4 pb-16 sm:px-6 lg:pb-24">
+      <section className="px-4 pb-12 sm:px-6 lg:pb-16">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700 p-8 shadow-2xl shadow-orange-600/20 sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-10">
           <div>
             <h2 className="text-4xl font-black text-white">{t.ctaTitle}</h2>
@@ -817,7 +873,7 @@ export default function ServicePageClient() {
             </p>
           </div>
 
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row lg:mt-0">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:mt-0 lg:justify-end">
             <a
               href={whatsappHref}
               target="_blank"
@@ -829,7 +885,7 @@ export default function ServicePageClient() {
 
             <a
               href={phoneHref}
-              className="rounded-2xl border border-white/40 px-7 py-4 text-center text-lg font-black text-white transition hover:bg-white hover:text-orange-600"
+              className="whitespace-nowrap rounded-2xl border border-white/40 px-7 py-4 text-center text-xl font-black text-white transition hover:bg-white hover:text-orange-600"
             >
               {phone}
             </a>
